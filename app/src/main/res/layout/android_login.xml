@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@drawable/TerraBG1">
 
     <TextView
@@ -12,7 +11,7 @@
         android:layout_marginStart="69dp"
         android:layout_marginTop="90dp"
         android:fontFamily="@font/montserrat"
-        android:text="Create Account"
+        android:text="Welcome Back!"
         android:textColor="#acdeaa"
         android:textSize="35sp"
         android:textStyle="bold" />
@@ -54,5 +53,6 @@
         android:layout_marginBottom="100dp"
         android:background="@drawable/radius"
         android:fontFamily="@font/montserrat"
-        android:text="Sign up" />
+        android:text="Login" />
+
 </RelativeLayout>
