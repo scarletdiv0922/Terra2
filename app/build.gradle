@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-def AlanMavenRepo = "https://mymavenrepo.com/repo/fSCXIHAoBMWBdlZGqq6n/"
+def AlanMavenRep = "https://mymavenrepo.com/repo/fSCXIHAoBMWBdlZGqq6n/"
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.1"
@@ -20,7 +20,7 @@ android {
 }
 
 repositories {
-    maven {url AlanMavenRepo}
+    maven {url AlanMavenRep}
 }
 
 dependencies {
