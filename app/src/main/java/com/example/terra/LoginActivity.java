@@ -13,9 +13,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getSupportActionBar().hide();
+
         Button login = findViewById(R.id.loginbutton);
         login.setOnClickListener((v) -> {
-            Toast.makeText(this, "Moving to home activity", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Moving to home activity", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getBaseContext(), HomeScreenActivity.class);
             startActivity(intent);
         });

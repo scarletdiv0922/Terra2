@@ -17,6 +17,8 @@ public class HomeScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+        getSupportActionBar().hide();
+
         //add intent
         AlanButton alanButton;
         alanButton = findViewById(R.id.alan_button_home_screen);

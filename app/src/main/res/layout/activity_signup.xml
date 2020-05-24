@@ -45,16 +45,15 @@
     </EditText>
 
     <Button
-        android:id="@+id/signupbutton"
+        android:id="@+id/sign_up_button"
         android:layout_below="@+id/password"
         android:layout_width="209dp"
         android:layout_marginTop="200dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="100dp"
         android:background="@drawable/radius"
         android:fontFamily="@font/montserrat"
+        android:textSize="20sp"
         android:text="Sign up"
-        android:textAllCaps="false"
-        android:textSize="20sp"/>
+        android:textAllCaps="false"/>
 </RelativeLayout>

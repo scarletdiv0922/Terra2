@@ -13,6 +13,8 @@ public class AfterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_after);
+        getSupportActionBar().hide();
+
         AlanButton alanButton;
         alanButton = findViewById(R.id.alanbutton);
         AlanConfig config = AlanConfig.builder()
