@@ -20,7 +20,7 @@ android {
 }
 
 repositories {
-    maven { url AlanMavenRepo }
+    maven {url AlanMavenRepo}
 }
 
 dependencies {
