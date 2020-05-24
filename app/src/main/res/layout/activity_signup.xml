@@ -54,5 +54,7 @@
         android:layout_marginBottom="100dp"
         android:background="@drawable/radius"
         android:fontFamily="@font/montserrat"
-        android:text="Sign up" />
+        android:text="Sign up"
+        android:textAllCaps="false"
+        android:textSize="20sp"/>
 </RelativeLayout>

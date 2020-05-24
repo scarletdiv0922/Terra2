@@ -17,29 +17,35 @@
 
     <Button
         android:id="@+id/login_button"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="77dp"
-        android:layout_marginBottom="114dp"
+        android:layout_marginStart="79dp"
+        android:layout_marginBottom="110dp"
         android:background="@null"
         android:fontFamily="@font/montserrat"
         android:text="Login"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/sign_up_button"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="70dp"
-        android:layout_marginBottom="116dp"
+        android:layout_marginBottom="110dp"
         android:background="@null"
         android:fontFamily="@font/montserrat"
         android:text="Sign up"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp" />
 
     <com.alan.alansdk.button.AlanButton
         app:layout_constraintBottom_toBottomOf="parent"

@@ -53,6 +53,8 @@
         android:layout_marginBottom="100dp"
         android:background="@drawable/radius"
         android:fontFamily="@font/montserrat"
-        android:text="Login" />
+        android:textSize="20sp"
+        android:text="Login"
+        android:textAllCaps="false"/>
 
 </RelativeLayout>
