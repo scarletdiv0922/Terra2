@@ -19,9 +19,12 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@null"
         android:fontFamily="@font/montserrat"
         android:text="Login"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"
+        android:style="?android:attr/borderlessButtonStyle"
+        android:layout_alignParentBottom="true"/>
 
 
 </RelativeLayout>
