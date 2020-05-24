@@ -23,6 +23,7 @@ public class BDAActivity extends AppCompatActivity {
             public void onClick(View arg0) {
 
                 Intent intent = new Intent(BDAActivity.this, BeforeActivity.class);
+                startActivity(intent);
 
             }
         });
@@ -32,6 +33,7 @@ public class BDAActivity extends AppCompatActivity {
             public void onClick(View arg0) {
 
                 Intent intent = new Intent(BDAActivity.this, DuringActivity.class);
+                startActivity(intent);
 
             }
         });
@@ -41,6 +43,7 @@ public class BDAActivity extends AppCompatActivity {
             public void onClick(View arg0) {
 
                 Intent intent = new Intent(BDAActivity.this, AfterActivity.class);
+                startActivity(intent);
 
             }
         });

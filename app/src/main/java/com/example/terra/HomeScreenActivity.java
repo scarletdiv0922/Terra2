@@ -26,6 +26,7 @@ public class HomeScreenActivity extends AppCompatActivity {
             public void onClick(View arg0) {
 
                 Intent intent = new Intent(HomeScreenActivity.this, EmergencyContactsActivity.class);
+                startActivity(intent);
 
             }
         });
@@ -35,6 +36,7 @@ public class HomeScreenActivity extends AppCompatActivity {
             public void onClick(View arg0) {
 
                 Intent intent = new Intent(HomeScreenActivity.this, BDAActivity.class);
+                startActivity(intent);
 
             }
         });
