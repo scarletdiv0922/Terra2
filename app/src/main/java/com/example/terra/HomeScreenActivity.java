@@ -9,7 +9,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_during);
+        setContentView(R.layout.activity_home_screen);
         //add intent
     }
 }
