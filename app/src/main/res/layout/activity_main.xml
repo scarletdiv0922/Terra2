@@ -29,7 +29,7 @@
     <com.alan.alansdk.button.AlanButton
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:id="@+id/alan_button"
+        android:id="@+id/alanbutton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

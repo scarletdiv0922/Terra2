@@ -13,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        alanButton = findViewById(R.id.alan_button);
+        alanButton = findViewById(R.id.alanbutton);
         AlanConfig config = AlanConfig.builder()
                 .setProjectId("")
                 .build();
