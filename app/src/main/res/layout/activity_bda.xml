@@ -1,6 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</LinearLayout>
+
+    <Button
+        android:id="@+id/before_button"
+        android:layout_width="266dp"
+        android:layout_height="148dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="79dp"
+        android:background="@drawable/radius_navy"
+        android:text="Before: Learn what to do before a disaster."
+        android:textColor="#FFFFFF"
+        android:textSize="25sp"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/during_button"
+        android:layout_width="266dp"
+        android:layout_height="148dp"
+        android:layout_below="@id/before_button"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/radius_mint_green"
+        android:text="During: Learn what to do during a disaster."
+        android:textColor="#FFFFFF"
+        android:textSize="25sp"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/after_button"
+        android:layout_below="@+id/during_button"
+        android:layout_width="266dp"
+        android:layout_height="148dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/radius_bright_green"
+        android:text="After: Learn what to do after a disaster."
+        android:textColor="#FFFFFF"
+        android:textSize="25sp"
+        android:textAllCaps="false"/>
+
+    <com.alan.alansdk.button.AlanButton
+        android:layout_constraintBottom_toBottomOf="parent"
+        android:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/alanbutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>
