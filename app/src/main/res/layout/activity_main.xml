@@ -26,5 +26,11 @@
         android:style="?android:attr/borderlessButtonStyle"
         android:layout_alignParentBottom="true"/>
 
+    <com.alan.alansdk.button.AlanButton
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/alan_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 </RelativeLayout>
