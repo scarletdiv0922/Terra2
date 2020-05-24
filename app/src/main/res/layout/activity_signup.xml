@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/TerraBG1">
+    android:background="@drawable/terrabg1">
 
     <TextView
         android:id="@+id/welcome_back"
