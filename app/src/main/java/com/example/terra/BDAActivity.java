@@ -7,12 +7,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class BDAActivity extends AppCompatActivity {
+import com.alan.alansdk.AlanConfig;
+import com.alan.alansdk.button.AlanButton;
 
+public class BDAActivity extends AppCompatActivity {
+    private AlanButton alanButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bda);
+        alanButton = findViewById(R.id.alanbutton);
+        AlanConfig config = AlanConfig.builder()
+                .setProjectId("9852fc5b086a6dc66a51e5f59c5b909a2e956eca572e1d8b807a3e2338fdd0dc/stage")
+                .build();
+        alanButton.initWithConfig(config);
 
         Button beforeButton = findViewById(R.id.before_button);
         Button duringButton = findViewById(R.id.during_button);;
