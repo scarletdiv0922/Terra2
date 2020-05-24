@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/TerraBG1">
+    android:background="@drawable/terrabg1">
 
     <ImageView
         android:id="@+id/logo"
