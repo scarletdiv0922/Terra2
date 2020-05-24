@@ -18,6 +18,21 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".AfterActivity"></activity>
+
+        <activity android:name=".BeforeActivity"></activity>
+
+        <activity android:name=".DuringActivity"></activity>
+
+        <activity android:name=".EmergencyContactsActivity"></activity>
+
+        <activity android:name=".HomeScreenActivity"></activity>
+
+        <activity android:name=".LoginActivity"></activity>
+
+        <activity android:name=".SignupActivity"></activity>
+
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
