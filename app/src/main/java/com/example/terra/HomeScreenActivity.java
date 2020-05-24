@@ -19,7 +19,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_screen);
         //add intent
         AlanButton alanButton;
-        alanButton = findViewById(R.id.alanbutton);
+        alanButton = findViewById(R.id.alan_button_home_screen);
         AlanConfig config = AlanConfig.builder()
                 .setProjectId("9852fc5b086a6dc66a51e5f59c5b909a2e956eca572e1d8b807a3e2338fdd0dc/stage")
                 .build();
