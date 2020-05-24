@@ -7,6 +7,8 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 public class HomeScreenActivity extends AppCompatActivity {
 
     @Override
@@ -15,9 +17,9 @@ public class HomeScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_screen);
         //add intent
 
-        Button menuFAB = findViewById(R.id.menu_button);
-        Button emergencyContactsFAB = findViewById(R.id.emergency_contacts_button);
-        Button infoFAB = findViewById(R.id.info_button);
+        FloatingActionButton menuFAB = findViewById(R.id.menu_button);
+        FloatingActionButton emergencyContactsFAB = findViewById(R.id.emergency_contacts_button);
+        FloatingActionButton infoFAB = findViewById(R.id.info_button);
 
         emergencyContactsFAB.setOnClickListener(new View.OnClickListener() {
             @Override
