@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/TerraBG1">
+    android:background="@drawable/terrabg1">
 
     <ImageView
         android:id="@+id/logo"
@@ -19,9 +19,18 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@null"
         android:fontFamily="@font/montserrat"
         android:text="Login"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"
+        android:style="?android:attr/borderlessButtonStyle"
+        android:layout_alignParentBottom="true"/>
 
+    <com.alan.alansdk.button.AlanButton
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/alanbutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 </RelativeLayout>
