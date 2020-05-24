@@ -3,7 +3,9 @@ package com.example.terra;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.alan.alansdk.AlanConfig;
@@ -25,6 +27,18 @@ public class MainActivity extends AppCompatActivity {
                 .setProjectId("9852fc5b086a6dc66a51e5f59c5b909a2e956eca572e1d8b807a3e2338fdd0dc/stage")
                 .build();
         alanButton.initWithConfig(config);
+        Button signup = findViewById(R.id.sign_up_button);
+        signup.setOnClickListener((v) -> {
+            Toast.makeText(this, "Moving to signup activity", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getBaseContext(), SignupActivity.class);
+            startActivity(intent);
+        });
+        Button login = findViewById(R.id.login_button);
+        login.setOnClickListener((v) -> {
+            Toast.makeText(this, "Moving to login activity", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+            startActivity(intent);
+        });
     }
     /**
      * Invokes when connection state with backend changed
