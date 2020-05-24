@@ -25,7 +25,7 @@
         android:layout_marginStart="103dp"
         android:layout_marginTop="50dp"
         android:fontFamily="@font/montserrat"
-        android:text="Email">
+        android:hint="Email">
 
     </EditText>
 
@@ -38,7 +38,7 @@
         android:layout_marginStart="103dp"
         android:layout_marginTop="30dp"
         android:fontFamily="@font/montserrat"
-        android:text="Password"
+        android:hint="Password"
         android:inputType="textPassword">
 
     </EditText>
