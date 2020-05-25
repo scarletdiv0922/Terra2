@@ -20,12 +20,12 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/menu_button"
-        android:layout_width="70dp"
-        android:layout_height="77dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="204dp"
-        android:layout_marginBottom="29dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="30dp"
         android:background="@color/midGreen"
         android:backgroundTint="@color/midGreen"
         android:src="@drawable/baseline_reorder_white_36dp" />
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="333dp"
+        android:layout_marginStart="130dp"
         android:layout_marginBottom="30dp"
         android:background="@color/midGreen"
         android:backgroundTint="@color/midGreen"
@@ -49,8 +49,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="43dp"
-        android:layout_marginBottom="29dp"
+        android:layout_marginEnd="120dp"
+        android:layout_marginBottom="30dp"
         android:background="@color/midGreen"
         android:backgroundTint="@color/midGreen"
         android:clickable="true"
@@ -61,18 +61,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true">
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="30dp">
 
     </com.alan.alansdk.button.AlanButton>
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="175dp"
+        android:layout_width="220dp"
         android:layout_height="104dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="114dp"
+        android:layout_marginStart="100dp"
         android:layout_marginBottom="126dp"
         android:fontFamily="@font/montserrat"
         android:text="There are no disasters in your area."
