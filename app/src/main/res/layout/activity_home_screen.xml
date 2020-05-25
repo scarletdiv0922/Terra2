@@ -24,11 +24,11 @@
         android:layout_height="77dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="51dp"
-        android:layout_marginBottom="32dp"
-        android:src="@drawable/baseline_reorder_white_36dp"
+        android:layout_marginStart="204dp"
+        android:layout_marginBottom="29dp"
+        android:background="@color/midGreen"
         android:backgroundTint="@color/midGreen"
-        android:background="@color/midGreen"/>
+        android:src="@drawable/baseline_reorder_white_36dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/emergency_contacts_button"
@@ -36,12 +36,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="133dp"
-        android:layout_marginBottom="32dp"
-        android:clickable="true"
-        app:srcCompat="@drawable/baseline_people_outline_white_36dp"
+        android:layout_marginStart="333dp"
+        android:layout_marginBottom="30dp"
+        android:background="@color/midGreen"
         android:backgroundTint="@color/midGreen"
-        android:background="@color/midGreen"/>
+        android:clickable="true"
+        app:srcCompat="@drawable/baseline_people_outline_white_36dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/info_button"
@@ -49,12 +49,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="140dp"
-        android:layout_marginBottom="34dp"
-        android:clickable="true"
-        app:srcCompat="@drawable/baseline_info_white_36dp"
+        android:layout_marginEnd="43dp"
+        android:layout_marginBottom="29dp"
+        android:background="@color/midGreen"
         android:backgroundTint="@color/midGreen"
-        android:background="@color/midGreen"/>
+        android:clickable="true"
+        app:srcCompat="@drawable/baseline_info_white_36dp" />
 
     <com.alan.alansdk.button.AlanButton
         android:id="@+id/alan_button_home_screen"
