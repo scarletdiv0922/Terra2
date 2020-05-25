@@ -17,7 +17,7 @@ public class SignupActivity extends AppCompatActivity {
 
         Button signup = findViewById(R.id.sign_up_button);
         signup.setOnClickListener((v) -> {
-            Toast.makeText(this, "Moving to home activity", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Moving to home activity", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getBaseContext(), HomeScreenActivity.class);
             startActivity(intent);
         });
