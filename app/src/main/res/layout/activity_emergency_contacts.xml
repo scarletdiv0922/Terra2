@@ -35,8 +35,32 @@
         android:layout_below="@id/emergContacts"
         android:layout_marginTop="130dp"
         android:divider="@color/midGreen"
-        android:dividerHeight="2dp" />
+        android:dividerHeight="2dp" >
 
+    </ListView>
+
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:id="@+id/floatingActionButton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:backgroundTint="@color/darkGreen"-->
+<!--        android:clickable="true"-->
+<!--        app:backgroundTint="@color/darkGreen"-->
+<!--        app:borderWidth="0dp"-->
+<!--        app:fabSize="normal"-->
+<!--        app:maxImageSize="30dp"-->
+<!--        app:srcCompat="@drawable/ic_more_vert_black_24dp" />-->
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        app:fab_addButtonColorNormal="@color/lightGreen"
+        app:fab_addButtonColorPressed="@color/darkGreen">
+
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 
 
