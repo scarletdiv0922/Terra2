@@ -39,25 +39,32 @@
 
     </ListView>
 
-<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--        android:id="@+id/floatingActionButton"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:backgroundTint="@color/darkGreen"-->
-<!--        android:clickable="true"-->
-<!--        app:backgroundTint="@color/darkGreen"-->
-<!--        app:borderWidth="0dp"-->
-<!--        app:fabSize="normal"-->
-<!--        app:maxImageSize="30dp"-->
-<!--        app:srcCompat="@drawable/ic_more_vert_black_24dp" />-->
-
     <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/fab1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        app:fab_addButtonColorNormal="@color/lightGreen"
+        app:fab_addButtonColorNormal="@color/midGreen"
         app:fab_addButtonColorPressed="@color/darkGreen">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/lightGreen"
+            app:fab_colorPressed="@color/midGreen"
+            app:fab_size="mini"
+            app:fab_icon="@drawable/add_icon"/>
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/remove_contact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/lightGreen"
+            app:fab_colorPressed="@color/midGreen"
+            app:fab_size="mini"
+            app:fab_icon="@drawable/ic_delete"/>
 
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
