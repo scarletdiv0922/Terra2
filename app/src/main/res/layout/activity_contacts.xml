@@ -1,6 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/terrabg2">
 
-</LinearLayout>
+
+    <TextView
+        android:id="@+id/emergContacts"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="90dp"
+        android:fontFamily="@font/montserrat"
+        android:text="Contacts"
+        android:textColor="#FFFFFF"
+        android:textSize="36sp" />
+
+    <ImageButton
+        android:id="@+id/backButton"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="90dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="10dp"
+        android:scaleX=".2"
+        android:scaleY=".2"
+        android:src="@drawable/backwhite" />
+
+    <ListView
+        android:id="@+id/listv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/emergContacts"
+        android:layout_marginTop="130dp"
+        android:divider="@color/midGreen"
+        android:dividerHeight="2dp" >
+
+    </ListView>
+
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/done"
+        app:fab_colorNormal="@color/midGreen"
+        app:fab_colorPressed="@color/darkGreen"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="20dp"
+        app:fab_icon="@drawable/ic_check"/>
+
+
+
+</RelativeLayout>

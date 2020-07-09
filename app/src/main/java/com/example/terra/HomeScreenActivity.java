@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 public class HomeScreenActivity extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,9 +37,11 @@ public class HomeScreenActivity extends AppCompatActivity {
                 .setProjectId("9852fc5b086a6dc66a51e5f59c5b909a2e956eca572e1d8b807a3e2338fdd0dc/stage")
                 .build();
         alanButton.initWithConfig(config);
+
         FloatingActionButton menuFAB = findViewById(R.id.menu_button);
         FloatingActionButton emergencyContactsFAB = findViewById(R.id.emergency_contacts_button);
         FloatingActionButton infoFAB = findViewById(R.id.info_button);
+
         alanButton.playCommand(commandJson.toString(),  new ScriptMethodCallback() {
             @Override
             public void onResponse(String methodName, String body, String error) {
@@ -87,5 +90,7 @@ public class HomeScreenActivity extends AppCompatActivity {
 
             }
         });
+
+
     }
 }

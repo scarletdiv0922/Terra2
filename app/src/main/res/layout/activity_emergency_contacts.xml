@@ -46,7 +46,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         app:fab_addButtonColorNormal="@color/midGreen"
-        app:fab_addButtonColorPressed="@color/darkGreen">
+        app:fab_addButtonColorPressed="@color/darkGreen"
+        android:layout_margin="20dp">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/add_contact"
@@ -54,7 +55,7 @@
             android:layout_height="wrap_content"
             app:fab_colorNormal="@color/lightGreen"
             app:fab_colorPressed="@color/midGreen"
-            app:fab_size="mini"
+            app:fab_size="normal"
             app:fab_icon="@drawable/add_icon"/>
 
         <com.getbase.floatingactionbutton.FloatingActionButton
@@ -63,12 +64,21 @@
             android:layout_height="wrap_content"
             app:fab_colorNormal="@color/lightGreen"
             app:fab_colorPressed="@color/midGreen"
-            app:fab_size="mini"
+            app:fab_size="normal"
             app:fab_icon="@drawable/ic_delete"/>
-
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
+    <TextView
+        android:id="@+id/no_contacts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat"
+        android:text="You have no emergency contacts saved."
+        android:textColor="@color/darkGreen"
+        android:textSize="20sp"
+        android:layout_marginTop="330dp"
+        android:layout_marginStart="50dp"/>
 
 
 </RelativeLayout>

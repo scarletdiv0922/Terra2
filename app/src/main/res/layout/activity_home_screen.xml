@@ -37,7 +37,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="120dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="28dp"
         android:background="@color/midGreen"
         android:backgroundTint="@color/midGreen"
         android:clickable="true"

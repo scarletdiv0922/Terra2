@@ -65,12 +65,12 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()){
                         //user is successfully registered
-                        Toast.makeText(this, "User is successfully logged in.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "User is successfully logged in.", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getBaseContext(), HomeScreenActivity.class);
                         startActivity(intent);
                     }
                     else
-                        Toast.makeText(this, "Failed to login. Please try again.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "Failed to login. Please try again.", Toast.LENGTH_SHORT).show();
                 });
     }
 }
