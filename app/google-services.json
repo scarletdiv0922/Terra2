@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "845515073522",
+    "firebase_url": "https://terra-alan.firebaseio.com",
+    "project_id": "terra-alan",
+    "storage_bucket": "terra-alan.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:845515073522:android:2a422958d30971540e6d6b",
+        "android_client_info": {
+          "package_name": "com.example.terra"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "845515073522-verrfb3e1jni80d46me75ghhcn0ks956.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAB9gUFK4D8auEPKovx9wbwkofsY3Bofbk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "845515073522-verrfb3e1jni80d46me75ghhcn0ks956.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
