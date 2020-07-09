@@ -33,10 +33,7 @@ public class SignupActivity extends AppCompatActivity {
         editTextPass = findViewById(R.id.password);
 
         Button signup = findViewById(R.id.sign_up_button);
-        signup.setOnClickListener((v) -> {
-//            Toast.makeText(this, "Moving to home activity", Toast.LENGTH_SHORT).show();
-            registerUser();
-        });
+        signup.setOnClickListener((v) -> registerUser());
     }
     private void registerUser(){
         String email = editTextEmail.getText().toString().trim();
