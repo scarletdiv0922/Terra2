@@ -9,7 +9,10 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -31,6 +34,8 @@ public class ContactsActivity2 extends AppCompatActivity {
     ArrayList<String> StoreContacts;
     ArrayAdapter<String> arrayAdapter;
     Cursor cursor;
+    ArrayList<String> contacts = new ArrayList<String>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +44,7 @@ public class ContactsActivity2 extends AppCompatActivity {
 
         l1 = findViewById(R.id.listv);
         StoreContacts = new ArrayList<String>();
+        l1.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
         ImageButton back = findViewById(R.id.backButton);
         back.setOnClickListener(new View.OnClickListener() {
@@ -53,14 +59,21 @@ public class ContactsActivity2 extends AppCompatActivity {
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ContactsActivity2.this, EmergencyContactsActivity.class);
-                startActivity(intent);
+                finishSelectingContacts();
             }
         });
 
+        l1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                l1.setItemChecked(position, true);
+                System.out.println("CHECKED " + l1.getItemAtPosition(position).toString() +" AT " + position);
+            }
+        });
+
+
         showContacts();
 
-//        get();
 
     }
 
@@ -131,6 +144,40 @@ public class ContactsActivity2 extends AppCompatActivity {
             cur.close();
         }
 
+//        loadContacts();
+    }
+
+    protected void finishSelectingContacts() {
+
+        ArrayList<String> selectedContacts = new ArrayList<String>();
+
+        SparseBooleanArray sp = l1.getCheckedItemPositions();
+        //StringBuffer str = new StringBuffer();
+        for (int i = 0; i < sp.size(); i++) {
+//            Log.d(TAG, "valueat: " + sp.valueAt(i) + " keyAt: " + sp.keyAt(i));
+            if (sp.valueAt(i)) {
+                //String s = ((TextView) list.getChildAt(i)).getText().toString();
+                //str = str.append(" "+s);
+                //Log.d(TAG, "index " + list.getItemAtPosition(sp.keyAt(i)));
+                //selectedContacts.add(list.getItemAtPosition(sp.keyAt(i)));
+                selectedContacts.add(StoreContacts.get(sp.keyAt(i)));
+            }
+        }
+
+        Intent intent = new Intent(ContactsActivity2.this, EmergencyContactsActivity.class);
+
+        intent.putStringArrayListExtra("EmergencyContacts", selectedContacts);
+//        setResult(RESULT_OK, intent);
+
+        startActivity(intent);
+    }
+
+    public void loadContacts() {
+        System.out.println("STARTED LOADCONTACTS");
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+
+        // ** READ FROM FIREBASE **
     }
 
 }

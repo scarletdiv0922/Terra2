@@ -35,7 +35,8 @@
         android:layout_below="@id/emergContacts"
         android:layout_marginTop="130dp"
         android:divider="@color/midGreen"
-        android:dividerHeight="2dp" >
+        android:dividerHeight="2dp"
+        android:padding="15dp">
 
     </ListView>
 
