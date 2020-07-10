@@ -13,7 +13,7 @@ public class DuringActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_during);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
 
         AlanButton alanButton;
         alanButton = findViewById(R.id.alanbutton);

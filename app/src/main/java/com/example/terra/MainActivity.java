@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
         Button signup = findViewById(R.id.sign_up_button);
         signup.setOnClickListener((v) -> {
             //Toast.makeText(this, "Moving to signup activity", Toast.LENGTH_SHORT).show();

@@ -24,7 +24,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
         JSONObject commandJson = null;
         try {
             commandJson = new JSONObject("{\"command\":\"navigate\", \"screen\": \"settings\"}");

@@ -16,7 +16,7 @@ public class BDAActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bda);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
 
         alanButton = findViewById(R.id.alanbutton);
         AlanConfig config = AlanConfig.builder()

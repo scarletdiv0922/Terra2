@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.View;
+import android.widget.ImageButton;
 
 import com.alan.alansdk.AlanConfig;
 import com.alan.alansdk.button.AlanButton;
@@ -19,7 +20,7 @@ public class EmergencyContactsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emergency_contacts);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
 
 //        alanButton = findViewById(R.id.alanbutton);
 //        AlanConfig config = AlanConfig.builder()
@@ -31,7 +32,16 @@ public class EmergencyContactsActivity extends AppCompatActivity {
         addContacts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(EmergencyContactsActivity.this, ContactsActivity.class);
+                Intent intent = new Intent(EmergencyContactsActivity.this, ContactsActivity2.class);
+                startActivity(intent);
+            }
+        });
+
+        ImageButton back = findViewById(R.id.backButton);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EmergencyContactsActivity.this, HomeScreenActivity.class);
                 startActivity(intent);
             }
         });

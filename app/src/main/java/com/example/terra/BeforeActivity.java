@@ -13,7 +13,7 @@ public class BeforeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_before);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
 
         AlanButton alanButton;
         alanButton = findViewById(R.id.alanbutton);
