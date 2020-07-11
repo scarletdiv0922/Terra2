@@ -80,7 +80,6 @@ public class ContactsActivity2 extends AppCompatActivity {
     private void showContacts() {
         // Check the SDK version and whether the permission is already granted or not.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(android.Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-//            requestPermissions(new String[]{android.Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
 
             ActivityCompat.requestPermissions(ContactsActivity2.this,
                     new String[] { Manifest.permission.READ_CONTACTS }, 1);
@@ -152,14 +151,12 @@ public class ContactsActivity2 extends AppCompatActivity {
         ArrayList<String> selectedContacts = new ArrayList<String>();
 
         SparseBooleanArray sp = l1.getCheckedItemPositions();
-        //StringBuffer str = new StringBuffer();
+
         for (int i = 0; i < sp.size(); i++) {
-//            Log.d(TAG, "valueat: " + sp.valueAt(i) + " keyAt: " + sp.keyAt(i));
             if (sp.valueAt(i)) {
-                //String s = ((TextView) list.getChildAt(i)).getText().toString();
-                //str = str.append(" "+s);
-                //Log.d(TAG, "index " + list.getItemAtPosition(sp.keyAt(i)));
-                //selectedContacts.add(list.getItemAtPosition(sp.keyAt(i)));
+//                System.out.println("KEY: " + sp.keyAt(i));
+//                System.out.println("VALUE: " + sp.valueAt(i));
+
                 selectedContacts.add(StoreContacts.get(sp.keyAt(i)));
             }
         }
@@ -167,7 +164,7 @@ public class ContactsActivity2 extends AppCompatActivity {
         Intent intent = new Intent(ContactsActivity2.this, EmergencyContactsActivity.class);
 
         intent.putStringArrayListExtra("EmergencyContacts", selectedContacts);
-//        setResult(RESULT_OK, intent);
+
 
         startActivity(intent);
     }
