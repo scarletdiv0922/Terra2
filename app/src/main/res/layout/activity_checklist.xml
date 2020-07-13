@@ -8,7 +8,7 @@
 
 
     <TextView
-        android:id="@+id/emergContacts"
+        android:id="@+id/emergChecklist"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="60dp"
@@ -26,16 +26,18 @@
         android:layout_marginTop="10dp"
         android:scaleX=".2"
         android:scaleY=".2"
-        android:src="@drawable/backwhite" />
+        android:src="@drawable/backwhite"
+        android:padding="15dp" />
 
     <ListView
         android:id="@+id/listv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/emergContacts"
-        android:layout_marginTop="130dp"
+        android:layout_below="@id/emergChecklist"
+        android:layout_marginTop="100dp"
         android:divider="@color/midGreen"
-        android:dividerHeight="2dp" />
+        android:dividerHeight="2dp"
+        android:padding="15dp"/>
 
 
 

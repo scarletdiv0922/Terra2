@@ -12,7 +12,7 @@ import com.alan.alansdk.AlanConfig;
 import com.alan.alansdk.ScriptMethodCallback;
 import com.alan.alansdk.button.AlanButton;
 import com.alan.alansdk.events.EventCommand;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,7 +38,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                 .build();
         alanButton.initWithConfig(config);
 
-        FloatingActionButton menuFAB = findViewById(R.id.menu_button);
+        FloatingActionButton checklistFAB = findViewById(R.id.checklist_button);
         FloatingActionButton emergencyContactsFAB = findViewById(R.id.emergency_contacts_button);
         FloatingActionButton infoFAB = findViewById(R.id.info_button);
 
@@ -86,6 +86,16 @@ public class HomeScreenActivity extends AppCompatActivity {
             public void onClick(View arg0) {
 
                 Intent intent = new Intent(HomeScreenActivity.this, BDAActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+        checklistFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(HomeScreenActivity.this, ChecklistActivity.class);
                 startActivity(intent);
 
             }
