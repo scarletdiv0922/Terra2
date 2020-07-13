@@ -23,8 +23,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.firebase.client.Firebase;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -32,9 +34,12 @@ public class ContactsActivity2 extends AppCompatActivity {
 
     ListView l1;
     ArrayList<String> StoreContacts;
+    ArrayList<String> names;
+    ArrayList<String> numbers;
     ArrayAdapter<String> arrayAdapter;
     Cursor cursor;
     ArrayList<String> contacts = new ArrayList<String>();
+    private Firebase mRef;
 
 
     @Override
@@ -45,6 +50,12 @@ public class ContactsActivity2 extends AppCompatActivity {
         l1 = findViewById(R.id.listv);
         StoreContacts = new ArrayList<String>();
         l1.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
+        Firebase.setAndroidContext(this);
+        mRef = new Firebase("https://terra-alan.firebaseio.com/");
+
+        names = new ArrayList<>();
+        numbers = new ArrayList<>();
 
         ImageButton back = findViewById(R.id.backButton);
         back.setOnClickListener(new View.OnClickListener() {
@@ -134,6 +145,8 @@ public class ContactsActivity2 extends AppCompatActivity {
                         String phoneNo = pCur.getString(pCur.getColumnIndex(
                                 ContactsContract.CommonDataKinds.Phone.NUMBER));
                         StoreContacts.add(name + "\n" + phoneNo);
+                        names.add(name);
+                        numbers.add(phoneNo);
                     }
                     pCur.close();
                 }
@@ -154,27 +167,16 @@ public class ContactsActivity2 extends AppCompatActivity {
 
         for (int i = 0; i < sp.size(); i++) {
             if (sp.valueAt(i)) {
-//                System.out.println("KEY: " + sp.keyAt(i));
-//                System.out.println("VALUE: " + sp.valueAt(i));
-
                 selectedContacts.add(StoreContacts.get(sp.keyAt(i)));
+
+                Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("emergency_contacts")
+                        .child(names.get(sp.keyAt(i)));
+                mRefChild.setValue(numbers.get(sp.keyAt(i)));
             }
         }
 
         Intent intent = new Intent(ContactsActivity2.this, EmergencyContactsActivity.class);
-
-        intent.putStringArrayListExtra("EmergencyContacts", selectedContacts);
-
-
         startActivity(intent);
-    }
-
-    public void loadContacts() {
-        System.out.println("STARTED LOADCONTACTS");
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-
-        // ** READ FROM FIREBASE **
     }
 
 }

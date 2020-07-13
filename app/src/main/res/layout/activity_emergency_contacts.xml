@@ -48,7 +48,28 @@
         android:layout_alignParentEnd="true"
         app:fab_addButtonColorNormal="@color/midGreen"
         app:fab_addButtonColorPressed="@color/darkGreen"
-        android:layout_margin="20dp">
+        android:layout_margin="20dp"
+        app:fab_labelStyle="@style/customFab">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/safe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/lightGreen"
+            app:fab_colorPressed="@color/midGreen"
+            app:fab_size="normal"
+            app:fab_icon="@drawable/ic_safe"
+            app:fab_title="I'm safe!"/>
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/lightGreen"
+            app:fab_colorPressed="@color/midGreen"
+            app:fab_size="normal"
+            app:fab_icon="@drawable/ic_help"
+            app:fab_title="Help!"/>
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/add_contact"
@@ -57,7 +78,8 @@
             app:fab_colorNormal="@color/lightGreen"
             app:fab_colorPressed="@color/midGreen"
             app:fab_size="normal"
-            app:fab_icon="@drawable/add_icon"/>
+            app:fab_icon="@drawable/add_icon"
+            app:fab_title="Add Contacts"/>
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/remove_contact"
@@ -66,7 +88,8 @@
             app:fab_colorNormal="@color/lightGreen"
             app:fab_colorPressed="@color/midGreen"
             app:fab_size="normal"
-            app:fab_icon="@drawable/ic_delete"/>
+            app:fab_icon="@drawable/ic_delete"
+            app:fab_title="Remove Contacts"/>
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
@@ -80,6 +103,7 @@
         android:textSize="20sp"
         android:layout_marginTop="330dp"
         android:layout_marginStart="50dp"/>
+
 
 
 </RelativeLayout>

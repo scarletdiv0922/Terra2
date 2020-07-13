@@ -10,7 +10,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.firebase.client.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -18,6 +22,7 @@ public class SignupActivity extends AppCompatActivity {
     private EditText editTextPass;
     private ProgressDialog progressDialog;
     private FirebaseAuth firebaseAuth;
+    private Firebase mRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +31,9 @@ public class SignupActivity extends AppCompatActivity {
 //        getSupportActionBar().hide();
 
         firebaseAuth = FirebaseAuth.getInstance();
+
+        Firebase.setAndroidContext(this);
+        mRef = new Firebase("https://terra-alan.firebaseio.com/");
 
         progressDialog = new ProgressDialog(this);
 
@@ -58,6 +66,9 @@ public class SignupActivity extends AppCompatActivity {
                     if (task.isSuccessful()){
                         //user is successfully registered
                         Toast.makeText(this, "User is successfully registered.", Toast.LENGTH_LONG).show();
+//                        Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("").child("c");
+//                        mRefChild.setValue("yoink");
+
                         Intent intent = new Intent(getBaseContext(), HomeScreenActivity.class);
                         startActivity(intent);
                     }

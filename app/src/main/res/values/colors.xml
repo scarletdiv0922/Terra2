@@ -8,6 +8,8 @@
     <color name="midGreen">#acdeaa</color>
     <color name="thirdGreen">#8fbbaf</color>
     <color name="darkGreen">#6b7b8e</color>
+    <color name="darkGreenTransparent">#B26b7b8e</color>
+
 
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
