@@ -10,6 +10,8 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -28,6 +30,9 @@ public class ChecklistActivity extends AppCompatActivity {
     private Firebase mRef;
     ArrayList<String> items = new ArrayList<>();
     ArrayList<Boolean> values = new ArrayList<>();
+    RecyclerView recyclerView;
+    RecyclerView.Adapter mAdapter;
+    RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +44,14 @@ public class ChecklistActivity extends AppCompatActivity {
 
         back = findViewById(R.id.backButton);
         checklist = findViewById(R.id.listv);
+        recyclerView = findViewById(R.id.recycler_view);
+
+//        recyclerView.setHasFixedSize(true);
+//        layoutManager = new LinearLayoutManager(this);
+//        recyclerView.setLayoutManager(layoutManager);
+//
+//        mAdapter = new MyAdapter(items);
+//        recyclerView.setAdapter(mAdapter);
 
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -50,15 +63,15 @@ public class ChecklistActivity extends AppCompatActivity {
         });
 
         getChecklist();
+//        recyclerView();
 
         checklist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String item = (String) checklist.getItemAtPosition(position);
-                System.out.println("HERE " + item);
+                System.out.println("HERE " + item + " position: " + position);
                 Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("emergency_checklist")
                         .child(item);
-
                 if (values.get(items.indexOf(item))) {
                     mRefChild.setValue(false);
                 }
@@ -106,5 +119,13 @@ public class ChecklistActivity extends AppCompatActivity {
                 System.out.println("firebase canceled oops");
             }
         });
+    }
+
+    public void recyclerView() {
+        System.out.println("RECYCLE");
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        RecyclerViewAdapter adapter = new RecyclerViewAdapter(items, this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 }
