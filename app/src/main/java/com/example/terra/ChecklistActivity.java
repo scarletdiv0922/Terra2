@@ -1,6 +1,7 @@
 package com.example.terra;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -61,7 +62,7 @@ public class ChecklistActivity extends AppCompatActivity {
                 if (values.get(items.indexOf(item))) {
                     mRefChild.setValue(false);
                 }
-                
+
                 else {
                     mRefChild.setValue(true);
                 }
@@ -74,8 +75,8 @@ public class ChecklistActivity extends AppCompatActivity {
     }
 
     public void getChecklist() {
-        Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("emergency_checklist");
 
+        Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("emergency_checklist");
         mRefChild.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -102,7 +103,7 @@ public class ChecklistActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-                System.out.println("firebase oops");
+                System.out.println("firebase canceled oops");
             }
         });
     }
