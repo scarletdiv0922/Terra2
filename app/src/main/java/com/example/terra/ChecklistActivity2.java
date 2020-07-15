@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +30,7 @@ public class ChecklistActivity2 extends AppCompatActivity {
 
     ImageButton back;
     ListView checklist;
+    RelativeLayout relativeLayout;
     ArrayAdapter<String> displayChecklist;
     private Firebase mRef;
     ArrayList<String> items = new ArrayList<>();
@@ -50,6 +52,7 @@ public class ChecklistActivity2 extends AppCompatActivity {
         back = findViewById(R.id.backButton);
         checklist = findViewById(R.id.listv);
         text = findViewById(R.id.txtitem);
+        relativeLayout = findViewById(R.id.relative_layout);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,11 +80,6 @@ public class ChecklistActivity2 extends AppCompatActivity {
                     view.setSelected(true);
                     System.out.println(item+ " NOW TRUE");
                 }
-
-//                displayChecklist.getView(0, null, checklist).setBackgroundResource(R.drawable.list_bg);
-                View view1;
-                view1 = displayChecklist.getView(0, null, checklist);
-                view1.setBackgroundResource(R.drawable.list_bg);
             }
         });
     }
@@ -104,11 +102,6 @@ public class ChecklistActivity2 extends AppCompatActivity {
         valuesog.clear();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        onStartChecks();
-    }
 
     public void getChecklist() {
         System.out.println("RUNNING GETCHECKLIST, SIZE " + items.size());
@@ -136,38 +129,21 @@ public class ChecklistActivity2 extends AppCompatActivity {
                     );
 
                     checklist.setAdapter(displayChecklist);
-
                 }
 
                 for (int i = 0; i < SIZE_OF_CHECKLIST; i++) {
                     if (values.get(i)) {
-                        System.out.println("owo " + checklist.getItemAtPosition(i));
-//                        displayChecklist.getView(i, null, checklist).setBackgroundResource(R.drawable.selected_item);
-//                        TextView t = (TextView) displayChecklist.getView(3, text, checklist);
-//                t.setBackgroundColor(Color.BLUE);
-
-//                System.out.println(displayChecklist.getItemViewType(0));
+                        checklist.setItemChecked(i,true);
                     }
                 }
-            }
+
+             }
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
                 System.out.println("firebase canceled oops");
             }
         });
-    }
-
-    public void onStartChecks() {
-        ListView checklistLocal;
-        checklistLocal = findViewById(R.id.listv);
-        checklistLocal.setItemChecked(0, true);
-        checklistLocal.setItemChecked(2, true);
-        if ( checklistLocal.getCount() > 0 ) {
-            checklistLocal.getChildAt(0).setSelected(true);
-            checklistLocal.getChildAt(1).setSelected(true);
-        }
-        System.out.println("here onstartchecks:" + checklistLocal.getCount());
     }
 
     public void setChecklist() {
