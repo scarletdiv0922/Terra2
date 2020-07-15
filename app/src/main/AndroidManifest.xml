@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".BDAActivity"></activity>
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -22,25 +23,35 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".AfterActivity"></activity>
+        <activity android:name=".AfterActivity"
+            android:screenOrientation="portrait"></activity>
 
-        <activity android:name=".BeforeActivity"></activity>
+        <activity android:name=".BeforeActivity"
+            android:screenOrientation="portrait"></activity>
 
-        <activity android:name=".DuringActivity"></activity>
+        <activity android:name=".DuringActivity"
+            android:screenOrientation="portrait"></activity>
 
-        <activity android:name=".EmergencyContactsActivity"></activity>
+        <activity android:name=".EmergencyContactsActivity"
+            android:screenOrientation="portrait"></activity>
 
-        <activity android:name=".HomeScreenActivity"></activity>
+        <activity android:name=".HomeScreenActivity"
+            android:screenOrientation="portrait"></activity>
 
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".LoginActivity"
+            android:screenOrientation="portrait"></activity>
 
-        <activity android:name=".SignupActivity"></activity>
+        <activity android:name=".SignupActivity"
+            android:screenOrientation="portrait"></activity>
 
-        <activity android:name=".ContactsActivity2"></activity>
+        <activity android:name=".ContactsActivity2"
+            android:screenOrientation="portrait"></activity>
 
-        <activity android:name=".RemoveContactActivity"></activity>
+        <activity android:name=".RemoveContactActivity"
+            android:screenOrientation="portrait"></activity>
 
-        <activity android:name=".ChecklistActivity"></activity>
+        <activity android:name=".ChecklistActivity2"
+            android:screenOrientation="portrait"></activity>
 
 
         <meta-data

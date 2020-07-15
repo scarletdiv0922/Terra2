@@ -30,21 +30,27 @@ public class ChecklistActivity extends AppCompatActivity {
     private Firebase mRef;
     ArrayList<String> items = new ArrayList<>();
     ArrayList<Boolean> values = new ArrayList<>();
-    RecyclerView recyclerView;
-    RecyclerView.Adapter mAdapter;
-    RecyclerView.LayoutManager layoutManager;
+//    RecyclerView recyclerView;
+//    RecyclerView.Adapter mAdapter;
+//    RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checklist);
 
+//        for (int i = 0; i < values.size(); i++) {
+////            if(values.get(i)) {
+////                System.out.println("SELECTED " + items.get(i));
+////                checklist.setSelection(i);
+////            }
+////        }
+
         Firebase.setAndroidContext(this);
         mRef = new Firebase("https://terra-alan.firebaseio.com/");
 
         back = findViewById(R.id.backButton);
         checklist = findViewById(R.id.listv);
-        recyclerView = findViewById(R.id.recycler_view);
 
 //        recyclerView.setHasFixedSize(true);
 //        layoutManager = new LinearLayoutManager(this);
@@ -64,6 +70,7 @@ public class ChecklistActivity extends AppCompatActivity {
 
         getChecklist();
 //        recyclerView();
+
 
         checklist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -85,6 +92,7 @@ public class ChecklistActivity extends AppCompatActivity {
             }
         });
 
+
     }
 
     public void getChecklist() {
@@ -93,6 +101,7 @@ public class ChecklistActivity extends AppCompatActivity {
         mRefChild.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                System.out.println("data changed!");
                 if (dataSnapshot.getValue() != null) {
                     Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
                     for (Map.Entry<String, Object> entry : map.entrySet()){
@@ -102,6 +111,7 @@ public class ChecklistActivity extends AppCompatActivity {
 
                         items.add(item);
                         values.add(value);
+                        System.out.println("item:" + item + "value:" + value);
                     }
 
                     displayChecklist = new ArrayAdapter<String>(
@@ -121,11 +131,10 @@ public class ChecklistActivity extends AppCompatActivity {
         });
     }
 
-    public void recyclerView() {
-        System.out.println("RECYCLE");
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(items, this);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-    }
+//    public void recyclerView() {
+//        System.out.println("RECYCLE");
+//        RecyclerViewAdapter adapter = new RecyclerViewAdapter(items, this);
+//        recyclerView.setAdapter(adapter);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//    }
 }

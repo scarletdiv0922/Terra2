@@ -95,7 +95,7 @@ public class HomeScreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(HomeScreenActivity.this, ChecklistActivity.class);
+                Intent intent = new Intent(HomeScreenActivity.this, ChecklistActivity2.class);
                 startActivity(intent);
 
             }
