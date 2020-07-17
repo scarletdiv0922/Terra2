@@ -5,19 +5,16 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,7 +22,6 @@ import androidx.core.app.ActivityCompat;
 
 import com.firebase.client.Firebase;
 import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -34,13 +30,13 @@ public class ContactsActivity2 extends AppCompatActivity {
 
     ListView l1;
     ArrayList<String> StoreContacts;
-    ArrayList<String> names;
-    ArrayList<String> numbers;
+    ArrayList<String> contactNames;
+    ArrayList<String> phoneNumbers;
     ArrayAdapter<String> arrayAdapter;
-    Cursor cursor;
-    ArrayList<String> contacts = new ArrayList<String>();
+    ImageButton backButton;
+    FloatingActionButton done;
     private Firebase mRef;
-
+    private static final String TAG = "ContactsActivity2";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,17 +44,18 @@ public class ContactsActivity2 extends AppCompatActivity {
         setContentView(R.layout.activity_contacts);
 
         l1 = findViewById(R.id.listv);
-        StoreContacts = new ArrayList<String>();
+        StoreContacts = new ArrayList<>();
         l1.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
+        //Connect to Firebase
         Firebase.setAndroidContext(this);
         mRef = new Firebase("https://terra-alan.firebaseio.com/");
 
-        names = new ArrayList<>();
-        numbers = new ArrayList<>();
+        contactNames = new ArrayList<>();
+        phoneNumbers = new ArrayList<>();
 
-        ImageButton back = findViewById(R.id.backButton);
-        back.setOnClickListener(new View.OnClickListener() {
+        backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ContactsActivity2.this, EmergencyContactsActivity.class);
@@ -66,7 +63,7 @@ public class ContactsActivity2 extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton done = findViewById(R.id.done);
+        done = findViewById(R.id.done);
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,53 +71,65 @@ public class ContactsActivity2 extends AppCompatActivity {
             }
         });
 
+        //Set onItemClickListener to set item as checked when user clicks on it
         l1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 l1.setItemChecked(position, true);
-                System.out.println("CHECKED " + l1.getItemAtPosition(position).toString() +" AT " + position);
+                Log.v(TAG, "User clicked on " + l1.getItemAtPosition(position).toString() + " at position " + position);
             }
         });
 
-
         showContacts();
-
 
     }
 
+    //Get user permission to access contacts, then populate the contacts ListView
     private void showContacts() {
-        // Check the SDK version and whether the permission is already granted or not.
+        //If the permission isn't granted and the SDK version isn't high enough
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(android.Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
 
+            //Then request the user permission to access contacts
             ActivityCompat.requestPermissions(ContactsActivity2.this,
                     new String[] { Manifest.permission.READ_CONTACTS }, 1);
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overridden method
         }
+
+        //If the user has already accepted the permission
         else {
-            // Android version is lesser than 6.0 or the permission is already granted.
+
+            //Get the user's contacts
             getContactList();
 
+            //Populate the ListView
             arrayAdapter = new ArrayAdapter<String>(
                     ContactsActivity2.this,
                     R.layout.list_item,
                     StoreContacts);
 
             l1.setAdapter(arrayAdapter);
+
         }
     }
 
+    //Handle the permission request result
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == 1) {
+
+            //If the permission has been granted, run showContacts() again and move on to the next step
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission is granted
                 showContacts();
-            } else {
-                Toast.makeText(this, "Without your permission, app cannot access the Contacts", Toast.LENGTH_SHORT).show();
+            }
+
+            //If the permission hasn't been granted, handle it with an error message
+            else {
+                Toast.makeText(this, "Without your permission, Terra cannot access your contacts.", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
+    //Retrieve the user's contact list
     private void getContactList() {
 
         ContentResolver cr = getContentResolver();
@@ -144,9 +153,9 @@ public class ContactsActivity2 extends AppCompatActivity {
                     while (pCur.moveToNext()) {
                         String phoneNo = pCur.getString(pCur.getColumnIndex(
                                 ContactsContract.CommonDataKinds.Phone.NUMBER));
-                        StoreContacts.add(name + "\n" + phoneNo);
-                        names.add(name);
-                        numbers.add(phoneNo);
+                        StoreContacts.add(name + "\n" + phoneNo); //Format each contact name and number and store it in StoreContacts
+                        contactNames.add(name); //Add each contact name to the ArrayList of contact names
+                        phoneNumbers.add(phoneNo); //Add each phone number to the ArrayList of phone numbers
                     }
                     pCur.close();
                 }
@@ -156,25 +165,24 @@ public class ContactsActivity2 extends AppCompatActivity {
             cur.close();
         }
 
-//        loadContacts();
     }
 
+    //Once the user is done selecting their emergency contacts from their contact list, update Firebase with their selected contacts
     protected void finishSelectingContacts() {
 
-        ArrayList<String> selectedContacts = new ArrayList<String>();
-
-        SparseBooleanArray sp = l1.getCheckedItemPositions();
+        SparseBooleanArray sp = l1.getCheckedItemPositions(); //Check which items in the ListView were selected
 
         for (int i = 0; i < sp.size(); i++) {
-            if (sp.valueAt(i)) {
-                selectedContacts.add(StoreContacts.get(sp.keyAt(i)));
 
+            //If the contact was selected, then add it to Firebase
+            if (sp.valueAt(i)) {
                 Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("emergency_contacts")
-                        .child(names.get(sp.keyAt(i)));
-                mRefChild.setValue(numbers.get(sp.keyAt(i)));
+                        .child(contactNames.get(sp.keyAt(i)));
+                mRefChild.setValue(phoneNumbers.get(sp.keyAt(i)));
             }
         }
 
+        //Then, start the intent to go back to the EmergencyContacts activity
         Intent intent = new Intent(ContactsActivity2.this, EmergencyContactsActivity.class);
         startActivity(intent);
     }

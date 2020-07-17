@@ -1,21 +1,16 @@
 package com.example.terra;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.SparseBooleanArray;
+
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -28,33 +23,30 @@ import java.util.Map;
 
 public class ChecklistActivity2 extends AppCompatActivity {
 
-    ImageButton back;
+    ImageButton backButton;
     ListView checklist;
-    RelativeLayout relativeLayout;
     ArrayAdapter<String> displayChecklist;
     private Firebase mRef;
-    ArrayList<String> items = new ArrayList<>();
-    ArrayList<Boolean> values = new ArrayList<>();
-    ArrayList<Boolean> valuesog = new ArrayList<>();
-    TextView text;
+    ArrayList<String> checklistItems = new ArrayList<>();
+    ArrayList<Boolean> updatedValues = new ArrayList<>();
+    ArrayList<Boolean> firebaseValues = new ArrayList<>();
     public int SIZE_OF_CHECKLIST = 16;
+    private static final String TAG = "ChecklistActivity2";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checklist);
 
-
-        System.out.println("inside oncreate");
+        //Connect activity to Firebase
         Firebase.setAndroidContext(this);
         mRef = new Firebase("https://terra-alan.firebaseio.com/");
 
-        back = findViewById(R.id.backButton);
+        backButton = findViewById(R.id.backButton);
         checklist = findViewById(R.id.listv);
-        text = findViewById(R.id.txtitem);
-        relativeLayout = findViewById(R.id.relative_layout);
 
-        back.setOnClickListener(new View.OnClickListener() {
+        //Set onClickListener to go back to Home Screen
+        backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ChecklistActivity2.this, HomeScreenActivity.class);
@@ -64,75 +56,83 @@ public class ChecklistActivity2 extends AppCompatActivity {
 
         getChecklist();
 
-
+        //Set onItemClickListener to check when list item is clicked
         checklist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String item = (String) checklist.getItemAtPosition(position);
-                System.out.println("HERE " + item + " position: " + position);
-                if (values.get(items.indexOf(item))) {
-                    values.set(items.indexOf(item), false);
+                String item = (String) checklist.getItemAtPosition(position); //Store checklist item that was clicked
+                Log.v(TAG, "Clicked on " + item + "at position " + position);
+
+                //If the value of the item was true, then update it to false
+                if (updatedValues.get(checklistItems.indexOf(item))) {
+                    updatedValues.set(checklistItems.indexOf(item), false);
                     view.setSelected(false);
-                    System.out.println(item+" NOW FALSE");
                 }
+
+                //If the value of the item was false, then update it to true
                 else {
-                    values.set(items.indexOf(item), true);
+                    updatedValues.set(checklistItems.indexOf(item), true);
                     view.setSelected(true);
-                    System.out.println(item+ " NOW TRUE");
                 }
             }
         });
     }
 
+    //When the user leaves the activity, empty the lists so that they can be loaded from
+    //Firebase when the user comes back.
     @Override
     protected void onPause() {
         super.onPause();
         setChecklist();
-        items.clear();
-        values.clear();
-        valuesog.clear();
+        checklistItems.clear();
+        updatedValues.clear();
+        firebaseValues.clear();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         setChecklist();
-        items.clear();
-        values.clear();
-        valuesog.clear();
+        checklistItems.clear();
+        updatedValues.clear();
+        firebaseValues.clear();
     }
 
-
+    //Load the items in the checklist from Firebase when the user enters the activity
     public void getChecklist() {
-        System.out.println("RUNNING GETCHECKLIST, SIZE " + items.size());
-        Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("emergency_checklist");
+        Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("emergency_checklist"); //Get the child element
         mRefChild.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println("data changed!");
                 if (dataSnapshot.getValue() != null) {
                     Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
                     for (Map.Entry<String, Object> entry : map.entrySet()){
-                        //Get user map
+
+                        //Get the emergency checklist item and its value
                         Boolean value = (Boolean) entry.getValue();
                         String item = entry.getKey();
 
-                        items.add(item);
-                        valuesog.add(value);
+                        //Add the item and value to their respective ArrayLists
+                        checklistItems.add(item);
+                        firebaseValues.add(value);
                     }
-                    values.addAll(valuesog);
 
+                    //Make a copy of the original Firebase values to be updated as the user selects items in the activity
+                    updatedValues.addAll(firebaseValues);
+
+                    //Inflate the checklist ListView with the items retrieved from Firebase
                     displayChecklist = new ArrayAdapter<String>(
                             ChecklistActivity2.this,
                             R.layout.list_item,
-                            items
+                            checklistItems
                     );
 
                     checklist.setAdapter(displayChecklist);
                 }
 
+                //If the item is already checked as true, then mark it as checked when the user enters the activity
                 for (int i = 0; i < SIZE_OF_CHECKLIST; i++) {
-                    if (values.get(i)) {
+                    if (firebaseValues.get(i)) {
                         checklist.setItemChecked(i,true);
                     }
                 }
@@ -141,30 +141,28 @@ public class ChecklistActivity2 extends AppCompatActivity {
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-                System.out.println("firebase canceled oops");
+                Log.e(TAG, "Error connecting to Firebase");
             }
         });
     }
 
+    //When the user leaves the activity, take the updated values and update Firebase with them
     public void setChecklist() {
-        System.out.println("SETTING CHECKLIST, SIZE " + values.size());
-        if (values.size() > 0) {
+        if (updatedValues.size() > 0) {
             for (int i = 0; i < SIZE_OF_CHECKLIST; i++) {
                 Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("emergency_checklist")
-                        .child(items.get(i));
-                if (values.get(i) != valuesog.get(i)) {
-                    System.out.println(items.get(i) + " CHANGED");
-                    if (valuesog.get(i)) {
-                        System.out.println(items.get(i) + " SET TO FALSE");
+                        .child(checklistItems.get(i)); //Get the Firebase children under emergency_checklist
+                if (updatedValues.get(i) != firebaseValues.get(i)) { //If the new value isn't equal to the original value in Firebase, then update the Firebase value to match
+                    if (firebaseValues.get(i)) {
+                        Log.v(TAG, checklistItems.get(i) + " is now set to false");
                         mRefChild.setValue(false);
                     }
                     else {
-                        System.out.println(items.get(i) + " SET TO TRUE");
+                        Log.v(TAG, checklistItems.get(i) + " is now set to true");
                         mRefChild.setValue(true);
                     }
                 }
             }
         }
-        System.out.println("FINISHED SETTING, SIZE " + values.size());
     }
 }
