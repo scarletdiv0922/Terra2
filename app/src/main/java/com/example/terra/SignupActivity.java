@@ -6,8 +6,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.firebase.client.Firebase;
@@ -26,7 +28,7 @@ public class SignupActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private Firebase mRef;
     ArrayList<String> items = new ArrayList<>();
-
+    ImageButton back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +62,25 @@ public class SignupActivity extends AppCompatActivity {
         items.add("Hand Sanitizer");
         items.add("Prescription Medications");
         items.add("Matchsticks");
+        items.add("Extra Cash");
+        items.add("Portable Charger");
+        //REMINDER: If you add any extra items to this list, update the SIZE_OF_CHECKLIST
+        //class constant in ChecklistActivity2
 
         Button signup = findViewById(R.id.sign_up_button);
         signup.setOnClickListener((v) -> registerUser());
+
+        back = findViewById(R.id.back_button);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
+
     private void registerUser(){
         String email = editTextEmail.getText().toString().trim();
         String pass = editTextPass.getText().toString().trim();
@@ -89,7 +106,7 @@ public class SignupActivity extends AppCompatActivity {
                         Toast.makeText(this, "User is successfully registered.", Toast.LENGTH_LONG).show();
                         addToFirebase();
 
-                        Intent intent = new Intent(getBaseContext(), HomeScreenActivity.class);
+                        Intent intent = new Intent(getBaseContext(), DisastersActivity.class);
                         startActivity(intent);
                     }
                     else

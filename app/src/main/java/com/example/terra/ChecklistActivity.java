@@ -49,7 +49,7 @@ public class ChecklistActivity extends AppCompatActivity {
         Firebase.setAndroidContext(this);
         mRef = new Firebase("https://terra-alan.firebaseio.com/");
 
-        back = findViewById(R.id.backButton);
+        back = findViewById(R.id.back_button);
         checklist = findViewById(R.id.listv);
 
 //        recyclerView.setHasFixedSize(true);

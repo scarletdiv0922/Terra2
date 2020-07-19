@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,25 +13,47 @@ import com.alan.alansdk.AlanConfig;
 import com.alan.alansdk.ScriptMethodCallback;
 import com.alan.alansdk.button.AlanButton;
 import com.alan.alansdk.events.EventCommand;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 public class HomeScreenActivity extends AppCompatActivity {
 
+    Button earthquake;
+    Button wildfire;
+    private Firebase mRef;
+    ArrayList<String> disasters = new ArrayList<>();
+    ArrayList<Boolean> values = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
-//        getSupportActionBar().hide();
+
+        earthquake = findViewById(R.id.earthquakes);
+        wildfire = findViewById(R.id.wildfires);
+
+        //Connect activity to Firebase
+        Firebase.setAndroidContext(this);
+        mRef = new Firebase("https://terra-alan.firebaseio.com/");
+
         JSONObject commandJson = null;
+
         try {
             commandJson = new JSONObject("{\"command\":\"navigate\", \"screen\": \"settings\"}");
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         AlanButton alanButton;
         alanButton = findViewById(R.id.alan_button_home_screen);
         AlanConfig config = AlanConfig.builder()
@@ -70,6 +93,9 @@ public class HomeScreenActivity extends AppCompatActivity {
                 }
             }
         };
+
+        getSelectedDisasters();
+
         alanButton.registerCallback(myCallback);
         emergencyContactsFAB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,15 +107,15 @@ public class HomeScreenActivity extends AppCompatActivity {
             }
         });
 
-        infoFAB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-
-                Intent intent = new Intent(HomeScreenActivity.this, BDAActivity.class);
-                startActivity(intent);
-
-            }
-        });
+//        infoFAB.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View arg0) {
+//
+//                Intent intent = new Intent(HomeScreenActivity.this, BDAActivity.class);
+//                startActivity(intent);
+//
+//            }
+//        });
 
         checklistFAB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +127,66 @@ public class HomeScreenActivity extends AppCompatActivity {
             }
         });
 
+        earthquake.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeScreenActivity.this, DisasterMenuActivity.class);
+                intent.putExtra("Disaster", "Earthquakes");
+                startActivity(intent);
+            }
+        });
 
+        wildfire.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeScreenActivity.this, DisasterMenuActivity.class);
+                intent.putExtra("Disaster", "Wildfires");
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    public void getSelectedDisasters() {
+        Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("selected_disasters"); //Get the child element
+        mRefChild.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                    Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                    for (Map.Entry<String, Object> entry : map.entrySet()) {
+
+                        String disaster = entry.getKey();
+                        Boolean value = (Boolean) entry.getValue();
+
+                        disasters.add(disaster);
+                        values.add(value);
+
+                    }
+                }
+                showButtons();
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+    public void showButtons() {
+        for (int i = 0; i < disasters.size(); i++) {
+            if (values.get(i)) {
+                if (disasters.get(i).equals("Earthquakes")) {
+                    earthquake.setVisibility(View.VISIBLE);
+                    earthquake.setEnabled(true);
+                }
+
+                if (disasters.get(i).equals("Wildfires")) {
+                    wildfire.setVisibility(View.VISIBLE);
+                    wildfire.setEnabled(true);
+                }
+            }
+        }
     }
 }

@@ -40,7 +40,7 @@ public class RemoveContactActivity extends AppCompatActivity {
 
         emergContacts = findViewById(R.id.listv);
         done = findViewById(R.id.done);
-        back = findViewById(R.id.backButton);
+        back = findViewById(R.id.back_button);
         noContacts = findViewById(R.id.no_contacts);
         instructions = findViewById(R.id.instructions);
 

@@ -54,7 +54,7 @@ public class ContactsActivity2 extends AppCompatActivity {
         contactNames = new ArrayList<>();
         phoneNumbers = new ArrayList<>();
 
-        backButton = findViewById(R.id.backButton);
+        backButton = findViewById(R.id.back_button);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,7 +169,6 @@ public class ContactsActivity2 extends AppCompatActivity {
 
     //Once the user is done selecting their emergency contacts from their contact list, update Firebase with their selected contacts
     protected void finishSelectingContacts() {
-
         SparseBooleanArray sp = l1.getCheckedItemPositions(); //Check which items in the ListView were selected
 
         for (int i = 0; i < sp.size(); i++) {

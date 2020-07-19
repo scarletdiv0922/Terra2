@@ -43,6 +43,7 @@ public class EmergencyContactsActivity extends AppCompatActivity {
     FloatingActionButton addContacts;
     FloatingActionButton safe;
     FloatingActionButton help;
+    ImageButton backButton;
     private Firebase mRef;
     ArrayList<String> contacts = new ArrayList<>();
     ArrayList<String> phoneNumbers = new ArrayList<>();
@@ -65,6 +66,15 @@ public class EmergencyContactsActivity extends AppCompatActivity {
         instructions = findViewById(R.id.instructions);
         safe = findViewById(R.id.safe);
         help = findViewById(R.id.help);
+        backButton = findViewById(R.id.back_button);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EmergencyContactsActivity.this, HomeScreenActivity.class);
+                startActivity(intent);
+            }
+        });
 
 //        getSupportActionBar().hide();
 
@@ -88,15 +98,6 @@ public class EmergencyContactsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(EmergencyContactsActivity.this, RemoveContactActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        ImageButton back = findViewById(R.id.backButton);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(EmergencyContactsActivity.this, HomeScreenActivity.class);
                 startActivity(intent);
             }
         });

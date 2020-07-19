@@ -65,17 +65,50 @@
 
     </com.alan.alansdk.button.AlanButton>
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="220dp"
-        android:layout_height="104dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/textView"
-        android:layout_marginTop="280dp"
-        android:fontFamily="@font/montserrat"
-        android:text="There are no disasters in your area."
-        android:textAlignment="center"
-        android:textSize="25sp" />
+<!--    <TextView-->
+<!--        android:id="@+id/textView2"-->
+<!--        android:layout_width="220dp"-->
+<!--        android:layout_height="104dp"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_below="@id/textView"-->
+<!--        android:layout_marginTop="280dp"-->
+<!--        android:fontFamily="@font/montserrat"-->
+<!--        android:text="There are no disasters in your area."-->
+<!--        android:textAlignment="center"-->
+<!--        android:textSize="25sp" />-->
 
+    <Button
+        android:id="@+id/earthquakes"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="180dp"
+        android:background="@drawable/radius"
+        android:enabled="false"
+        android:fontFamily="@font/montserrat"
+        android:text="Earthquakes"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        android:backgroundTint="@color/thirdGreen"
+        android:textColor="@color/white"/>
+
+    <Button
+        android:id="@+id/wildfires"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/earthquakes"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/radius"
+        android:enabled="false"
+        android:fontFamily="@font/montserrat"
+        android:text="Wildfires"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        android:backgroundTint="@color/thirdGreen"
+        android:textColor="@color/white" />
 
 </RelativeLayout>

@@ -30,7 +30,7 @@ public class ChecklistActivity2 extends AppCompatActivity {
     ArrayList<String> checklistItems = new ArrayList<>();
     ArrayList<Boolean> updatedValues = new ArrayList<>();
     ArrayList<Boolean> firebaseValues = new ArrayList<>();
-    public int SIZE_OF_CHECKLIST = 16;
+    public int SIZE_OF_CHECKLIST = 18;
     private static final String TAG = "ChecklistActivity2";
 
     @Override
@@ -42,7 +42,7 @@ public class ChecklistActivity2 extends AppCompatActivity {
         Firebase.setAndroidContext(this);
         mRef = new Firebase("https://terra-alan.firebaseio.com/");
 
-        backButton = findViewById(R.id.backButton);
+        backButton = findViewById(R.id.back_button);
         checklist = findViewById(R.id.listv);
 
         //Set onClickListener to go back to Home Screen

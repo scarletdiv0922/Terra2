@@ -28,7 +28,7 @@ public class ContactsActivity extends AppCompatActivity {
 
         l1 = findViewById(R.id.listv);
 
-        ImageButton back = findViewById(R.id.backButton);
+        ImageButton back = findViewById(R.id.back_button);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

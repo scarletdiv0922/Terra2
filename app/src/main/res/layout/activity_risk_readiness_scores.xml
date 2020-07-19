@@ -17,13 +17,13 @@
         android:layout_marginStart="10dp"/>
 
     <TextView
-        android:id="@+id/after"
+        android:id="@+id/before"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
         android:layout_marginTop="100dp"
         android:fontFamily="@font/montserrat"
-        android:text="After"
+        android:text="Your Scores"
         android:textColor="@color/darkGreen"
         android:textSize="40sp"
         android:textStyle="bold" />
