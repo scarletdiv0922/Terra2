@@ -17,13 +17,13 @@
         android:layout_marginStart="10dp"/>
 
     <TextView
-        android:id="@+id/during"
+        android:id="@+id/before"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
         android:layout_marginTop="100dp"
         android:fontFamily="@font/montserrat"
-        android:text="During"
+        android:text="Before"
         android:textColor="@color/darkGreen"
         android:textSize="40sp"
         android:textStyle="bold" />
@@ -55,29 +55,28 @@
         android:id="@+id/desc1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="260dp"
-        android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="270dp"
+        android:layout_marginRight="10dp"
         android:ems="30"
         android:gravity="start|top"
         android:inputType="textMultiLine"
         android:singleLine="false"
-        android:text="• Stay calm"
-        android:textStyle="bold"
+        android:text="• Learn how to prevent wildfires (most fires are caused by people usually during the summer months)"
         android:textSize="15sp" />
 
     <TextView
         android:id="@+id/desc2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="320dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:ems="30"
         android:gravity="start|top"
         android:inputType="textMultiLine"
         android:singleLine="false"
-        android:text="• If you are indoors stay inside and if you are outdoors stay outside"
+        android:text="• Practice safety techniques (stop, drop, and roll)"
         android:textSize="15sp" />
 
     <TextView
@@ -91,49 +90,48 @@
         android:gravity="start|top"
         android:inputType="textMultiLine"
         android:singleLine="false"
-        android:text="• If you are indoors, stay away from windows and outside doors and instead crawl under heavy furniture or stand against a wall near the center of the building"
+        android:text="• Make sure home and other belongings are insured"
         android:textSize="15sp" />
 
     <TextView
         android:id="@+id/desc4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="425dp"
+        android:layout_marginTop="390dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:ems="30"
         android:gravity="start|top"
         android:inputType="textMultiLine"
         android:singleLine="false"
-        android:text="• If you are outdoors, stay away from powerlines, buildings, and anything that might fall"
+        android:text="• Prepare an emergency kit which should have three days worth of supplies for each member (water, emergency contacts, first aid, blankets, flashlight, batteries, nonperishable food, battery powered radio)"
         android:textSize="15sp" />
 
     <TextView
         android:id="@+id/desc5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="480dp"
+        android:layout_marginTop="475dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:ems="30"
         android:gravity="start|top"
         android:inputType="textMultiLine"
         android:singleLine="false"
-        android:text="• Don’t use matches or candles because of potentially broken gas lines"
+        android:text="• Create a map and mark emergency exits"
         android:textSize="15sp" />
 
     <TextView
         android:id="@+id/desc6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="540dp"
+        android:layout_marginTop="505dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:ems="30"
         android:gravity="start|top"
         android:inputType="textMultiLine"
         android:singleLine="false"
-        android:text="• If you are in a car, stop the car and stay inside"
+        android:text="• Keep a watch for local news about wildfires around you"
         android:textSize="15sp" />
-
 </RelativeLayout>
