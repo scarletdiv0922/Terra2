@@ -17,13 +17,13 @@
         android:layout_marginStart="10dp"/>
 
     <TextView
-        android:id="@+id/during"
+        android:id="@+id/after"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
         android:layout_marginTop="100dp"
         android:fontFamily="@font/montserrat"
-        android:text="During"
+        android:text="After"
         android:textColor="@color/darkGreen"
         android:textSize="40sp"
         android:textStyle="bold" />
@@ -34,106 +34,103 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="15dp"
         app:fab_colorNormal="@color/midGreen"
         app:fab_colorPressed="@color/darkGreen"
         app:fab_icon="@drawable/ic_home" />
 
     <com.alan.alansdk.button.AlanButton
         android:id="@+id/alan_button"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_toStartOf="@id/home_button"
-        android:layout_marginBottom="25dp"
+        android:layout_marginBottom="15dp"
         android:layout_marginStart="25dp"/>
 
     <TextView
         android:id="@+id/desc1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="260dp"
+        android:layout_marginTop="270dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:ems="30"
         android:gravity="start|top"
         android:inputType="textMultiLine"
         android:singleLine="false"
-        android:text="• Stay calm"
-        android:textStyle="bold"
+        android:text="• Pack supplies before heading back home such as garbage bags, gloves, googles, closed toe shoes, and bottled water"
         android:textSize="15sp" />
 
     <TextView
         android:id="@+id/desc2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="330dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:ems="30"
         android:gravity="start|top"
         android:inputType="textMultiLine"
         android:singleLine="false"
-        android:text="• If you are indoors stay inside and if you are outdoors stay outside"
+        android:text="• Take pictures of damaged objects to make it easier for the insurance company to track what is damaged"
         android:textSize="15sp" />
 
     <TextView
         android:id="@+id/desc3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="355dp"
+        android:layout_marginTop="375dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:ems="30"
         android:gravity="start|top"
         android:inputType="textMultiLine"
         android:singleLine="false"
-        android:text="• If you are indoors, stay away from windows and outside doors and instead crawl under heavy furniture or stand against a wall near the center of the building"
+        android:text="• Enter the house carefully and turn of the main power breaker immediately"
         android:textSize="15sp" />
 
     <TextView
         android:id="@+id/desc4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="425dp"
+        android:layout_marginTop="420dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:ems="30"
         android:gravity="start|top"
         android:inputType="textMultiLine"
         android:singleLine="false"
-        android:text="• If you are outdoors, stay away from powerlines, buildings, and anything that might fall"
+        android:text="• Walk around the perimeter of the house before entering"
         android:textSize="15sp" />
 
     <TextView
         android:id="@+id/desc5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="480dp"
+        android:layout_marginTop="450dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:ems="30"
         android:gravity="start|top"
         android:inputType="textMultiLine"
         android:singleLine="false"
-        android:text="• Don’t use matches or candles because of potentially broken gas lines"
+        android:text="• Throw any food items out if the house was without power for a long time"
         android:textSize="15sp" />
 
     <TextView
         android:id="@+id/desc6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="540dp"
+        android:layout_marginTop="500dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:ems="30"
         android:gravity="start|top"
         android:inputType="textMultiLine"
         android:singleLine="false"
-        android:text="• If you are in a car, stop the car and stay inside"
+        android:text="• Contact your home insurance broker to get started with repairs right away"
         android:textSize="15sp" />
-
 </RelativeLayout>

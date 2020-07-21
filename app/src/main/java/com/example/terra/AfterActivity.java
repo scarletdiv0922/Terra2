@@ -27,7 +27,21 @@ public class AfterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_after);
+
+        Intent i = getIntent();
+        Bundle bundle = i.getExtras();
+
+        if (bundle != null) {
+            disaster = (String) bundle.get("Disaster");
+        }
+
+        if (disaster.equals("Earthquakes")) {
+            setContentView(R.layout.activity_after);
+        }
+
+        else if (disaster.equals("Wildfires")) {
+            setContentView(R.layout.activity_after_wildfires);
+        }
 
         JSONObject commandJson = null;
 
@@ -196,13 +210,6 @@ public class AfterActivity extends AppCompatActivity {
         };
 
         alan_button.registerCallback(myCallback);
-
-        Intent i = getIntent();
-        Bundle bundle = i.getExtras();
-
-        if (bundle != null) {
-            disaster = (String) bundle.get("Disaster");
-        }
 
         backButton = findViewById(R.id.back_button);
         home = findViewById(R.id.home_button);

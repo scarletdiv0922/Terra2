@@ -34,6 +34,21 @@ public class BDAActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+
+        if (bundle != null) {
+            disaster = (String) bundle.get("Disaster");
+        }
+
+        if (disaster.equals("Earthquakes")) {
+            setContentView(R.layout.activity_earthquake_bda);
+        }
+
+        else if (disaster.equals("Wildfires")) {
+            setContentView(R.layout.activity_wildfire_bda);
+        }
+
         JSONObject commandJson = null;
 
         try {
@@ -201,21 +216,6 @@ public class BDAActivity extends AppCompatActivity {
         };
 
         alan_button.registerCallback(myCallback);
-
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-
-        if (bundle != null) {
-            disaster = (String) bundle.get("Disaster");
-        }
-
-        if (disaster.equals("Earthquakes")) {
-            setContentView(R.layout.activity_earthquake_bda);
-        }
-
-        else if (disaster.equals("Wildfires")) {
-            setContentView(R.layout.activity_wildfire_bda);
-        }
 
         home = findViewById(R.id.home_button);
         before = findViewById(R.id.before_button);
