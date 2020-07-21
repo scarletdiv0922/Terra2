@@ -54,28 +54,20 @@
         android:layout_toStartOf="@id/emergency_contacts_button"
         app:fab_icon="@drawable/ic_info"/>
 
+<!--    <com.alan.alansdk.button.AlanButton-->
+<!--        android:id="@+id/alan_button_home_screen"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_alignParentRight="true"-->
+<!--        android:layout_marginBottom="25dp"-->
+<!--        android:layout_marginStart="25dp">-->
+
+<!--    </com.alan.alansdk.button.AlanButton>-->
     <com.alan.alansdk.button.AlanButton
-        android:id="@+id/alan_button_home_screen"
+        android:id="@+id/alan_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="25dp"
-        android:layout_marginStart="25dp">
-
-    </com.alan.alansdk.button.AlanButton>
-
-<!--    <TextView-->
-<!--        android:id="@+id/textView2"-->
-<!--        android:layout_width="220dp"-->
-<!--        android:layout_height="104dp"-->
-<!--        android:layout_centerHorizontal="true"-->
-<!--        android:layout_below="@id/textView"-->
-<!--        android:layout_marginTop="280dp"-->
-<!--        android:fontFamily="@font/montserrat"-->
-<!--        android:text="There are no disasters in your area."-->
-<!--        android:textAlignment="center"-->
-<!--        android:textSize="25sp" />-->
+        android:layout_height="wrap_content"/>
 
     <Button
         android:id="@+id/earthquakes"
