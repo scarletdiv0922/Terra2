@@ -200,7 +200,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                         //TODO
                         Toast.makeText(HomeScreenActivity.this, "near", Toast.LENGTH_SHORT).show();
                     }
-                    else if (cmd.substring(i, j).equals("disaster warnings") || cmd.substring(i, j).equals("disaster updates")) {
+                    else if (cmd.substring(i, j).equals("disaster warnings") || cmd.substring(i, j).equals("disaster updates") || cmd.substring(i, j).equals("map")) {
                         Intent intent = new Intent(HomeScreenActivity.this, DisasterMapActivity.class);
                         startActivity(intent);
                     }
