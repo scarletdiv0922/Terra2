@@ -130,11 +130,4 @@ public class ChecklistActivity extends AppCompatActivity {
             }
         });
     }
-
-//    public void recyclerView() {
-//        System.out.println("RECYCLE");
-//        RecyclerViewAdapter adapter = new RecyclerViewAdapter(items, this);
-//        recyclerView.setAdapter(adapter);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//    }
 }
