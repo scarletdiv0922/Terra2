@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -78,15 +79,131 @@ public class HomeScreenActivity extends AppCompatActivity {
                 super.onCommandReceived(eventCommand);
                 System.out.println("Heeereeee");
                 String cmd = eventCommand.getData().toString();
-                if (cmd.contains("risk score")){
+                if (cmd.contains("riskScore")){
                     alanButton.playText("Your risk score is 7%");
                 }
-                else if (cmd.contains("readiness score")){
+                else if (cmd.contains("readinessScore")){
+                    //TODO
                     alanButton.playText("Your readiness score is 90%");
                 }
-                else if (cmd.contains("setContacts ")){
+                else if (cmd.contains("addContact")){
                     int i = cmd.indexOf("value: ");
-                    alanButton.playText("Added " + cmd.substring(i, 4) + "to your contacts");
+                    int j = cmd.indexOf("}");
+                    alanButton.playText("Added " + cmd.substring(i, j) + "to your contacts");
+                }
+                else if (cmd.contains("removeContact")){
+                    int i = cmd.indexOf("value: ");
+                    int j = cmd.indexOf("}");
+                    alanButton.playText("Removed " + cmd.substring(i, j) + "to your contacts");
+                }
+                else if (cmd.contains("safe")){
+                    alanButton.playText("Your contacts have been informed that you are safe");
+                }
+                else if (cmd.contains("help")){
+                    alanButton.playText("Your contacts have been informed that you need help");
+                }
+                else if (cmd.contains("mark")){
+//                    int i = cmd.indexOf("value: ");
+//                    int j = cmd.indexOf("}");
+                    alanButton.playText("(item) has been checked on your emergency checklist");
+                }
+                else if (cmd.contains("before")){
+                    int i = cmd.indexOf("value: ");
+                    int j = cmd.indexOf("}");
+                    if (cmd.substring(i, j).equals("earthquakes")){
+                        Intent intent = new Intent(HomeScreenActivity.this, BeforeActivity.class);
+                        intent.putExtra("Disaster", "Earthquakes");
+                        startActivity(intent);
+                    }
+                    else if (cmd.substring(i, j).equals("wildfires")){
+                        Intent intent = new Intent(HomeScreenActivity.this, BeforeActivity.class);
+                        intent.putExtra("Disaster", "Wildfires");
+                        startActivity(intent);
+                    }
+                }
+                else if (cmd.contains("during")){
+                    int i = cmd.indexOf("value: ");
+                    int j = cmd.indexOf("}");
+                    if (cmd.substring(i, j).equals("earthquakes")){
+                        Intent intent = new Intent(HomeScreenActivity.this, DuringActivity.class);
+                        intent.putExtra("Disaster", "Earthquakes");
+                        startActivity(intent);
+                    }
+                    else if (cmd.substring(i, j).equals("wildfires")){
+                        Intent intent = new Intent(HomeScreenActivity.this, DuringActivity.class);
+                        intent.putExtra("Disaster", "Wildfires");
+                        startActivity(intent);
+                    }
+                }
+                else if (cmd.contains("after")){
+                    int i = cmd.indexOf("value: ");
+                    int j = cmd.indexOf("}");
+                    if (cmd.substring(i, j).equals("earthquakes")){
+                        Intent intent = new Intent(HomeScreenActivity.this, AfterActivity.class);
+                        intent.putExtra("Disaster", "Earthquakes");
+                        startActivity(intent);
+                    }
+                    else if (cmd.substring(i, j).equals("wildfires")){
+                        Intent intent = new Intent(HomeScreenActivity.this, AfterActivity.class);
+                        intent.putExtra("Disaster", "Wildfires");
+                        startActivity(intent);
+                    }
+                }
+                else if (cmd.contains("nearMe")) {
+                    int i = cmd.indexOf("value: ");
+                    int j = cmd.indexOf("}");
+                    if (cmd.substring(i, j).equals("earthquakes")) {
+                        Intent intent = new Intent(HomeScreenActivity.this, DisasterMapActivity.class);
+                        intent.putExtra("Disaster", "Earthquakes");
+                        startActivity(intent);
+                    }
+                    else if (cmd.substring(i, j).equals("wildfires")){
+                        Intent intent = new Intent(HomeScreenActivity.this, DisasterMapActivity.class);
+                        intent.putExtra("Disaster", "Wildfires");
+                        startActivity(intent);
+                    }
+                }
+                else if (cmd.contains("show")) {
+                    Intent intent = new Intent(HomeScreenActivity.this, EmergencyContactsActivity.class);
+                    startActivity(intent);
+                }
+                else if (cmd.contains("checklist")) {
+                    Intent intent = new Intent(HomeScreenActivity.this, ChecklistActivity2.class);
+                    startActivity(intent);
+                }
+                else if (cmd.contains("near")) {
+                    //TODO
+                    Toast.makeText(HomeScreenActivity.this, "near", Toast.LENGTH_SHORT).show();
+                }
+                else if (cmd.contains("left")) {
+                    //TODO
+                    Intent intent = new Intent(HomeScreenActivity.this, ChecklistActivity2.class);
+                    startActivity(intent);
+                }
+                else if (cmd.contains("about")) {
+                    alanButton.playText("You can ask about anything related to natural disasters, risk scores, readiness scores, and other features of the app. Try asking, “What is my risk/readiness score?");
+                }
+                else if (cmd.contains("navigate")) {
+                    int i = cmd.indexOf("value: ");
+                    int j = cmd.indexOf("}");
+                    if (cmd.substring(i, j).equals("home"))
+                        alanButton.playText("You are already at the home screen.");
+                    else if (cmd.substring(i, j).equals("emergency contacts") || cmd.substring(i, j).equals("contacts")) {
+                        Intent intent = new Intent(HomeScreenActivity.this, EmergencyContactsActivity.class);
+                        startActivity(intent);
+                    }
+                    else if (cmd.substring(i, j).equals("emergency checklist") || cmd.substring(i, j).equals("checklist")) {
+                        Intent intent = new Intent(HomeScreenActivity.this, ChecklistActivity2.class);
+                        startActivity(intent);
+                    }
+                    else if (cmd.substring(i, j).equals("nearby facilities")){
+                        //TODO
+                        Toast.makeText(HomeScreenActivity.this, "near", Toast.LENGTH_SHORT).show();
+                    }
+                    else if (cmd.substring(i, j).equals("disaster warnings") || cmd.substring(i, j).equals("disaster updates")) {
+                        Intent intent = new Intent(HomeScreenActivity.this, DisasterMapActivity.class);
+                        startActivity(intent);
+                    }
                 }
                 else{
                     alanButton.playText("Oops something went wrong. Please try again.");
