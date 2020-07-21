@@ -63,12 +63,13 @@
         app:fab_icon="@drawable/ic_home" />
 
     <com.alan.alansdk.button.AlanButton
-        android:id="@+id/alanbutton"
+        android:id="@+id/alan_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"></com.alan.alansdk.button.AlanButton>
-    <!--        android:layout_constraintBottom_toBottomOf="parent"-->
-    <!--        android:layout_constraintEnd_toEndOf="parent"/>-->
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_toStartOf="@id/info_button"
+        android:layout_marginBottom="25dp"
+        android:layout_marginStart="25dp"/>
 
 </RelativeLayout>
