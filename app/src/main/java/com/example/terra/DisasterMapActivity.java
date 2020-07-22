@@ -1,19 +1,17 @@
 package com.example.terra;
 
 import android.Manifest;
-import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
@@ -23,25 +21,25 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class DisasterMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -51,15 +49,25 @@ public class DisasterMapActivity extends FragmentActivity implements OnMapReadyC
     TextView eqInfo;
     MapView mapView;
     GoogleMap map;
-    ArrayList<Double> magnitudes = new ArrayList<>();
-    ArrayList<Double> lats = new ArrayList<>();
-    ArrayList<Double> lons = new ArrayList<>();
     int NUM_DISASTERS;
+
+    //Location Updates variables
+    static DisasterMapActivity instance;
+    LocationRequest locationRequest;
+    FusedLocationProviderClient fusedLocationProviderClient;
+    double currentlat;
+    double currentlong;
+
+    public static DisasterMapActivity getInstance() {
+        return instance;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        instance = this;
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -86,11 +94,81 @@ public class DisasterMapActivity extends FragmentActivity implements OnMapReadyC
             }
         });
 
+        getPermission();
         GetUsgsData();
     }
 
+    public void getPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            //Then request the user permission to access contacts
+            ActivityCompat.requestPermissions(DisasterMapActivity.this,
+                    new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, 1);
+            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overridden method
+        }
+        else {
+            System.out.println("PERMISSION RECEIVED");
+            updateLocation();
+        }
+    }
+
+    //Handle the permission request result
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == 1) {
+
+            //If the permission has been granted, run showContacts() again and move on to the next step
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getPermission();
+            }
+
+            //If the permission hasn't been granted, handle it with an error message
+            else {
+                Toast.makeText(this, "Without your permission, Terra cannot access your contacts.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void updateLocation() {
+        buildLocationRequest(); //request to get the current location
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest, getPendingIntent());
+        System.out.println("updateLocation");
+
+
+    }
+
+    private PendingIntent getPendingIntent() {
+        Intent intent = new Intent(this, MyLocationService.class);
+        intent.setAction(MyLocationService.ACTION_PROCESS_UPDATE);
+        System.out.println("pendingIntent");
+        return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private void buildLocationRequest() {
+        locationRequest = new LocationRequest();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY); //get the location at high accuracy
+        System.out.println("buildLocationRequest");
+    }
+
+    public void setCoordinates(final double lat, final double lon) {
+        System.out.println("setting coords");
+        DisasterMapActivity.this.runOnUiThread(new Runnable() { //while this activity is running
+            @Override
+            public void run() {
+                currentlat = lat;
+                currentlong = lon;
+//                Toast.makeText(DisasterMapActivity.this, currentlat+"/"+currentlong, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     public void GetUsgsData() {
-        String url = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2014-01-01&endtime=2014-01-02";
+        String url = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&limit=2000";
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -105,7 +183,6 @@ public class DisasterMapActivity extends FragmentActivity implements OnMapReadyC
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-//                        eqInfo.setText(response.toString());
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -121,7 +198,6 @@ public class DisasterMapActivity extends FragmentActivity implements OnMapReadyC
 
     public void readJSON() throws JSONException {
         if (json != null) {
-            Toast.makeText(this, "OWO", Toast.LENGTH_SHORT).show();
             JSONObject reader = new JSONObject(json);
             JSONArray earthquakes = reader.getJSONArray("features");
             NUM_DISASTERS = earthquakes.length();
@@ -129,32 +205,43 @@ public class DisasterMapActivity extends FragmentActivity implements OnMapReadyC
                 JSONObject earthquake = (JSONObject) earthquakes.get(i);
                 JSONObject properties = (JSONObject) earthquake.get("properties");
                 Double magnitude = properties.getDouble("mag");
+                String place = properties.getString("place");
+
                 System.out.println("MAG: " + magnitude);
-                magnitudes.add(magnitude);
                 JSONObject geometry = (JSONObject) earthquake.get("geometry");
                 JSONArray coordinates = geometry.getJSONArray("coordinates");
                 Double latitude = (Double) coordinates.get(1);
                 Double longitude = (Double) coordinates.get(0);
                 System.out.println(latitude + "/" + longitude);
 
-                lats.add(latitude);
-                lons.add(longitude);
+                LatLng location = new LatLng(latitude, longitude);
+                map.addMarker(new MarkerOptions().position(location).title("Magnitude: " + magnitude+"; " + place)
+                        .icon(BitmapDescriptorFactory.defaultMarker(getMarkerColor(magnitude))));
             }
         }
 
-        for (int i = 0; i < NUM_DISASTERS; i++) {
-            LatLng location = new LatLng(lats.get(i), lons.get(i));
-            map.addMarker(new MarkerOptions().position(location).title(String.valueOf(magnitudes.get(i))));
-        }
+        LatLng user = new LatLng(currentlat, currentlong);
+        map.addMarker(new MarkerOptions().position(user).title("You are here")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET)));
+        map.moveCamera(CameraUpdateFactory.newLatLng(user));
+        map.moveCamera(CameraUpdateFactory.zoomTo(10.0f));
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
+        System.out.println("map ready");
+    }
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        map.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        map.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    public float getMarkerColor(double magnitude) {
+        if (magnitude < 1.0) {
+            return BitmapDescriptorFactory.HUE_CYAN;
+        } else if (magnitude < 2.5) {
+            return BitmapDescriptorFactory.HUE_GREEN;
+        } else if (magnitude < 4.5) {
+            return BitmapDescriptorFactory.HUE_YELLOW;
+        } else {
+            return BitmapDescriptorFactory.HUE_RED;
+        }
     }
 }

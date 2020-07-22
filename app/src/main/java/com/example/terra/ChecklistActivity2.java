@@ -39,7 +39,7 @@ public class ChecklistActivity2 extends AppCompatActivity {
     ArrayList<String> checklistItems = new ArrayList<>();
     ArrayList<Boolean> updatedValues = new ArrayList<>();
     ArrayList<Boolean> firebaseValues = new ArrayList<>();
-    public int SIZE_OF_CHECKLIST = 18;
+    public int SIZE_OF_CHECKLIST;
     private static final String TAG = "ChecklistActivity2";
 
     @Override
@@ -293,6 +293,8 @@ public class ChecklistActivity2 extends AppCompatActivity {
                         checklistItems.add(item);
                         firebaseValues.add(value);
                     }
+
+                    SIZE_OF_CHECKLIST = firebaseValues.size();
 
                     //Make a copy of the original Firebase values to be updated as the user selects items in the activity
                     updatedValues.addAll(firebaseValues);

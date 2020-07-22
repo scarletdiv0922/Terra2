@@ -32,11 +32,11 @@ public class LoginActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-//        if (firebaseAuth.getCurrentUser() != null){
-////            Toast.makeText(this, "User is already logged in.", Toast.LENGTH_LONG).show();
-////            Intent intent = new Intent(getBaseContext(), HomeScreenActivity.class);
-////            startActivity(intent);
-////        }
+        if (firebaseAuth.getCurrentUser() != null){
+            Toast.makeText(this, "User is already logged in.", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getBaseContext(), HomeScreenActivity.class);
+            startActivity(intent);
+        }
 
         progressDialog = new ProgressDialog(this);
 
