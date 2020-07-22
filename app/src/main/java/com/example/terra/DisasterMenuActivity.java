@@ -30,6 +30,20 @@ public class DisasterMenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+
+        if (bundle != null) {
+            disaster = (String) bundle.get("Disaster");
+        }
+
+        if (disaster.equals("Earthquakes")) {
+            setContentView(R.layout.activity_earthquake_menu);
+        }
+
+        else if (disaster.equals("Wildfires")) {
+            setContentView(R.layout.activity_wildfire_menu);
+        }
 
         JSONObject commandJson = null;
 
@@ -198,21 +212,6 @@ public class DisasterMenuActivity extends AppCompatActivity {
         };
 
         alan_button.registerCallback(myCallback);
-
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-
-        if (bundle != null) {
-            disaster = (String) bundle.get("Disaster");
-        }
-
-        if (disaster.equals("Earthquakes")) {
-            setContentView(R.layout.activity_earthquake_menu);
-        }
-
-        else if (disaster.equals("Wildfires")) {
-            setContentView(R.layout.activity_wildfire_menu);
-        }
 
         information = findViewById(R.id.info_button);
         scores = findViewById(R.id.scores_button);

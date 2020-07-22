@@ -1,42 +1,69 @@
 package com.example.terra;
 
 import android.Manifest;
-import android.app.PendingIntent;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentActivity;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-public class DisasterMapActivity extends AppCompatActivity {
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
+public class DisasterMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     String disaster;
+    String json;
     ImageButton back;
-    FloatingActionButton home;
-    FusedLocationProviderClient fusedLocationProviderClient;
-    LocationRequest locationRequest;
-    static DisasterMapActivity instance;
-    double currentLat;
-    double currentLon;
-
-    public static DisasterMapActivity getInstance() {
-        return instance;
-    }
+    TextView eqInfo;
+    MapView mapView;
+    GoogleMap map;
+    ArrayList<Double> magnitudes = new ArrayList<>();
+    ArrayList<Double> lats = new ArrayList<>();
+    ArrayList<Double> lons = new ArrayList<>();
+    int NUM_DISASTERS;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_disaster_map);
+        setContentView(R.layout.activity_maps);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync((OnMapReadyCallback) this);
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -46,7 +73,9 @@ public class DisasterMapActivity extends AppCompatActivity {
         }
 
         back = findViewById(R.id.back_button);
-        home = findViewById(R.id.home_button);
+        eqInfo = findViewById(R.id.info);
+        eqInfo.setMovementMethod(new ScrollingMovementMethod());
+        mapView = findViewById(R.id.mapView);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,77 +86,75 @@ public class DisasterMapActivity extends AppCompatActivity {
             }
         });
 
-        home.setOnClickListener(new View.OnClickListener() {
+        GetUsgsData();
+    }
+
+    public void GetUsgsData() {
+        String url = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2014-01-01&endtime=2014-01-02";
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener() {
+                    @Override
+                    public void onResponse(Object response) {
+                        // Display the first 500 characters of the response string.
+                        json = response.toString();
+                        System.out.println("I'M HERE" + json.substring(0,100));
+                        try {
+                            readJSON();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+//                        eqInfo.setText(response.toString());
+                    }
+                }, new Response.ErrorListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent1 = new Intent(DisasterMapActivity.this, HomeScreenActivity.class);
-                startActivity(intent1);
+            public void onErrorResponse(VolleyError error) {
+                eqInfo.setText("That didn't work!");
             }
         });
 
-        requestLocation();
-        updateLocation();
+        // Add the request to the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        queue.add(stringRequest);
     }
 
-    public void requestLocation() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+    public void readJSON() throws JSONException {
+        if (json != null) {
+            Toast.makeText(this, "OWO", Toast.LENGTH_SHORT).show();
+            JSONObject reader = new JSONObject(json);
+            JSONArray earthquakes = reader.getJSONArray("features");
+            NUM_DISASTERS = earthquakes.length();
+            for (int i = 0; i < earthquakes.length(); i++) {
+                JSONObject earthquake = (JSONObject) earthquakes.get(i);
+                JSONObject properties = (JSONObject) earthquake.get("properties");
+                Double magnitude = properties.getDouble("mag");
+                System.out.println("MAG: " + magnitude);
+                magnitudes.add(magnitude);
+                JSONObject geometry = (JSONObject) earthquake.get("geometry");
+                JSONArray coordinates = geometry.getJSONArray("coordinates");
+                Double latitude = (Double) coordinates.get(1);
+                Double longitude = (Double) coordinates.get(0);
+                System.out.println(latitude + "/" + longitude);
 
-            //Then request the user permission to access contacts
-            ActivityCompat.requestPermissions(DisasterMapActivity.this,
-                    new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, 1);
-            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overridden method
+                lats.add(latitude);
+                lons.add(longitude);
+            }
+        }
+
+        for (int i = 0; i < NUM_DISASTERS; i++) {
+            LatLng location = new LatLng(lats.get(i), lons.get(i));
+            map.addMarker(new MarkerOptions().position(location).title(String.valueOf(magnitudes.get(i))));
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if (requestCode == 1) {
+    public void onMapReady(GoogleMap googleMap) {
+        map = googleMap;
 
-            //If the permission has been granted, run showContacts() again and move on to the next step
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                requestLocation();
-            }
-
-            //If the permission hasn't been granted, handle it with an error message
-            else {
-                Toast.makeText(this, "Without your permission, Terra cannot inform you of disasters in your area.", Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
-    private void updateLocation() {
-        buildLocationRequest(); //request to get the current location
-
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        fusedLocationProviderClient.requestLocationUpdates(locationRequest, getPendingIntent());
-        System.out.println("updateLocation");
-
-
-    }
-
-    private PendingIntent getPendingIntent() {
-        Intent intent = new Intent(this, MyLocationService.class);
-        intent.setAction(MyLocationService.ACTION_PROCESS_UPDATE);
-        System.out.println("pendingIntent");
-        return  PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
-
-    private void buildLocationRequest() {
-        locationRequest = new LocationRequest();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY); //get the location at high accuracy
-        locationRequest.setInterval(100); //get the location at 100 ms intervals
-        locationRequest.setSmallestDisplacement(1); //get the location if the user moves 1 meter
-        System.out.println("buildLocationRequest");
-    }
-
-    public void setCoordinates(final double lat, final double lon) {
-        currentLat = lat;
-        currentLon = lon;
-//        Toast.makeText(DisasterMapActivity.this, "Currently at " + currentLat + "/" + currentLon, Toast.LENGTH_SHORT).show();
-
-        System.out.println(lat + "/" + lon);
+        // Add a marker in Sydney and move the camera
+        LatLng sydney = new LatLng(-34, 151);
+        map.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        map.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 }
