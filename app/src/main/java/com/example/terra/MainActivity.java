@@ -1,11 +1,17 @@
 package com.example.terra;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -40,6 +46,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
+import java.nio.channels.Channel;
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     private AlanButton alanButton;
@@ -52,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
     FusedLocationProviderClient fusedLocationProviderClient;
     double currentlat;
     double currentlong;
+    ArrayList<String> prevCodes = new ArrayList<>();
+    ArrayList<String> currCodes = new ArrayList<>();
+    NotificationChannel channel;
 
     public static MainActivity getInstance() {
         return instance;
@@ -78,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(getBaseContext(), LoginActivity.class);
             startActivity(intent);
         });
+
+        createNotificationChannel();
 
         new Thread(new Runnable() {
             @Override
@@ -111,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                 new Response.Listener() {
                     @Override
                     public void onResponse(Object response) {
-                        // Display the first 500 characters of the response string.
+
                         json = response.toString();
                         System.out.println("I'M HERE 22222" + json);
                         try {
@@ -122,15 +137,16 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-//                eqInfo.setText("That didn't work!");
-            }
+            public void onErrorResponse(VolleyError error) { }
         });
         // Add the request to the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         queue.add(stringRequest);
         System.out.println("uwu " + count);
         count++;
+
+        prevCodes.addAll(currCodes);
+        currCodes.clear();
     }
 
     public void readJSON() throws JSONException {
@@ -142,6 +158,32 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject properties = (JSONObject) earthquake.get("properties");
                 Double magnitude = properties.getDouble("mag");
                 String place = properties.getString("place");
+                String code = properties.getString("code");
+                currCodes.add(code);
+
+                if (!prevCodes.contains(code)) {
+                    System.out.println("NOTIFY");
+
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this, "channel")
+                            .setSmallIcon(R.mipmap.ic_launcher_round)
+                            .setContentTitle("Earthquake")
+                            .setContentText("An earthquake of magnitude " + magnitude + " at " + place + " has occurred.")
+                            .setStyle(new NotificationCompat.BigTextStyle()
+                                    .bigText("An earthquake of magnitude " + magnitude + " at " + place + " has occurred."))
+                            .setAutoCancel(true);
+
+                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                    PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    builder.setContentIntent(pendingIntent);
+
+                    NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                    notificationManager.notify(0, builder.build());
+                }
+                else {
+                    System.out.println("DON'T NOTIFY");
+                }
 
                 System.out.println("MAG: " + magnitude);
                 JSONObject geometry = (JSONObject) earthquake.get("geometry");
@@ -150,6 +192,22 @@ public class MainActivity extends AppCompatActivity {
                 Double longitude = (Double) coordinates.get(0);
 //                System.out.println(latitude + "/" + longitude);
             }
+        }
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Notification";
+            String description = "Earthquake";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("channel", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
         }
     }
 
