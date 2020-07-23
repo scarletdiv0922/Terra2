@@ -33,8 +33,8 @@
         <receiver
             android:name=".MyLocationService"/>
         <!-- not sure why this is throwing me an error, so commented for now -->
-<!--        <receiver-->
-<!--            android:name=".MyLocationService2"/>-->
+        <receiver
+            android:name=".MyLocationService2"/>
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

@@ -8,6 +8,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -48,7 +49,10 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Array;
 import java.nio.channels.Channel;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -68,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> places = new ArrayList<>();
     NotificationChannel channel;
     int code = 0;
+    String dateString;
+    int minutes;
+    int seconds;
 
     public static MainActivity getInstance() {
         return instance;
@@ -80,6 +87,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         instance = this;
+
+        minutes = Calendar.getInstance().get(Calendar.MINUTE);
+        seconds = Calendar.getInstance().get(Calendar.SECOND);
+        SimpleDateFormat formatter
+                = new SimpleDateFormat ("yyyy-MM-dd'T'hh:");
+        Date date = new Date();
+        dateString = formatter.format(date);
+        System.out.println("DATE "+dateString+":"+(minutes-10)+":"+seconds);
 
         Button signup = findViewById(R.id.sign_up_button);
         signup.setOnClickListener((v) -> {
@@ -122,7 +137,8 @@ public class MainActivity extends AppCompatActivity {
                 + currentlat
                 + "&longitude="
                 + currentlong
-                + "&maxradiuskm=100&minmagnitude=2.5";
+                + "&maxradiuskm=100&minmagnitude=2.5&starttime="
+                + dateString+(minutes-10)+":"+seconds;
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,

@@ -38,6 +38,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class DisasterMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     String disaster;
@@ -55,6 +58,7 @@ public class DisasterMapActivity extends FragmentActivity implements OnMapReadyC
     FusedLocationProviderClient fusedLocationProviderClient;
     double currentlat;
     double currentlong;
+    String dateString;
 
     public static DisasterMapActivity getInstance() {
         return instance;
@@ -82,6 +86,11 @@ public class DisasterMapActivity extends FragmentActivity implements OnMapReadyC
         eqInfo = findViewById(R.id.info);
         eqInfo.setMovementMethod(new ScrollingMovementMethod());
         mapView = findViewById(R.id.mapView);
+
+        SimpleDateFormat formatter
+                = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        dateString = formatter.format(date);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,7 +174,7 @@ public class DisasterMapActivity extends FragmentActivity implements OnMapReadyC
     }
 
     public void GetUsgsData() {
-        String url = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&limit=2000&orderby=time";
+        String url = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&limit=2000&orderby=time&starttime=" + dateString;
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
