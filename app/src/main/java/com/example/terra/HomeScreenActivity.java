@@ -225,8 +225,9 @@ public class HomeScreenActivity extends AppCompatActivity {
         emergencyContactsFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-
-                Intent intent = new Intent(HomeScreenActivity.this, EmergencyContactsActivity.class);
+                Toast.makeText(HomeScreenActivity.this, "Temporarily borrowing for nearby facilities thanks", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(HomeScreenActivity.this, NearbyFacilitiesActivity.class);
+//                Intent intent = new Intent(HomeScreenActivity.this, EmergencyContactsActivity.class);
                 startActivity(intent);
 
             }
@@ -235,8 +236,7 @@ public class HomeScreenActivity extends AppCompatActivity {
 //        infoFAB.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View arg0) {
-//
-//                Intent intent = new Intent(HomeScreenActivity.this, BDAActivity.class);
+//                Intent intent = new Intent(HomeScreenActivity.this, NearbyFacilitiesActivity.class);
 //                startActivity(intent);
 //
 //            }
