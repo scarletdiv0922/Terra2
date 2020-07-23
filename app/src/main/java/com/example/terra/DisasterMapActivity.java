@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -24,7 +25,6 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -38,9 +38,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
-
 public class DisasterMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     String disaster;
@@ -50,6 +47,7 @@ public class DisasterMapActivity extends FragmentActivity implements OnMapReadyC
     MapView mapView;
     GoogleMap map;
     int NUM_DISASTERS;
+    int count = 0;
 
     //Location Updates variables
     static DisasterMapActivity instance;
@@ -162,13 +160,12 @@ public class DisasterMapActivity extends FragmentActivity implements OnMapReadyC
             public void run() {
                 currentlat = lat;
                 currentlong = lon;
-//                Toast.makeText(DisasterMapActivity.this, currentlat+"/"+currentlong, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void GetUsgsData() {
-        String url = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&limit=2000";
+        String url = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&limit=2000&orderby=time";
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -207,12 +204,12 @@ public class DisasterMapActivity extends FragmentActivity implements OnMapReadyC
                 Double magnitude = properties.getDouble("mag");
                 String place = properties.getString("place");
 
-                System.out.println("MAG: " + magnitude);
+//                System.out.println("MAG: " + magnitude);
                 JSONObject geometry = (JSONObject) earthquake.get("geometry");
                 JSONArray coordinates = geometry.getJSONArray("coordinates");
                 Double latitude = (Double) coordinates.get(1);
                 Double longitude = (Double) coordinates.get(0);
-                System.out.println(latitude + "/" + longitude);
+//                System.out.println(latitude + "/" + longitude);
 
                 LatLng location = new LatLng(latitude, longitude);
                 map.addMarker(new MarkerOptions().position(location).title("Magnitude: " + magnitude+"; " + place)
