@@ -7,14 +7,14 @@
     android:background="@drawable/terrabg3">
 
     <ImageButton
+        android:id="@+id/back_button"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:id="@+id/back_button"
-        android:src="@drawable/ic_back_dark"
-        android:scaleType="fitCenter"
-        android:background="@color/white_transparent"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="30dp"
-        android:layout_marginStart="10dp"/>
+        android:background="@color/white_transparent"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_back_dark" />
 
     <TextView
         android:id="@+id/after"
@@ -35,7 +35,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="15dp"
         app:fab_colorNormal="@color/midGreen"
         app:fab_colorPressed="@color/darkGreen"
         app:fab_icon="@drawable/ic_home" />
@@ -44,10 +44,111 @@
         android:id="@+id/alan_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_toStartOf="@id/home_button"
-        android:layout_marginBottom="25dp"
+        android:layout_marginBottom="15dp"
         android:layout_marginStart="25dp"/>
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="25dp"
+        android:layout_toStartOf="@id/home_button" />
+
+    <TextView
+        android:id="@+id/desc1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="235dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:ems="30"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:singleLine="false"
+        android:text="• Turn on the radio and use phones for emergencies"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/desc2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="275dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:ems="30"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:singleLine="false"
+        android:text="• Check yourself and others around you for injures and provide first aid to those that need it"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/desc3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="330dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:ems="30"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:singleLine="false"
+        android:text="• Be careful of broken glass and other objects that may injure you"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/desc4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="385dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:ems="30"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:singleLine="false"
+        android:text="• Stay away from beaches as tsunamis often hit after the earthquake"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/desc5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="440dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:ems="30"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:singleLine="false"
+        android:text="• Expect potential aftershocks"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/desc6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="480dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:ems="30"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:singleLine="false"
+        android:text="• Stay away from damaged areas"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/desc7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="525dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:ems="30"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:singleLine="false"
+        android:text="• Check water, electric, and gas lines and if any are damaged, shut off the valves. If the smell of gas is present, open all windows and doors and exit the building."
+        android:textSize="15sp" />
 
 </RelativeLayout>

@@ -50,4 +50,60 @@
         android:layout_toStartOf="@id/home_button"
         android:layout_marginBottom="25dp"
         android:layout_marginStart="25dp"/>
+
+    <TextView
+        android:id="@+id/desc1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="270dp"
+        android:layout_marginRight="10dp"
+        android:ems="30"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:singleLine="false"
+        android:text="• Anchor heavy appliances / furniture to the wall"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/desc2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="310dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:ems="30"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:singleLine="false"
+        android:text="• Make a plan of where to  meet your family after an earthquake"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/desc3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="365dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:ems="30"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:singleLine="false"
+        android:text="• Make sure you have access to a fire extinguisher, first-aid kit, extra batteries, flashlight, and a battery powered radio"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/desc4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="430dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:ems="30"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        android:singleLine="false"
+        android:text="• Get familiar with the earthquake plan at other locations like schools and offices"
+        android:textSize="15sp" />
 </RelativeLayout>

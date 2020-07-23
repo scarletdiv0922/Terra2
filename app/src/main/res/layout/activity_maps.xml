@@ -6,5 +6,34 @@
     android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MapsActivity"
-    />
+    tools:context=".MapsActivity">
+
+    <ImageButton
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:id="@+id/back_button"
+        android:src="@drawable/ic_back_dark"
+        android:scaleType="fitCenter"
+        android:background="@color/white_transparent"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="10dp"/>
+
+    <TextView
+        android:id="@+id/mapText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="100dp"
+        android:fontFamily="@font/montserrat"
+        android:textColor="@color/darkGreen"
+        android:textSize="40sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:scrollbars="vertical"/>
+
+</fragment>

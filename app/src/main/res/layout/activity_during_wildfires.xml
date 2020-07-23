@@ -55,85 +55,55 @@
         android:id="@+id/desc1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="260dp"
+        android:layout_marginTop="290dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:ems="30"
         android:gravity="start|top"
         android:inputType="textMultiLine"
         android:singleLine="false"
-        android:text="• Stay calm"
-        android:textStyle="bold"
+        android:text="• Be prepared to evacuate at any moment (usually a very short notice is given)"
         android:textSize="15sp" />
 
     <TextView
         android:id="@+id/desc2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="340dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:ems="30"
         android:gravity="start|top"
         android:inputType="textMultiLine"
         android:singleLine="false"
-        android:text="• If you are indoors stay inside and if you are outdoors stay outside"
+        android:text="• Keep a watch of the news and obey officials and authorities"
         android:textSize="15sp" />
 
     <TextView
         android:id="@+id/desc3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="355dp"
+        android:layout_marginTop="390dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:ems="30"
         android:gravity="start|top"
         android:inputType="textMultiLine"
         android:singleLine="false"
-        android:text="• If you are indoors, stay away from windows and outside doors and instead crawl under heavy furniture or stand against a wall near the center of the building"
+        android:text="• Consider soaking your entire property in water"
         android:textSize="15sp" />
 
     <TextView
         android:id="@+id/desc4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="425dp"
+        android:layout_marginTop="430dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:ems="30"
         android:gravity="start|top"
         android:inputType="textMultiLine"
         android:singleLine="false"
-        android:text="• If you are outdoors, stay away from powerlines, buildings, and anything that might fall"
+        android:text="• Keep windows and doors closed to limit exposure to dust"
         android:textSize="15sp" />
-
-    <TextView
-        android:id="@+id/desc5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="480dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:ems="30"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        android:singleLine="false"
-        android:text="• Don’t use matches or candles because of potentially broken gas lines"
-        android:textSize="15sp" />
-
-    <TextView
-        android:id="@+id/desc6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="540dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:ems="30"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        android:singleLine="false"
-        android:text="• If you are in a car, stop the car and stay inside"
-        android:textSize="15sp" />
-
 </RelativeLayout>
