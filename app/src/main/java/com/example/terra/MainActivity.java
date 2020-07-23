@@ -64,7 +64,10 @@ public class MainActivity extends AppCompatActivity {
     double currentlong;
     ArrayList<String> prevCodes = new ArrayList<>();
     ArrayList<String> currCodes = new ArrayList<>();
+    ArrayList<Double> mags = new ArrayList<>();
+    ArrayList<String> places = new ArrayList<>();
     NotificationChannel channel;
+    int code = 0;
 
     public static MainActivity getInstance() {
         return instance;
@@ -131,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                         System.out.println("I'M HERE 22222" + json);
                         try {
                             readJSON();
-                        } catch (JSONException e) {
+                        } catch (JSONException | InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
@@ -147,9 +150,11 @@ public class MainActivity extends AppCompatActivity {
 
         prevCodes.addAll(currCodes);
         currCodes.clear();
+        mags.clear();
+        places.clear();
     }
 
-    public void readJSON() throws JSONException {
+    public void readJSON() throws JSONException, InterruptedException {
         if (json != null) {
             JSONObject reader = new JSONObject(json);
             JSONArray earthquakes = reader.getJSONArray("features");
@@ -160,37 +165,42 @@ public class MainActivity extends AppCompatActivity {
                 String place = properties.getString("place");
                 String code = properties.getString("code");
                 currCodes.add(code);
+                mags.add(magnitude);
+                places.add(place);
 
-                if (!prevCodes.contains(code)) {
-                    System.out.println("NOTIFY");
-
-                    NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this, "channel")
-                            .setSmallIcon(R.mipmap.ic_launcher_round)
-                            .setContentTitle("Earthquake")
-                            .setContentText("An earthquake of magnitude " + magnitude + " at " + place + " has occurred.")
-                            .setStyle(new NotificationCompat.BigTextStyle()
-                                    .bigText("An earthquake of magnitude " + magnitude + " at " + place + " has occurred."))
-                            .setAutoCancel(true);
-
-                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-                    PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                    builder.setContentIntent(pendingIntent);
-
-                    NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                    notificationManager.notify(0, builder.build());
-                }
-                else {
-                    System.out.println("DON'T NOTIFY");
-                }
-
-                System.out.println("MAG: " + magnitude);
+//                System.out.println("MAG: " + magnitude);
                 JSONObject geometry = (JSONObject) earthquake.get("geometry");
                 JSONArray coordinates = geometry.getJSONArray("coordinates");
                 Double latitude = (Double) coordinates.get(1);
                 Double longitude = (Double) coordinates.get(0);
 //                System.out.println(latitude + "/" + longitude);
+            }
+
+            for (int i = 0; i < currCodes.size(); i++) {
+                if (!prevCodes.contains(currCodes.get(i))) {
+                    System.out.println("NOTIFY " + currCodes.get(i));
+
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this, "channel")
+                            .setSmallIcon(R.mipmap.ic_launcher_round)
+                            .setContentTitle("Earthquake")
+                            .setContentText("An earthquake of magnitude " + mags.get(i) + " at " + places.get(i) + " has occurred.")
+                            .setStyle(new NotificationCompat.BigTextStyle()
+                                    .bigText("An earthquake of magnitude " + mags.get(i) + " at " + places.get(i) + " has occurred."))
+                            .setAutoCancel(true);
+
+                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                    PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this, code, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    builder.setContentIntent(pendingIntent);
+
+                    NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                    notificationManager.notify(code, builder.build());
+                    code++;
+                }
+                else {
+                    System.out.println("DON'T NOTIFY");
+                }
             }
         }
     }
