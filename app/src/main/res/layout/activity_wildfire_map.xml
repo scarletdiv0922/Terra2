@@ -16,25 +16,31 @@
         android:layout_marginTop="30dp"
         android:layout_marginStart="10dp"/>
 
-    <TextView
-        android:id="@+id/map"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="100dp"
-        android:fontFamily="@font/montserrat"
-        android:text="Map"
-        android:textColor="@color/darkGreen"
-        android:textSize="40sp"
-        android:textStyle="bold" />
+<!--    <TextView-->
+<!--        android:id="@+id/map"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="70dp"-->
+<!--        android:layout_marginTop="100dp"-->
+<!--        android:fontFamily="@font/montserrat"-->
+<!--        android:text="Map"-->
+<!--        android:textColor="@color/darkGreen"-->
+<!--        android:textSize="40sp"-->
+<!--        android:textStyle="bold" />-->
 
     <TextView
-        android:id="@+id/info"
+        android:id="@+id/dialogue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/map"
-        android:layout_margin="20dp"
-        android:scrollbars="vertical"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:fontFamily="@font/montserrat"
+        android:scrollbars="vertical"
+        android:text="Real-time wildfire map coming soon!"
+        android:layout_centerVertical="true"
+        android:textColor="@color/darkGreen"
+        android:textSize="30sp" />
 
     <com.getbase.floatingactionbutton.FloatingActionButton
         android:id="@+id/home_button"
@@ -58,12 +64,5 @@
         android:layout_toStartOf="@id/home_button"
         android:layout_marginBottom="25dp"
         android:layout_marginStart="25dp"/>
-
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/mapView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:layout_below="@id/map"/>
 
 </RelativeLayout>

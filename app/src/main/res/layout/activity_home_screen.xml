@@ -19,40 +19,40 @@
         android:textStyle="bold" />
 
     <com.getbase.floatingactionbutton.FloatingActionButton
+        android:id="@+id/checklist_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/checklist_button"
-        app:fab_colorNormal="@color/midGreen"
-        app:fab_colorPressed="@color/darkGreen"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
         android:layout_marginEnd="10dp"
-        app:fab_icon="@drawable/ic_checklist"/>
+        android:layout_marginBottom="20dp"
+        app:fab_colorNormal="@color/midGreen"
+        app:fab_colorPressed="@color/darkGreen"
+        app:fab_icon="@drawable/ic_checklist" />
 
     <com.getbase.floatingactionbutton.FloatingActionButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/emergency_contacts_button"
-        app:fab_colorNormal="@color/midGreen"
-        app:fab_colorPressed="@color/darkGreen"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
-        android:layout_marginEnd="10dp"
-        android:layout_toStartOf="@id/checklist_button"
-        app:fab_icon="@drawable/ic_people"/>
-
-    <com.getbase.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/info_button"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_toStartOf="@id/checklist_button"
         app:fab_colorNormal="@color/midGreen"
         app:fab_colorPressed="@color/darkGreen"
+        app:fab_icon="@drawable/ic_people" />
+
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:id="@+id/info_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
         android:layout_marginEnd="10dp"
+        android:layout_marginBottom="20dp"
         android:layout_toStartOf="@id/emergency_contacts_button"
-        app:fab_icon="@drawable/ic_info"/>
+        app:fab_colorNormal="@color/midGreen"
+        app:fab_colorPressed="@color/darkGreen"
+        app:fab_icon="@drawable/ic_info" />
 
     <com.alan.alansdk.button.AlanButton
         android:id="@+id/alan_button"
@@ -70,7 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/textView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="180dp"
+        android:layout_marginTop="150sp"
         android:background="@drawable/radius"
         android:enabled="false"
         android:fontFamily="@font/montserrat"

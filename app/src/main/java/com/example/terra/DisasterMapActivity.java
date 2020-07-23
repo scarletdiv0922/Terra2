@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -22,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -46,7 +46,7 @@ public class DisasterMapActivity extends FragmentActivity implements OnMapReadyC
     String disaster;
     String json;
     ImageButton back;
-    TextView eqInfo;
+    FloatingActionButton home;
     MapView mapView;
     GoogleMap map;
     int NUM_DISASTERS;
@@ -67,13 +67,12 @@ public class DisasterMapActivity extends FragmentActivity implements OnMapReadyC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+//        setContentView(R.layout.activity_earthquake_map);
 
-        instance = this;
-
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync((OnMapReadyCallback) this);
+        SimpleDateFormat formatter
+                = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        dateString = formatter.format(date);
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
@@ -82,15 +81,24 @@ public class DisasterMapActivity extends FragmentActivity implements OnMapReadyC
             disaster = (String) bundle.get("Disaster");
         }
 
-        back = findViewById(R.id.back_button);
-        eqInfo = findViewById(R.id.info);
-        eqInfo.setMovementMethod(new ScrollingMovementMethod());
-        mapView = findViewById(R.id.mapView);
+        if (disaster.equals("Earthquakes")) {
+            setContentView(R.layout.activity_earthquake_map);
+//            mapView = findViewById(R.id.mapView);
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.map);
+            mapFragment.getMapAsync((OnMapReadyCallback) this);
+            getPermission();
+            GetUsgsData();
+        }
 
-        SimpleDateFormat formatter
-                = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = new Date();
-        dateString = formatter.format(date);
+        else if (disaster.equals("Wildfires")) {
+            setContentView(R.layout.activity_wildfire_map);
+            home = findViewById(R.id.home_button);
+        }
+
+        instance = this;
+
+        back = findViewById(R.id.back_button);;
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,8 +109,13 @@ public class DisasterMapActivity extends FragmentActivity implements OnMapReadyC
             }
         });
 
-        getPermission();
-        GetUsgsData();
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(DisasterMapActivity.this, HomeScreenActivity.class);
+                startActivity(intent1);
+            }
+        });
     }
 
     public void getPermission() {
@@ -193,7 +206,6 @@ public class DisasterMapActivity extends FragmentActivity implements OnMapReadyC
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                eqInfo.setText("That didn't work!");
             }
         });
 

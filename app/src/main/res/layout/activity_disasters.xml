@@ -6,12 +6,12 @@
 
     <TextView
         android:id="@+id/question"
-        android:layout_width="500dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="40dp"
         android:fontFamily="@font/montserrat"
+        android:padding="30dp"
         android:text="Which disasters would you like to learn about?"
         android:textAlignment="center"
         android:textColor="#acdeaa"
