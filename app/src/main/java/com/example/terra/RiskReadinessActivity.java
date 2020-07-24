@@ -173,8 +173,8 @@ public class RiskReadinessActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 else if (cmd.contains("near")) {
-                    //TODO
-                    Toast.makeText(RiskReadinessActivity.this, "near", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(RiskReadinessActivity.this, NearbyFacilitiesActivity.class);
+                    startActivity(intent);
                 }
                 else if (cmd.contains("left")) {
                     //TODO
@@ -198,8 +198,8 @@ public class RiskReadinessActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                     else if (cmd.substring(i, j).equals("nearby facilities")){
-                        //TODO
-                        Toast.makeText(RiskReadinessActivity.this, "near", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(RiskReadinessActivity.this, NearbyFacilitiesActivity.class);
+                        startActivity(intent);
                     }
                     else if (cmd.substring(i, j).equals("disaster warnings") || cmd.substring(i, j).equals("disaster updates") || cmd.substring(i, j).equals("map")) {
                         Intent intent = new Intent(RiskReadinessActivity.this, DisasterMapActivity.class);
