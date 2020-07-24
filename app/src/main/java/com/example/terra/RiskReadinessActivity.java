@@ -46,6 +46,7 @@ public class RiskReadinessActivity extends AppCompatActivity {
         Firebase.setAndroidContext(this);
         mRef = new Firebase("https://terra-alan.firebaseio.com/");
 
+        //Alan Button
         JSONObject commandJson = null;
 
         try {
@@ -223,13 +224,17 @@ public class RiskReadinessActivity extends AppCompatActivity {
 
         getFirebase();
 
+        //Readiness Score
         Log.v(TAG, "Checked items: " + checkedItems);
         readinessScore = checkedItems / SIZE_OF_CHECKLIST;
 
         Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("readiness_score");
         mRefChild.setValue(readinessScore);
 
+        //Risk score
 
+
+        //Buttons
         back = findViewById(R.id.back_button);
         home = findViewById(R.id.home_button);
 
