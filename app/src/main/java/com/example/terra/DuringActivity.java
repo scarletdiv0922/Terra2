@@ -175,8 +175,8 @@ public class DuringActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 else if (cmd.contains("near")) {
-                    //TODO
-                    Toast.makeText(DuringActivity.this, "near", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(DuringActivity.this, NearbyFacilitiesActivity.class);
+                    startActivity(intent);
                 }
                 else if (cmd.contains("left")) {
                     //TODO
@@ -200,8 +200,8 @@ public class DuringActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                     else if (cmd.substring(i, j).equals("nearby facilities")){
-                        //TODO
-                        Toast.makeText(DuringActivity.this, "near", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(DuringActivity.this, NearbyFacilitiesActivity.class);
+                        startActivity(intent);
                     }
                     else if (cmd.substring(i, j).equals("disaster warnings") || cmd.substring(i, j).equals("disaster updates") || cmd.substring(i, j).equals("map")) {
                         Intent intent = new Intent(DuringActivity.this, DisasterMapActivity.class);
