@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 = new SimpleDateFormat ("yyyy-MM-dd'T'hh:");
         Date date = new Date();
         dateString = formatter.format(date);
-        System.out.println("DATE "+dateString+":"+(minutes-10)+":"+seconds);
+        System.out.println("DATE "+dateString+":"+minutes+":"+seconds);
 
         Button signup = findViewById(R.id.sign_up_button);
         signup.setOnClickListener((v) -> {
@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 + "&longitude="
                 + currentlong
                 + "&maxradiuskm=100&minmagnitude=2.5&starttime="
-                + dateString+(minutes-10)+":"+seconds;
+                + dateString+(minutes-1)+":"+seconds;
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -263,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
 
             //If the permission hasn't been granted, handle it with an error message
             else {
-                Toast.makeText(this, "Without your permission, Terra cannot access your contacts.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Without your permission, Terra cannot tell you what disasters are in your area.", Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -1,8 +1,10 @@
 package com.example.terra;
 
 import android.Manifest;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.util.Log;
@@ -23,6 +25,9 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONException;
@@ -52,10 +57,25 @@ public class EmergencyContactsActivity extends AppCompatActivity {
     ArrayList<String> phoneNumbers = new ArrayList<>();
     private static final String TAG = "EmergencyContacts";
 
+    //Location Updates variables
+    static EmergencyContactsActivity instance;
+    LocationRequest locationRequest;
+    FusedLocationProviderClient fusedLocationProviderClient;
+    double currentlat;
+    double currentlong;
+
+    public static EmergencyContactsActivity getInstance() {
+        return instance;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emergency_contacts);
+
+        instance = this;
+
+        getPermission();
 
         //Connect to Firebase
         Firebase.setAndroidContext(this);
@@ -288,6 +308,13 @@ public class EmergencyContactsActivity extends AppCompatActivity {
             }
         });
 
+        safe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(EmergencyContactsActivity.this, "Long-press to send a text to your emergency contacts.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         //When the user long-clicks on the "Help!" button, send a text to each emergency contact
         help.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -296,6 +323,13 @@ public class EmergencyContactsActivity extends AppCompatActivity {
                     sendHelpText(phoneNumbers.get(i));
                 }
                 return false;
+            }
+        });
+
+        help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(EmergencyContactsActivity.this, "Long-press to send a text to your emergency contacts.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -307,7 +341,7 @@ public class EmergencyContactsActivity extends AppCompatActivity {
         }
         if (checkPermission(Manifest.permission.SEND_SMS)) {
             SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(phoneNumber, null,"I have been hit by a natural disaster, but I'm safe! From, Terra.", null, null);
+            smsManager.sendTextMessage(phoneNumber, null,"I have been hit by a natural disaster, but I'm safe. I am at http://maps.google.com/?q=" + currentlat + "," + currentlong + ". From, Terra.", null, null);
             Toast.makeText(EmergencyContactsActivity.this, "Your contacts have been informed you are safe.", Toast.LENGTH_LONG).show();
 
         }
@@ -323,7 +357,7 @@ public class EmergencyContactsActivity extends AppCompatActivity {
         }
         if (checkPermission(Manifest.permission.SEND_SMS)) {
             SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(phoneNumber, null,"I have been hit by a natural disaster, and I need help! From, Terra.", null, null);
+            smsManager.sendTextMessage(phoneNumber, null,"I have been hit by a natural disaster, and I need help! I am at http://maps.google.com/?q=" + currentlat + "," + currentlong + ". From, Terra.", null, null);
             Toast.makeText(EmergencyContactsActivity.this, "Your contacts have been informed you need help.", Toast.LENGTH_LONG).show();
 
         }
@@ -383,6 +417,76 @@ public class EmergencyContactsActivity extends AppCompatActivity {
             @Override
             public void onCancelled(FirebaseError firebaseError) {
                 Log.e(TAG, "Error connecting to Firebase");
+            }
+        });
+    }
+
+    public void getPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            //Then request the user permission to access contacts
+            ActivityCompat.requestPermissions(EmergencyContactsActivity.this,
+                    new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, 1);
+            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overridden method
+        }
+        else {
+            System.out.println("PERMISSION RECEIVED");
+            updateLocation();
+        }
+    }
+
+    //Handle the permission request result
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == 1) {
+
+            //If the permission has been granted, run showContacts() again and move on to the next step
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                getPermission();
+            }
+
+            //If the permission hasn't been granted, handle it with an error message
+            else {
+                Toast.makeText(this, "Without your permission, Terra cannot tell your contacts where you are..", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void updateLocation() {
+        buildLocationRequest(); //request to get the current location
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest, getPendingIntent());
+        System.out.println("updateLocation2");
+
+
+    }
+
+    private PendingIntent getPendingIntent() {
+        Intent intent = new Intent(this, MyLocationService3.class);
+        intent.setAction(MyLocationService.ACTION_PROCESS_UPDATE);
+        System.out.println("pendingIntent2");
+        return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private void buildLocationRequest() {
+        locationRequest = new LocationRequest();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY); //get the location at high accuracy
+        System.out.println("buildLocationRequest2");
+    }
+
+    public void setCoordinates(final double lat, final double lon) {
+        System.out.println("setting coords2");
+        EmergencyContactsActivity.this.runOnUiThread(new Runnable() { //while this activity is running
+            @Override
+            public void run() {
+                currentlat = lat;
+                currentlong = lon;
+
+                System.out.println("owo"+currentlat+"/"+currentlong);
             }
         });
     }

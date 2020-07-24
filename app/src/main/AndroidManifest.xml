@@ -36,6 +36,9 @@
         <receiver
             android:name=".MyLocationService2"/>
 
+        <receiver
+            android:name=".MyLocationService3"/>
+
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
