@@ -224,9 +224,8 @@ public class RiskReadinessActivity extends AppCompatActivity {
 
         getFirebase();
 
-//        readinessScore = (double) checkedItems / (double) SIZE_OF_CHECKLIST;
         Toast.makeText(this, "score " + readinessScore, Toast.LENGTH_SHORT).show();
-        
+
         //Buttons
         back = findViewById(R.id.back_button);
         home = findViewById(R.id.home_button);
@@ -286,7 +285,8 @@ public class RiskReadinessActivity extends AppCompatActivity {
                     }
                     Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("readiness_score");
                     readinessScore = (double) checkedItems / (double) SIZE_OF_CHECKLIST;
-                    mRefChild.setValue(readinessScore);
+                    mRefChild.setValue((readinessScore*100) + "%");
+                    mRefChild.setValue(String.format("%.2f", (readinessScore*100)) + "%");
                 }
             }
 
