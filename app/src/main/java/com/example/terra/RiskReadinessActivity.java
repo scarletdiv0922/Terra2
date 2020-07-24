@@ -29,9 +29,9 @@ import java.util.Map;
 public class RiskReadinessActivity extends AppCompatActivity {
 
     private Firebase mRef;
-    public int checkedItems;
+    int checkedItems;
     public int total;
-    public int SIZE_OF_CHECKLIST = 16;
+    public int SIZE_OF_CHECKLIST;
     public double readinessScore;
     ImageButton back;
     FloatingActionButton home;
@@ -223,12 +223,15 @@ public class RiskReadinessActivity extends AppCompatActivity {
 
         getFirebase();
 
-        Log.v(TAG, "Checked items: " + checkedItems);
-        readinessScore = checkedItems / SIZE_OF_CHECKLIST;
+//        Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("readiness_score");
+//        readinessScore = (double) checkedItems / (double) SIZE_OF_CHECKLIST;
+//        mRefChild.setValue(readinessScore);
 
-        Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("readiness_score");
-        mRefChild.setValue(readinessScore);
+//        readinessScore = (double) checkedItems / (double) SIZE_OF_CHECKLIST;
+        Toast.makeText(this, "score " + readinessScore, Toast.LENGTH_SHORT).show();
 
+        System.out.println("She turned into the moon");
+        Log.v(TAG, "Checked items1: " + checkedItems);
 
         back = findViewById(R.id.back_button);
         home = findViewById(R.id.home_button);
@@ -253,30 +256,42 @@ public class RiskReadinessActivity extends AppCompatActivity {
     }
 
     public void getFirebase() {
-
-        Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("emergency_checklist");
-        mRefChild.addValueEventListener(new ValueEventListener() {
+        Firebase mRefChild1 = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("emergency_checklist");
+        mRefChild1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                System.out.println("That's");
                 if (dataSnapshot.getValue() != null) {
                     Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
 
                     for (Map.Entry<String, Object> entry : map.entrySet()) {
                         Boolean value = (Boolean) entry.getValue();
                         String item = entry.getKey();
-
-                        if (value) {
                             if (item.equals("Water") || item.equals("Non-perishable Food") || item.equals("First-aid Kit")) {
-                                checkedItems += 3;
+                                SIZE_OF_CHECKLIST +=3;
+                                System.out.println("rough");
+                                if (value){
+                                    checkedItems += 3;
+                                }
                             }
                             else if (item.equals("Portable Charger") || item.equals("Extra Cash") || item.equals("Flashlight") || item.equals("Extra Batteries")) {
-                                checkedItems += 2;
+                                SIZE_OF_CHECKLIST +=2;
+                                System.out.println("buddy");
+                                if (value){
+                                    checkedItems += 2;
+                                }
                             }
                             else {
-                                checkedItems++;
+                                SIZE_OF_CHECKLIST++;
+                                System.out.println("- Z");
+                                if (value){
+                                    checkedItems ++;
+                                }
                             }
-                        }
                     }
+                    Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("readiness_score");
+                    readinessScore = (double) checkedItems / (double) SIZE_OF_CHECKLIST;
+                    mRefChild.setValue(readinessScore);
                 }
             }
 

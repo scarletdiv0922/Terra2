@@ -257,14 +257,6 @@ public class ChecklistActivity2 extends AppCompatActivity {
 
     //When the user leaves the activity, empty the lists so that they can be loaded from
     //Firebase when the user comes back.
-    @Override
-    protected void onPause() {
-        super.onPause();
-        setChecklist();
-        checklistItems.clear();
-        updatedValues.clear();
-        firebaseValues.clear();
-    }
 
     @Override
     protected void onStop() {
@@ -327,6 +319,7 @@ public class ChecklistActivity2 extends AppCompatActivity {
 
     //When the user leaves the activity, take the updated values and update Firebase with them
     public void setChecklist() {
+        System.out.println("sparky sparky");
         if (updatedValues.size() > 0) {
             for (int i = 0; i < SIZE_OF_CHECKLIST; i++) {
                 Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("emergency_checklist")

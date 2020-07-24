@@ -120,5 +120,8 @@ public class SignupActivity extends AppCompatActivity {
                     .child(items.get(i));
             mRefChild.setValue(false);
         }
+
+        Firebase mRefChild1 = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("readiness_score");
+        mRefChild1.setValue(0.0);
     }
 }
