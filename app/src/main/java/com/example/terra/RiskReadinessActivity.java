@@ -46,6 +46,7 @@ public class RiskReadinessActivity extends AppCompatActivity {
         Firebase.setAndroidContext(this);
         mRef = new Firebase("https://terra-alan.firebaseio.com/");
 
+        //Alan Button
         JSONObject commandJson = null;
 
         try {
@@ -223,16 +224,10 @@ public class RiskReadinessActivity extends AppCompatActivity {
 
         getFirebase();
 
-//        Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("readiness_score");
-//        readinessScore = (double) checkedItems / (double) SIZE_OF_CHECKLIST;
-//        mRefChild.setValue(readinessScore);
-
 //        readinessScore = (double) checkedItems / (double) SIZE_OF_CHECKLIST;
         Toast.makeText(this, "score " + readinessScore, Toast.LENGTH_SHORT).show();
-
-        System.out.println("She turned into the moon");
-        Log.v(TAG, "Checked items1: " + checkedItems);
-
+        
+        //Buttons
         back = findViewById(R.id.back_button);
         home = findViewById(R.id.home_button);
 

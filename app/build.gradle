@@ -25,6 +25,10 @@ android {
     aaptOptions {
         noCompress "tflite"
     }
+
+    packagingOptions {
+        pickFirst '**/*.so'
+    }
 }
 
 repositories {
