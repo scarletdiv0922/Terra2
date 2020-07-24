@@ -32,7 +32,7 @@ public class RiskReadinessActivity extends AppCompatActivity {
     public int checkedItems;
     public int total;
     public int SIZE_OF_CHECKLIST = 16;
-    public int readinessScore;
+    public double readinessScore;
     ImageButton back;
     FloatingActionButton home;
     String disaster;
@@ -225,6 +225,10 @@ public class RiskReadinessActivity extends AppCompatActivity {
 
         Log.v(TAG, "Checked items: " + checkedItems);
         readinessScore = checkedItems / SIZE_OF_CHECKLIST;
+
+        Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("readiness_score");
+        mRefChild.setValue(readinessScore);
+
 
         back = findViewById(R.id.back_button);
         home = findViewById(R.id.home_button);

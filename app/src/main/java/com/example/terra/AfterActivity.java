@@ -76,7 +76,6 @@ public class AfterActivity extends AppCompatActivity {
             @Override
             public void onCommandReceived(EventCommand eventCommand) {
                 super.onCommandReceived(eventCommand);
-                System.out.println("Heeereeee");
                 String cmd = eventCommand.getData().toString();
                 System.out.println(cmd);
                 if (cmd.contains("riskScore")){
