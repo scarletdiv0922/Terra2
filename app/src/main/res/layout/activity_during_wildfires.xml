@@ -28,6 +28,20 @@
         android:textSize="40sp"
         android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/during_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="260dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="80dp"
+        android:fontFamily="@font/montserrat"
+        android:scrollbars="vertical"
+        android:text="@string/during_wildfire"
+        android:textColor="@color/darkGreen"
+        android:textSize="20sp" />
+
     <com.getbase.floatingactionbutton.FloatingActionButton
         android:id="@+id/home_button"
         android:layout_width="wrap_content"
@@ -51,59 +65,4 @@
         android:layout_marginBottom="25dp"
         android:layout_marginStart="25dp"/>
 
-    <TextView
-        android:id="@+id/desc1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="290dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:ems="30"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        android:singleLine="false"
-        android:text="• Be prepared to evacuate at any moment (usually a very short notice is given)"
-        android:textSize="15sp" />
-
-    <TextView
-        android:id="@+id/desc2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="340dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:ems="30"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        android:singleLine="false"
-        android:text="• Keep a watch of the news and obey officials and authorities"
-        android:textSize="15sp" />
-
-    <TextView
-        android:id="@+id/desc3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="390dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:ems="30"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        android:singleLine="false"
-        android:text="• Consider soaking your entire property in water"
-        android:textSize="15sp" />
-
-    <TextView
-        android:id="@+id/desc4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="430dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:ems="30"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        android:singleLine="false"
-        android:text="• Keep windows and doors closed to limit exposure to dust"
-        android:textSize="15sp" />
 </RelativeLayout>

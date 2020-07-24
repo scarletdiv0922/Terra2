@@ -94,6 +94,14 @@ public class DisasterMapActivity extends FragmentActivity implements OnMapReadyC
         else if (disaster.equals("Wildfires")) {
             setContentView(R.layout.activity_wildfire_map);
             home = findViewById(R.id.home_button);
+
+            home.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent1 = new Intent(DisasterMapActivity.this, HomeScreenActivity.class);
+                    startActivity(intent1);
+                }
+            });
         }
 
         instance = this;
@@ -105,14 +113,6 @@ public class DisasterMapActivity extends FragmentActivity implements OnMapReadyC
             public void onClick(View v) {
                 Intent intent1 = new Intent(DisasterMapActivity.this, DisasterMenuActivity.class);
                 intent1.putExtra("Disaster", disaster);
-                startActivity(intent1);
-            }
-        });
-
-        home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent1 = new Intent(DisasterMapActivity.this, HomeScreenActivity.class);
                 startActivity(intent1);
             }
         });

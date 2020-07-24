@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alan.alansdk.AlanCallback;
@@ -23,6 +25,7 @@ public class DuringActivity extends AppCompatActivity {
     ImageButton backButton;
     FloatingActionButton home;
     String disaster;
+    TextView text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,9 @@ public class DuringActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        text = findViewById(R.id.during_text);
+        text.setMovementMethod(new ScrollingMovementMethod());
 
         AlanButton alan_button;
         alan_button = findViewById(R.id.alan_button);

@@ -28,6 +28,20 @@
         android:textSize="40sp"
         android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/after_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="260dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="80dp"
+        android:fontFamily="@font/montserrat"
+        android:scrollbars="vertical"
+        android:text="@string/after_earthquake"
+        android:textColor="@color/darkGreen"
+        android:textSize="20sp" />
+
     <com.getbase.floatingactionbutton.FloatingActionButton
         android:id="@+id/home_button"
         android:layout_width="wrap_content"
@@ -50,87 +64,4 @@
         android:layout_marginBottom="15dp"
         android:layout_marginStart="25dp"/>
 
-    <TextView
-        android:id="@+id/desc1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="270dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:ems="30"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        android:singleLine="false"
-        android:text="• Pack supplies before heading back home such as garbage bags, gloves, googles, closed toe shoes, and bottled water"
-        android:textSize="15sp" />
-
-    <TextView
-        android:id="@+id/desc2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="330dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:ems="30"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        android:singleLine="false"
-        android:text="• Take pictures of damaged objects to make it easier for the insurance company to track what is damaged"
-        android:textSize="15sp" />
-
-    <TextView
-        android:id="@+id/desc3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="375dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:ems="30"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        android:singleLine="false"
-        android:text="• Enter the house carefully and turn of the main power breaker immediately"
-        android:textSize="15sp" />
-
-    <TextView
-        android:id="@+id/desc4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="420dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:ems="30"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        android:singleLine="false"
-        android:text="• Walk around the perimeter of the house before entering"
-        android:textSize="15sp" />
-
-    <TextView
-        android:id="@+id/desc5"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="450dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:ems="30"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        android:singleLine="false"
-        android:text="• Throw any food items out if the house was without power for a long time"
-        android:textSize="15sp" />
-
-    <TextView
-        android:id="@+id/desc6"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="500dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:ems="30"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        android:singleLine="false"
-        android:text="• Contact your home insurance broker to get started with repairs right away"
-        android:textSize="15sp" />
 </RelativeLayout>
