@@ -54,6 +54,7 @@ public class JsonParser {
         try {
             //Get result array
             jsonArray = object.getJSONArray("results");
+            System.out.println(jsonArray);
         } catch (JSONException e) {
             e.printStackTrace();
         }
