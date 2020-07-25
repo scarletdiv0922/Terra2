@@ -51,4 +51,38 @@
         android:layout_marginBottom="25dp"
         android:layout_marginStart="25dp"/>
 
+    <TextView
+        android:id="@+id/textViewCounty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat"
+        android:textColor="@color/darkGreen"
+        android:textSize="20sp"
+        android:layout_marginTop="250dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="25dp"
+        android:text="Please type the name of your county below." />
+
+    <EditText
+        android:id="@+id/editTextCounty"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat"
+        android:inputType="text"
+        android:hint="Name of Your County"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="25dp"
+        android:layout_below="@+id/textViewCounty"/>
+
+    <Button
+        android:id="@+id/doneButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextCounty"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@color/lightGreen"
+        android:fontFamily="@font/montserrat"
+        android:text="Show me my scores" />
+
 </RelativeLayout>
