@@ -222,10 +222,6 @@ public class RiskReadinessActivity extends AppCompatActivity {
             disaster = (String) bundle.get("Disaster");
         }
 
-        getFirebase();
-
-        Toast.makeText(this, "score " + readinessScore, Toast.LENGTH_SHORT).show();
-
         //Buttons
         back = findViewById(R.id.back_button);
         home = findViewById(R.id.home_button);
@@ -247,53 +243,5 @@ public class RiskReadinessActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    public void getFirebase() {
-        Firebase mRefChild1 = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("emergency_checklist");
-        mRefChild1.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println("That's");
-                if (dataSnapshot.getValue() != null) {
-                    Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-
-                    for (Map.Entry<String, Object> entry : map.entrySet()) {
-                        Boolean value = (Boolean) entry.getValue();
-                        String item = entry.getKey();
-                            if (item.equals("Water") || item.equals("Non-perishable Food") || item.equals("First-aid Kit")) {
-                                SIZE_OF_CHECKLIST +=3;
-                                System.out.println("rough");
-                                if (value){
-                                    checkedItems += 3;
-                                }
-                            }
-                            else if (item.equals("Portable Charger") || item.equals("Extra Cash") || item.equals("Flashlight") || item.equals("Extra Batteries")) {
-                                SIZE_OF_CHECKLIST +=2;
-                                System.out.println("buddy");
-                                if (value){
-                                    checkedItems += 2;
-                                }
-                            }
-                            else {
-                                SIZE_OF_CHECKLIST++;
-                                System.out.println("- Z");
-                                if (value){
-                                    checkedItems ++;
-                                }
-                            }
-                    }
-                    Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("readiness_score");
-                    readinessScore = (double) checkedItems / (double) SIZE_OF_CHECKLIST;
-                    mRefChild.setValue((readinessScore*100) + "%");
-                    mRefChild.setValue(String.format("%.2f", (readinessScore*100)) + "%");
-                }
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
     }
 }

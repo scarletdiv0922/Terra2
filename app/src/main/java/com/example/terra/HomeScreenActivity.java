@@ -34,6 +34,10 @@ public class HomeScreenActivity extends AppCompatActivity {
     private Firebase mRef;
     ArrayList<String> disasters = new ArrayList<>();
     ArrayList<Boolean> values = new ArrayList<>();
+    String readinessValue = "0%";
+    int SIZE_OF_CHECKLIST;
+    int checkedItems;
+    double readinessScore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,9 @@ public class HomeScreenActivity extends AppCompatActivity {
         //Connect activity to Firebase
         Firebase.setAndroidContext(this);
         mRef = new Firebase("https://terra-alan.firebaseio.com/");
+
+        getFirebase();
+        getReadiness();
 
         JSONObject commandJson = null;
 
@@ -70,7 +77,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         alan_button.playCommand(commandJson.toString(),  new ScriptMethodCallback() {
             @Override
             public void onResponse(String methodName, String body, String error) {
-                System.out.println("Heyyyyy");
+                System.out.println("Home now");
                 System.out.println(methodName);
             }
         });
@@ -78,7 +85,7 @@ public class HomeScreenActivity extends AppCompatActivity {
             @Override
             public void onCommandReceived(EventCommand eventCommand) {
                 super.onCommandReceived(eventCommand);
-                System.out.println("Heeereeee");
+                System.out.println("Command received");
                 String cmd = eventCommand.getData().toString();
                 System.out.println(cmd);
                 if (cmd.contains("riskScore")){
@@ -86,7 +93,9 @@ public class HomeScreenActivity extends AppCompatActivity {
                 }
                 else if (cmd.contains("readinessScore")){
                     //TODO
-                    alan_button.playText("Your readiness score is 90%");
+                    getFirebase();
+                    System.out.println("at readiness " + readinessValue);
+                    alan_button.playText("Your readiness score is " + readinessValue);
                 }
                 else if (cmd.contains("addContact")){
                     int i = cmd.indexOf("value")+8;
@@ -311,5 +320,76 @@ public class HomeScreenActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    public void getFirebase() {
+
+        System.out.println("Twinkle");
+
+        Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("readiness_score");
+        mRefChild.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                System.out.println("toes");
+                readinessValue = (String) dataSnapshot.getValue();
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+        System.out.println("Aang");
+    }
+
+    public void getReadiness() {
+        Firebase mRefChild1 = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("emergency_checklist");
+        mRefChild1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                System.out.println("That's");
+                if (dataSnapshot.getValue() != null) {
+                    Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+
+                    for (Map.Entry<String, Object> entry : map.entrySet()) {
+                        Boolean value = (Boolean) entry.getValue();
+                        String item = entry.getKey();
+                        if (item.equals("Water") || item.equals("Non-perishable Food") || item.equals("First-aid Kit")) {
+                            SIZE_OF_CHECKLIST +=3;
+                            if (value){
+                                System.out.println("rough");
+                                checkedItems += 3;
+                            }
+                        }
+                        else if (item.equals("Portable Charger") || item.equals("Extra Cash") || item.equals("Flashlight") || item.equals("Extra Batteries")) {
+                            SIZE_OF_CHECKLIST +=2;
+                            if (value){
+                                System.out.println("buddy");
+                                checkedItems += 2;
+                            }
+                        }
+                        else {
+                            SIZE_OF_CHECKLIST++;
+                            if (value){
+                                System.out.println("- Z");
+                                checkedItems ++;
+                            }
+                        }
+                    }
+                    Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("readiness_score");
+                    readinessScore = (double) checkedItems / (double) SIZE_OF_CHECKLIST;
+                    mRefChild.setValue((readinessScore*100) + "%");
+                    mRefChild.setValue(String.format("%.2f", (readinessScore*100)) + "%");
+                    System.out.println("CHECKED " + checkedItems);
+                    checkedItems = 0;
+                    SIZE_OF_CHECKLIST = 0;
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 }

@@ -88,13 +88,13 @@ public class MainActivity extends AppCompatActivity {
 
         instance = this;
 
-        minutes = Calendar.getInstance().get(Calendar.MINUTE);
-        seconds = Calendar.getInstance().get(Calendar.SECOND);
-        SimpleDateFormat formatter
-                = new SimpleDateFormat ("yyyy-MM-dd'T'hh:");
-        Date date = new Date();
-        dateString = formatter.format(date);
-        System.out.println("DATE "+dateString+":"+minutes+":"+seconds);
+//        minutes = Calendar.getInstance().get(Calendar.MINUTE);
+//        seconds = Calendar.getInstance().get(Calendar.SECOND);
+//        SimpleDateFormat formatter
+//                = new SimpleDateFormat ("yyyy-MM-dd'T'hh:");
+//        Date date = new Date();
+//        dateString = formatter.format(date);
+//        System.out.println("DATE "+dateString+":"+minutes+":"+seconds);
 
         Button signup = findViewById(R.id.sign_up_button);
         signup.setOnClickListener((v) -> {
@@ -128,12 +128,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void threadCode() {
-        //TODO: FIX THE LINK TO THE RIGHT QUERY
         android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+        minutes = Calendar.getInstance().get(Calendar.MINUTE);
+        seconds = Calendar.getInstance().get(Calendar.SECOND);
+        SimpleDateFormat formatter
+                = new SimpleDateFormat ("yyyy-MM-dd'T'hh:");
+        Date date = new Date();
+        dateString = formatter.format(date);
+        System.out.println("DATE "+dateString+":"+minutes+":"+seconds);
         getPermission();
         System.out.println(currentlat);
         System.out.println(currentlong);
-        String url = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&limit=10&orderby=time&latitude="
+        String url = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&limit=20&orderby=time&latitude="
                 + currentlat
                 + "&longitude="
                 + currentlong
