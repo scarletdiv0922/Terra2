@@ -59,7 +59,7 @@ public class ChecklistActivity2 extends AppCompatActivity {
         alan_button = findViewById(R.id.alan_button);
 
         AlanConfig config = AlanConfig.builder()
-                .setProjectId("9852fc5b086a6dc66a51e5f59c5b909a2e956eca572e1d8b807a3e2338fdd0dc/stage")
+                .setProjectId("53a6f889052442def00f689c7641807c2e956eca572e1d8b807a3e2338fdd0dc/stage")
                 .build();
         alan_button.initWithConfig(config);
 
