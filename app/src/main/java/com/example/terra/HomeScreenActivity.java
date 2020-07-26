@@ -1,6 +1,7 @@
 package com.example.terra;
 
 import android.Manifest;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,6 +9,7 @@ import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.alan.alansdk.AlanCallback;
 import com.alan.alansdk.AlanConfig;
@@ -27,6 +30,9 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONException;
@@ -43,6 +49,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     ArrayList<String> disasters = new ArrayList<>();
     ArrayList<Boolean> values = new ArrayList<>();
     ArrayList<String> emergContacts = new ArrayList<>();
+    ArrayList<String> emergPhoneNumbers = new ArrayList<>();
     ArrayList<String> contacts = new ArrayList<>();
     ArrayList<String> phoneNumbers = new ArrayList<>();
     String readinessValue = "0%";
@@ -50,10 +57,23 @@ public class HomeScreenActivity extends AppCompatActivity {
     int checkedItems;
     double readinessScore;
 
+    //Location Updates variables
+    static HomeScreenActivity instance;
+    LocationRequest locationRequest;
+    FusedLocationProviderClient fusedLocationProviderClient;
+    double currentlat;
+    double currentlong;
+
+    public static HomeScreenActivity getInstance() {
+        return instance;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+
+        instance = this;
 
         earthquake = findViewById(R.id.earthquakes);
         wildfire = findViewById(R.id.wildfires);
@@ -66,6 +86,18 @@ public class HomeScreenActivity extends AppCompatActivity {
         getReadiness();
         getEmergContacts();
         showContacts();
+        updateLocation();
+
+        //Check if the user has allowed the app to send text messages
+        if (!checkPermission(Manifest.permission.SEND_SMS)) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.SEND_SMS}, 1);
+        }
+
+        if (!checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
 
         JSONObject commandJson = null;
 
@@ -148,9 +180,15 @@ public class HomeScreenActivity extends AppCompatActivity {
                     }
                 }
                 else if (cmd.contains("safe")){
+                    for (int i = 0; i < emergPhoneNumbers.size(); i++) {
+                        sendSafeText(emergPhoneNumbers.get(i));
+                    }
                     alan_button.playText("Your contacts have been informed that you are safe");
                 }
                 else if (cmd.contains("help")){
+                    for (int i = 0; i < emergPhoneNumbers.size(); i++) {
+                        sendHelpText(emergPhoneNumbers.get(i));
+                    }
                     alan_button.playText("Your contacts have been informed that you need help");
                 }
                 else if (cmd.contains("mark")){
@@ -423,6 +461,45 @@ public class HomeScreenActivity extends AppCompatActivity {
         });
     }
 
+
+    //Check the permissions
+    public boolean checkPermission(String permission) {
+        int check = ContextCompat.checkSelfPermission(this, permission);
+        return (check == PackageManager.PERMISSION_GRANTED);
+    }
+
+    //Send the "safe" text message to the emergency contacts
+    public void sendSafeText(String phoneNumber) {
+        if (phoneNumber == null || phoneNumber.length() == 0) {
+            return;
+        }
+        if (checkPermission(Manifest.permission.SEND_SMS)) {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(phoneNumber, null,"I have been hit by a natural disaster, but I'm safe. I am at http://maps.google.com/?q=" + currentlat + "," + currentlong + ". From, Terra, my natural disaster app.", null, null);
+            Toast.makeText(HomeScreenActivity.this, "Your contacts have been informed you are safe.", Toast.LENGTH_LONG).show();
+
+        }
+        else {
+            Toast.makeText(HomeScreenActivity.this, "You did not give Terra permission to send text messages.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    //Sned the "help" text message to the emergency contacts
+    public void sendHelpText(String phoneNumber) {
+        if (phoneNumber == null || phoneNumber.length() == 0) {
+            return;
+        }
+        if (checkPermission(Manifest.permission.SEND_SMS)) {
+            SmsManager smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage(phoneNumber, null,"I have been hit by a natural disaster, and I need help! I am at http://maps.google.com/?q=" + currentlat + "," + currentlong + ". From, Terra, my natural disaster app.", null, null);
+            Toast.makeText(HomeScreenActivity.this, "Your contacts have been informed you need help.", Toast.LENGTH_LONG).show();
+
+        }
+        else {
+            Toast.makeText(HomeScreenActivity.this, "You did not give Terra permission to send text messages.", Toast.LENGTH_LONG).show();
+        }
+    }
+
     public void getEmergContacts() {
         Firebase mRefChild1 = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("emergency_contacts");
         mRefChild1.addValueEventListener(new ValueEventListener() {
@@ -432,7 +509,10 @@ public class HomeScreenActivity extends AppCompatActivity {
                     Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
                     for (Map.Entry<String, Object> entry : map.entrySet()) {
                         String contact = entry.getKey();
+                        String number = (String) entry.getValue();
+
                         emergContacts.add(contact);
+                        emergPhoneNumbers.add(number);
                         System.out.println("CONTACT " + contact);
                     }
                 }
@@ -514,5 +594,44 @@ public class HomeScreenActivity extends AppCompatActivity {
             cur.close();
         }
 
+    }
+
+    private void updateLocation() {
+        buildLocationRequest(); //request to get the current location
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        fusedLocationProviderClient.requestLocationUpdates(locationRequest, getPendingIntent());
+        System.out.println("updateLocation2");
+
+
+    }
+
+    private PendingIntent getPendingIntent() {
+        Intent intent = new Intent(this, MyLocationService3.class);
+        intent.setAction(MyLocationService.ACTION_PROCESS_UPDATE);
+        System.out.println("pendingIntent2");
+        return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    private void buildLocationRequest() {
+        locationRequest = new LocationRequest();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY); //get the location at high accuracy
+        System.out.println("buildLocationRequest2");
+    }
+
+    public void setCoordinates(final double lat, final double lon) {
+        System.out.println("setting coords2");
+        HomeScreenActivity.this.runOnUiThread(new Runnable() { //while this activity is running
+            @Override
+            public void run() {
+                currentlat = lat;
+                currentlong = lon;
+
+                System.out.println("owo"+currentlat+"/"+currentlong);
+            }
+        });
     }
 }
