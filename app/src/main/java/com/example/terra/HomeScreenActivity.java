@@ -58,6 +58,8 @@ public class HomeScreenActivity extends AppCompatActivity {
     int SIZE_OF_CHECKLIST;
     int checkedItems;
     double readinessScore;
+    boolean riskScoreUD = false;
+    ArrayList<Double> riskScores = new ArrayList<>();
 
     //Location Updates variables
     static HomeScreenActivity instance;
@@ -89,6 +91,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         getEmergContacts();
         showContacts();
         updateLocation();
+        getRisk();
 
         //Check if the user has allowed the app to send text messages
         if (!checkPermission(Manifest.permission.SEND_SMS)) {
@@ -141,8 +144,19 @@ public class HomeScreenActivity extends AppCompatActivity {
                 String cmd = eventCommand.getData().toString();
                 System.out.println(cmd);
                 if (cmd.contains("riskScore")){
-                    System.out.println("at risk score");
-                    alan_button.playText("Your risk score is 7%");
+                    if (riskScoreUD) {
+                        alan_button.playText("Your risk scores haven't been calculated yet. Please go to the your scores screen to find out what your risk score is.");
+                    }
+                    else {
+                        for (int i = 0; i < riskScores.size(); i++) {
+                            if (riskScores.get(i) == 100.0) {
+                                alan_button.playText("Your risk score for " + disasters.get(i) + "has not been calculated.");
+                            }
+                            else {
+                                alan_button.playText("Your risk score for " + disasters.get(i) + " is " + riskScores.get(i));
+                            }
+                        }
+                    }
                 }
                 else if (cmd.contains("readinessScore")) {
                     getFirebase();
@@ -479,6 +493,38 @@ public class HomeScreenActivity extends AppCompatActivity {
                     System.out.println("CHECKED " + checkedItems);
                     checkedItems = 0;
                     SIZE_OF_CHECKLIST = 0;
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+    public void getRisk() {
+        Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("risk_score");
+        mRefChild.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int count = disasters.size();
+                Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                for (Map.Entry<String, Object> entry : map.entrySet()) {
+                    try {
+                        Double score = (Double) dataSnapshot.getValue();
+                        riskScores.add(score);
+                        riskScoreUD = false;
+                    } catch (Exception e) {
+                        String s = (String) entry.getValue();
+                        if (s.equals("undefined")) {
+                            count--;
+                            riskScores.add(100.0);
+                            if (count == 0) {
+                                riskScoreUD = true;
+                            }
+                        }
+                    }
                 }
             }
 
