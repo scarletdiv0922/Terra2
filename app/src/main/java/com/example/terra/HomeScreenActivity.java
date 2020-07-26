@@ -52,6 +52,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     ArrayList<String> emergPhoneNumbers = new ArrayList<>();
     ArrayList<String> contacts = new ArrayList<>();
     ArrayList<String> phoneNumbers = new ArrayList<>();
+    ArrayList<Boolean> checklistValues = new ArrayList<>();
     String readinessValue = "0%";
     int SIZE_OF_CHECKLIST;
     int checkedItems;
@@ -137,8 +138,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                     System.out.println("at risk score");
                     alan_button.playText("Your risk score is 7%");
                 }
-                else if (cmd.contains("readinessScore")){
-                    //TODO
+                else if (cmd.contains("readinessScore")) {
                     getFirebase();
                     System.out.println("at readiness " + readinessValue);
                     alan_button.playText("Your readiness score is " + readinessValue);
@@ -146,9 +146,6 @@ public class HomeScreenActivity extends AppCompatActivity {
                 else if (cmd.contains("addContact")){
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
-//                    System.out.println("CMD: " + cmd + "I: " + i + "J: " + j);
-                    //TODO add try/catch to make sure that we're actually able to add a contact that exists
-//                    System.out.println(cmd.substring(i, j));
 
                     if (emergContacts.contains(cmd.substring(i, j))) {
                         alan_button.playText(cmd.substring(i, j) + " is already in your emergency contacts list.");
@@ -265,9 +262,13 @@ public class HomeScreenActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 else if (cmd.contains("left")) {
-                    //TODO
-                    Intent intent = new Intent(HomeScreenActivity.this, ChecklistActivity2.class);
-                    startActivity(intent);
+                    int count = 0;
+                    for (int i = 0; i < checklistValues.size(); i++) {
+                        if (!checklistValues.get(i)) {
+                            count++;
+                        }
+                    }
+                    alan_button.playText("You have " + count + " items left in your emergency checklist.");
                 }
                 else if (cmd.contains("about")) {
                     alan_button.playText("You can ask about anything related to natural disasters, risk scores, readiness scores, and other features of the app. Try asking, “What is my risk/readiness score?");
@@ -421,6 +422,7 @@ public class HomeScreenActivity extends AppCompatActivity {
 
                     for (Map.Entry<String, Object> entry : map.entrySet()) {
                         Boolean value = (Boolean) entry.getValue();
+                        checklistValues.add(value);
                         String item = entry.getKey();
                         if (item.equals("Water") || item.equals("Non-perishable Food") || item.equals("First-aid Kit")) {
                             SIZE_OF_CHECKLIST +=3;
