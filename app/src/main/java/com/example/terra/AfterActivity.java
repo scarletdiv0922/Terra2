@@ -31,8 +31,8 @@ public class AfterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Intent i = getIntent();
-        Bundle bundle = i.getExtras();
+        Intent disasterIntent = getIntent();
+        Bundle bundle = disasterIntent.getExtras();
 
         if (bundle != null) {
             disaster = (String) bundle.get("Disaster");
@@ -78,138 +78,102 @@ public class AfterActivity extends AppCompatActivity {
                 super.onCommandReceived(eventCommand);
                 String cmd = eventCommand.getData().toString();
                 System.out.println(cmd);
-                if (cmd.contains("riskScore")){
-                    alan_button.playText("Your risk score is 7%");
-                }
-                else if (cmd.contains("readinessScore")){
-                    //TODO
-                    alan_button.playText("Your readiness score is 90%");
-                }
-                else if (cmd.contains("addContact")){
-                    int i = cmd.indexOf("value")+8;
-                    int j = cmd.indexOf("\"}");
-                    System.out.println("CMD: " + cmd + "I: " + i + "J: " + j);
-                    //TODO add try/catch to make sure that we're actually able to add a contact that exists
-                    System.out.println(cmd.substring(i, j));
-                    alan_button.playText("Added " + cmd.substring(i, j) + "to your contacts");
-                }
-                else if (cmd.contains("removeContact")){
-                    int i = cmd.indexOf("value")+8;
-                    int j = cmd.indexOf("\"}");
-                    //TODO add try/catch to make sure that we're actually able to remove a contact that exists
-//                    mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("emergency_contacts")
-//                            .child(cmd.substring(i, j)).removeValue();
-                    alan_button.playText("Removed " + cmd.substring(i, j) + "from your contacts");
-                }
-                else if (cmd.contains("safe")){
-                    alan_button.playText("Your contacts have been informed that you are safe");
-                }
-                else if (cmd.contains("help")){
-                    alan_button.playText("Your contacts have been informed that you need help");
-                }
-                else if (cmd.contains("mark")){
-                    int i = cmd.indexOf("value")+8;
-                    int j = cmd.indexOf("\"}");
-                    alan_button.playText(cmd.substring(i, j) + " has been checked on your emergency checklist");
-                }
-                else if (cmd.contains("before")){
+                if (cmd.contains("before")){
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
                     if (cmd.substring(i, j).equals("earthquake") || cmd.substring(i, j).equals("earthquakes")) {
-                        Intent intent = new Intent(AfterActivity.this, BeforeActivity.class);
-                        intent.putExtra("Disaster", "Earthquakes");
-                        startActivity(intent);
+                        Intent intent1 = new Intent(AfterActivity.this, BeforeActivity.class);
+                        intent1.putExtra("Disaster", "Earthquakes");
+                        startActivity(intent1);
                     }
                     else if (cmd.substring(i, j).equals("wildfire") || cmd.substring(i, j).equals("wildfires")) {
-                        Intent intent = new Intent(AfterActivity.this, BeforeActivity.class);
-                        intent.putExtra("Disaster", "Wildfires");
-                        startActivity(intent);
+                        Intent intent1 = new Intent(AfterActivity.this, BeforeActivity.class);
+                        intent1.putExtra("Disaster", "Wildfires");
+                        startActivity(intent1);
                     }
                 }
                 else if (cmd.contains("during")){
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
                     if (cmd.substring(i, j).equals("earthquake") || cmd.substring(i, j).equals("earthquakes")){
-                        Intent intent = new Intent(AfterActivity.this, DuringActivity.class);
-                        intent.putExtra("Disaster", "Earthquakes");
-                        startActivity(intent);
+                        Intent intent1 = new Intent(AfterActivity.this, DuringActivity.class);
+                        intent1.putExtra("Disaster", "Earthquakes");
+                        startActivity(intent1);
                     }
                     else if (cmd.substring(i, j).equals("wildfire") || cmd.substring(i, j).equals("wildfires")){
-                        Intent intent = new Intent(AfterActivity.this, DuringActivity.class);
-                        intent.putExtra("Disaster", "Wildfires");
-                        startActivity(intent);
+                        Intent intent1 = new Intent(AfterActivity.this, DuringActivity.class);
+                        intent1.putExtra("Disaster", "Wildfires");
+                        startActivity(intent1);
                     }
                 }
                 else if (cmd.contains("after")){
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
                     if (cmd.substring(i, j).equals("earthquake") || cmd.substring(i, j).equals("earthquakes")){
-                        Intent intent = new Intent(AfterActivity.this, AfterActivity.class);
-                        intent.putExtra("Disaster", "Earthquakes");
-                        startActivity(intent);
+                        Intent intent1 = new Intent(AfterActivity.this, AfterActivity.class);
+                        intent1.putExtra("Disaster", "Earthquakes");
+                        startActivity(intent1);
                     }
                     else if (cmd.substring(i, j).equals("wildfire") ||cmd.substring(i, j).equals("wildfires")){
-                        Intent intent = new Intent(AfterActivity.this, AfterActivity.class);
-                        intent.putExtra("Disaster", "Wildfires");
-                        startActivity(intent);
+                        Intent intent1 = new Intent(AfterActivity.this, AfterActivity.class);
+                        intent1.putExtra("Disaster", "Wildfires");
+                        startActivity(intent1);
                     }
                 }
                 else if (cmd.contains("nearMe")) {
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
                     if (cmd.substring(i, j).equals("earthquake") || cmd.substring(i, j).equals("earthquakes")) {
-                        Intent intent = new Intent(AfterActivity.this, DisasterMapActivity.class);
-                        intent.putExtra("Disaster", "Earthquakes");
-                        startActivity(intent);
+                        Intent intent1 = new Intent(AfterActivity.this, DisasterMapActivity.class);
+                        intent1.putExtra("Disaster", "Earthquakes");
+                        startActivity(intent1);
                     }
                     else if (cmd.substring(i, j).equals("wildfire") ||cmd.substring(i, j).equals("wildfires")){
-                        Intent intent = new Intent(AfterActivity.this, DisasterMapActivity.class);
-                        intent.putExtra("Disaster", "Wildfires");
-                        startActivity(intent);
+                        Intent intent1 = new Intent(AfterActivity.this, DisasterMapActivity.class);
+                        intent1.putExtra("Disaster", "Wildfires");
+                        startActivity(intent1);
                     }
                 }
-                else if (cmd.contains("show"))
-                    alan_button.playText("You are already on the emergency contacts screen.");
+                else if (cmd.contains("show")) {
+                    Intent intent1 = new Intent(AfterActivity.this, EmergencyContactsActivity.class);
+                    startActivity(intent1);
+                }
                 else if (cmd.contains("checklist")) {
-                    Intent intent = new Intent(AfterActivity.this, ChecklistActivity2.class);
-                    startActivity(intent);
+                    Intent intent1 = new Intent(AfterActivity.this, ChecklistActivity2.class);
+                    startActivity(intent1);
                 }
                 else if (cmd.contains("near")) {
-                    Intent intent = new Intent(AfterActivity.this, NearbyFacilitiesActivity.class);
-                    startActivity(intent);
+                    Intent intent1 = new Intent(AfterActivity.this, NearbyFacilitiesActivity.class);
+                    startActivity(intent1);
                 }
                 else if (cmd.contains("left")) {
                     //TODO
-                    Intent intent = new Intent(AfterActivity.this, ChecklistActivity2.class);
-                    startActivity(intent);
-                }
-                else if (cmd.contains("about")) {
-                    alan_button.playText("You can ask about anything related to natural disasters, risk scores, readiness scores, and other features of the app. Try asking, “What is my risk/readiness score?");
+                    Intent intent1 = new Intent(AfterActivity.this, ChecklistActivity2.class);
+                    startActivity(intent1);
                 }
                 else if (cmd.contains("navigate")) {
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
                     if (cmd.substring(i, j).equals("home")){
-                        Intent intent = new Intent(AfterActivity.this, HomeScreenActivity.class);
-                        startActivity(intent);
+                        Intent intent1 = new Intent(AfterActivity.this, HomeScreenActivity.class);
+                        startActivity(intent1);
                     }
-                    else if (cmd.substring(i, j).equals("emergency contacts") || cmd.substring(i, j).equals("contacts"))
-                        alan_button.playText("You are already at the emergency contacts screen.");
+                    else if (cmd.substring(i, j).equals("emergency contacts") || cmd.substring(i, j).equals("contacts")) {
+                        Intent intent1 = new Intent(AfterActivity.this, EmergencyContactsActivity.class);
+                        startActivity(intent1);
+                    }
                     else if (cmd.substring(i, j).equals("emergency checklist") || cmd.substring(i, j).equals("checklist")) {
-                        Intent intent = new Intent(AfterActivity.this, ChecklistActivity2.class);
-                        startActivity(intent);
+                        Intent intent1 = new Intent(AfterActivity.this, ChecklistActivity2.class);
+                        startActivity(intent1);
                     }
                     else if (cmd.substring(i, j).equals("nearby facilities")){
-                        Intent intent = new Intent(AfterActivity.this, NearbyFacilitiesActivity.class);
-                        startActivity(intent);
+                        Intent intent1 = new Intent(AfterActivity.this, NearbyFacilitiesActivity.class);
+                        startActivity(intent1);
                     }
                     else if (cmd.substring(i, j).equals("disaster warnings") || cmd.substring(i, j).equals("disaster updates") || cmd.substring(i, j).equals("map")) {
-                        Intent intent = new Intent(AfterActivity.this, DisasterMapActivity.class);
-                        startActivity(intent);
+                        Intent intent1 = new Intent(AfterActivity.this, DisasterMapActivity.class);
+                        startActivity(intent1);
                     }
-                }
-                else{
-                    alan_button.playText("Something went wrong. Please try again.");
                 }
             }
         };

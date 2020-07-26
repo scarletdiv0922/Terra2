@@ -89,6 +89,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                 String cmd = eventCommand.getData().toString();
                 System.out.println(cmd);
                 if (cmd.contains("riskScore")){
+                    System.out.println("at risk score");
                     alan_button.playText("Your risk score is 7%");
                 }
                 else if (cmd.contains("readinessScore")){
@@ -339,7 +340,6 @@ public class HomeScreenActivity extends AppCompatActivity {
 
             }
         });
-        System.out.println("Aang");
     }
 
     public void getReadiness() {
