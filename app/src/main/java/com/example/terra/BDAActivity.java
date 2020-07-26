@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -29,16 +30,18 @@ public class BDAActivity extends AppCompatActivity {
     ImageButton during;
     ImageButton after;
     ImageButton back;
+    private static final String TAG = "BDAActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Set the layout based on which disaster the user is learning about
         Intent disasterIntent = getIntent();
         Bundle bundle = disasterIntent.getExtras();
 
         if (bundle != null) {
-            disaster = (String) bundle.get("Disaster");
+            disaster = (String) bundle.get("Disaster"); //Get the disaster passed to this activity from the previous activity
         }
 
         if (disaster.equals("Earthquakes")) {
@@ -49,14 +52,21 @@ public class BDAActivity extends AppCompatActivity {
             setContentView(R.layout.activity_wildfire_bda);
         }
 
-        JSONObject commandJson = null;
+        //Retrieve the relevant views from the xml layout
+        home = findViewById(R.id.home_button);
+        before = findViewById(R.id.before_button);
+        during = findViewById(R.id.during_button);
+        after = findViewById(R.id.after_button);
+        back = findViewById(R.id.back_button);
 
+        JSONObject commandJson = null;
         try {
             commandJson = new JSONObject("{\"command\":\"navigate\", \"screen\": \"settings\"}");
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
+        //Set up the Alan AI voice assistant
         AlanButton alan_button;
         alan_button = findViewById(R.id.alan_button);
 
@@ -68,17 +78,18 @@ public class BDAActivity extends AppCompatActivity {
         alan_button.playCommand(commandJson.toString(),  new ScriptMethodCallback() {
             @Override
             public void onResponse(String methodName, String body, String error) {
-                System.out.println("Heyyyyy");
-                System.out.println(methodName);
+                Log.v(TAG, methodName);
             }
         });
+
+        //Define the Alan Callback
         AlanCallback myCallback = new AlanCallback() {
             @Override
             public void onCommandReceived(EventCommand eventCommand) {
                 super.onCommandReceived(eventCommand);
-                System.out.println("Heeereeee");
                 String cmd = eventCommand.getData().toString();
-                System.out.println(cmd);
+                Log.v(TAG, cmd);
+
                 if (cmd.contains("before")){
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
@@ -93,6 +104,7 @@ public class BDAActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 }
+
                 else if (cmd.contains("during")){
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
@@ -107,6 +119,7 @@ public class BDAActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 }
+
                 else if (cmd.contains("after")){
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
@@ -121,6 +134,7 @@ public class BDAActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 }
+
                 else if (cmd.contains("nearMe")) {
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
@@ -135,6 +149,7 @@ public class BDAActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 }
+
                 else if (cmd.contains("show")) {
                     Intent intent = new Intent(BDAActivity.this, EmergencyContactsActivity.class);
                     startActivity(intent);
@@ -144,10 +159,12 @@ public class BDAActivity extends AppCompatActivity {
                     Intent intent = new Intent(BDAActivity.this, ChecklistActivity2.class);
                     startActivity(intent);
                 }
+
                 else if (cmd.contains("near")) {
                     Intent intent = new Intent(BDAActivity.this, NearbyFacilitiesActivity.class);
                     startActivity(intent);
                 }
+
                 else if (cmd.contains("navigate")) {
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
@@ -175,14 +192,9 @@ public class BDAActivity extends AppCompatActivity {
             }
         };
 
-        alan_button.registerCallback(myCallback);
+        alan_button.registerCallback(myCallback); //Register Callback
 
-        home = findViewById(R.id.home_button);
-        before = findViewById(R.id.before_button);
-        during = findViewById(R.id.during_button);
-        after = findViewById(R.id.after_button);
-        back = findViewById(R.id.back_button);
-
+        //Go back to the home screen
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -191,6 +203,7 @@ public class BDAActivity extends AppCompatActivity {
             }
         });
 
+        //Go to the before screen and pass along the current disaster pathway the user is on
         before.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -200,6 +213,7 @@ public class BDAActivity extends AppCompatActivity {
             }
         });
 
+        //Go to the during screen and pass along the current disaster pathway the user is on
         during.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -209,6 +223,7 @@ public class BDAActivity extends AppCompatActivity {
             }
         });
 
+        //Go to the after screen and pass along the current disaster pathway the user is on
         after.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -218,6 +233,7 @@ public class BDAActivity extends AppCompatActivity {
             }
         });
 
+        //Go back to the menu for the disaster pathway the user is on
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

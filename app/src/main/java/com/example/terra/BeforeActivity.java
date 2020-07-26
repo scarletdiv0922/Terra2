@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -27,16 +28,18 @@ public class BeforeActivity extends AppCompatActivity {
     FloatingActionButton home;
     String disaster;
     TextView text;
+    private static final String TAG = "BeforeActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Set the layout based on which disaster the user is learning about
         Intent disasterIntent = getIntent();
         Bundle bundle = disasterIntent.getExtras();
 
         if (bundle != null) {
-            disaster = (String) bundle.get("Disaster");
+            disaster = (String) bundle.get("Disaster"); //Get the disaster passed to this activity from the previous activity
         }
         if (disaster.equals("Earthquakes")) {
             setContentView(R.layout.activity_before);
@@ -45,17 +48,18 @@ public class BeforeActivity extends AppCompatActivity {
             setContentView(R.layout.activity_before_wildfires);
         }
 
-        JSONObject commandJson = null;
+        //Allow the After TextView to be scrollable
+        text = findViewById(R.id.before_text);
+        text.setMovementMethod(new ScrollingMovementMethod());
 
+        JSONObject commandJson = null;
         try {
             commandJson = new JSONObject("{\"command\":\"navigate\", \"screen\": \"settings\"}");
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        text = findViewById(R.id.before_text);
-        text.setMovementMethod(new ScrollingMovementMethod());
-
+        //Set up the Alan AI voice assistant
         AlanButton alan_button;
         alan_button = findViewById(R.id.alan_button);
 
@@ -67,17 +71,16 @@ public class BeforeActivity extends AppCompatActivity {
         alan_button.playCommand(commandJson.toString(),  new ScriptMethodCallback() {
             @Override
             public void onResponse(String methodName, String body, String error) {
-                System.out.println("Heyyyyy");
-                System.out.println(methodName);
+                Log.v(TAG, methodName);
             }
         });
         AlanCallback myCallback = new AlanCallback() {
             @Override
             public void onCommandReceived(EventCommand eventCommand) {
                 super.onCommandReceived(eventCommand);
-                System.out.println("Heeereeee");
                 String cmd = eventCommand.getData().toString();
-                System.out.println(cmd);
+                Log.v(TAG, cmd);
+
                 if (cmd.contains("before")){
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
@@ -92,6 +95,7 @@ public class BeforeActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 }
+
                 else if (cmd.contains("during")){
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
@@ -106,6 +110,7 @@ public class BeforeActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 }
+
                 else if (cmd.contains("after")){
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
@@ -120,6 +125,7 @@ public class BeforeActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 }
+
                 else if (cmd.contains("nearMe")) {
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
@@ -134,18 +140,22 @@ public class BeforeActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 }
+
                 else if (cmd.contains("show")) {
                     Intent intent = new Intent(BeforeActivity.this, EmergencyContactsActivity.class);
                     startActivity(intent);
                 }
+
                 else if (cmd.contains("checklist")) {
                     Intent intent = new Intent(BeforeActivity.this, ChecklistActivity2.class);
                     startActivity(intent);
                 }
+
                 else if (cmd.contains("near")) {
                     Intent intent = new Intent(BeforeActivity.this, NearbyFacilitiesActivity.class);
                     startActivity(intent);
                 }
+                
                 else if (cmd.contains("navigate")) {
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");

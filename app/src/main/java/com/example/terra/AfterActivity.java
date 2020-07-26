@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -26,16 +27,18 @@ public class AfterActivity extends AppCompatActivity {
     FloatingActionButton home;
     String disaster;
     TextView text;
+    private static final String TAG = "AfterActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Set the layout based on which disaster the user is learning about
         Intent disasterIntent = getIntent();
         Bundle bundle = disasterIntent.getExtras();
 
         if (bundle != null) {
-            disaster = (String) bundle.get("Disaster");
+            disaster = (String) bundle.get("Disaster"); //Get the disaster passed to this activity from the previous activity
         }
 
         if (disaster.equals("Earthquakes")) {
@@ -46,17 +49,22 @@ public class AfterActivity extends AppCompatActivity {
             setContentView(R.layout.activity_after_wildfires);
         }
 
-        JSONObject commandJson = null;
+        //Retrieve the relevant views from the xml layout
+        backButton = findViewById(R.id.back_button);
+        home = findViewById(R.id.home_button);
 
+        //Allow the After TextView to be scrollable
+        text = findViewById(R.id.after_text);
+        text.setMovementMethod(new ScrollingMovementMethod());
+
+        JSONObject commandJson = null;
         try {
             commandJson = new JSONObject("{\"command\":\"navigate\", \"screen\": \"settings\"}");
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        text = findViewById(R.id.after_text);
-        text.setMovementMethod(new ScrollingMovementMethod());
-
+        //Set up the Alan AI voice assistant
         AlanButton alan_button;
         alan_button = findViewById(R.id.alan_button);
 
@@ -68,16 +76,18 @@ public class AfterActivity extends AppCompatActivity {
         alan_button.playCommand(commandJson.toString(),  new ScriptMethodCallback() {
             @Override
             public void onResponse(String methodName, String body, String error) {
-                System.out.println("Heyyyyy");
-                System.out.println(methodName);
+                Log.v(TAG, methodName);
             }
         });
+
+        //Define the Alan Callback
         AlanCallback myCallback = new AlanCallback() {
             @Override
             public void onCommandReceived(EventCommand eventCommand) {
                 super.onCommandReceived(eventCommand);
                 String cmd = eventCommand.getData().toString();
-                System.out.println(cmd);
+                Log.v(TAG, cmd);
+
                 if (cmd.contains("before")){
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
@@ -92,6 +102,7 @@ public class AfterActivity extends AppCompatActivity {
                         startActivity(intent1);
                     }
                 }
+
                 else if (cmd.contains("during")){
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
@@ -106,6 +117,7 @@ public class AfterActivity extends AppCompatActivity {
                         startActivity(intent1);
                     }
                 }
+
                 else if (cmd.contains("after")){
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
@@ -120,6 +132,7 @@ public class AfterActivity extends AppCompatActivity {
                         startActivity(intent1);
                     }
                 }
+
                 else if (cmd.contains("nearMe")) {
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
@@ -134,18 +147,22 @@ public class AfterActivity extends AppCompatActivity {
                         startActivity(intent1);
                     }
                 }
+
                 else if (cmd.contains("show")) {
                     Intent intent1 = new Intent(AfterActivity.this, EmergencyContactsActivity.class);
                     startActivity(intent1);
                 }
+
                 else if (cmd.contains("checklist")) {
                     Intent intent1 = new Intent(AfterActivity.this, ChecklistActivity2.class);
                     startActivity(intent1);
                 }
+
                 else if (cmd.contains("near")) {
                     Intent intent1 = new Intent(AfterActivity.this, NearbyFacilitiesActivity.class);
                     startActivity(intent1);
                 }
+
                 else if (cmd.contains("navigate")) {
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
@@ -173,11 +190,9 @@ public class AfterActivity extends AppCompatActivity {
             }
         };
 
-        alan_button.registerCallback(myCallback);
+        alan_button.registerCallback(myCallback); //Register Callback
 
-        backButton = findViewById(R.id.back_button);
-        home = findViewById(R.id.home_button);
-
+        //Go back to BDA Activity and pass along the current disaster pathway the user is on
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,6 +202,7 @@ public class AfterActivity extends AppCompatActivity {
             }
         });
 
+        //Go back to the home screen
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
