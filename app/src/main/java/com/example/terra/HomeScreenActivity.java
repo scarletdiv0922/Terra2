@@ -1,13 +1,21 @@
 package com.example.terra;
 
+import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.alan.alansdk.AlanCallback;
 import com.alan.alansdk.AlanConfig;
@@ -34,6 +42,9 @@ public class HomeScreenActivity extends AppCompatActivity {
     private Firebase mRef;
     ArrayList<String> disasters = new ArrayList<>();
     ArrayList<Boolean> values = new ArrayList<>();
+    ArrayList<String> emergContacts = new ArrayList<>();
+    ArrayList<String> contacts = new ArrayList<>();
+    ArrayList<String> phoneNumbers = new ArrayList<>();
     String readinessValue = "0%";
     int SIZE_OF_CHECKLIST;
     int checkedItems;
@@ -53,6 +64,8 @@ public class HomeScreenActivity extends AppCompatActivity {
 
         getFirebase();
         getReadiness();
+        getEmergContacts();
+        showContacts();
 
         JSONObject commandJson = null;
 
@@ -101,18 +114,38 @@ public class HomeScreenActivity extends AppCompatActivity {
                 else if (cmd.contains("addContact")){
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
-                    System.out.println("CMD: " + cmd + "I: " + i + "J: " + j);
+//                    System.out.println("CMD: " + cmd + "I: " + i + "J: " + j);
                     //TODO add try/catch to make sure that we're actually able to add a contact that exists
-                    System.out.println(cmd.substring(i, j));
-                    alan_button.playText("Added " + cmd.substring(i, j) + "to your contacts");
+//                    System.out.println(cmd.substring(i, j));
+
+                    if (emergContacts.contains(cmd.substring(i, j))) {
+                        alan_button.playText(cmd.substring(i, j) + " is already in your emergency contacts list.");
+                    }
+                    else {
+                        if (contacts.contains(cmd.substring(i, j))) {
+                            int index = contacts.indexOf(cmd.substring(i, j));
+                            String number = phoneNumbers.get(index);
+                            Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("emergency_contacts")
+                                    .child(cmd.substring(i, j));
+                            mRefChild.setValue(number);
+                            alan_button.playText("Added " + cmd.substring(i, j) + " to your contacts");
+                        } else {
+                            alan_button.playText("I don't know if " + cmd.substring(i, j) + " is in your contacts list.");
+                        }
+                    }
                 }
                 else if (cmd.contains("removeContact")){
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
-                    //TODO add try/catch to make sure that we're actually able to remove a contact that exists
-//                    mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("emergency_contacts")
-//                            .child(cmd.substring(i, j)).removeValue();
-                    alan_button.playText("Removed " + cmd.substring(i, j) + "from your contacts");
+
+                    if (emergContacts.contains(cmd.substring(i, j))) {
+                        mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("emergency_contacts")
+                                .child(cmd.substring(i, j)).removeValue();
+                        alan_button.playText("Removed " + cmd.substring(i, j) + "from your emergency contacts.");
+                    }
+                    else {
+                        alan_button.playText("I don't think " + cmd.substring(i, j) + "is in your emergency contacts.");
+                    }
                 }
                 else if (cmd.contains("safe")){
                     alan_button.playText("Your contacts have been informed that you are safe");
@@ -325,13 +358,10 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     public void getFirebase() {
 
-        System.out.println("Twinkle");
-
         Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("readiness_score");
         mRefChild.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println("toes");
                 readinessValue = (String) dataSnapshot.getValue();
             }
 
@@ -391,5 +421,98 @@ public class HomeScreenActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void getEmergContacts() {
+        Firebase mRefChild1 = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("emergency_contacts");
+        mRefChild1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                    Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                    for (Map.Entry<String, Object> entry : map.entrySet()) {
+                        String contact = entry.getKey();
+                        emergContacts.add(contact);
+                        System.out.println("CONTACT " + contact);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
+    private void showContacts() {
+        //If the permission isn't granted and the SDK version isn't high enough
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(android.Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+
+            //Then request the user permission to access contacts
+            ActivityCompat.requestPermissions(HomeScreenActivity.this,
+                    new String[] { Manifest.permission.READ_CONTACTS }, 1);
+            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overridden method
+        }
+
+        //If the user has already accepted the permission
+        else {
+            //Get the user's contacts
+            getContactList();
+        }
+    }
+
+    //Handle the permission request result
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == 1) {
+
+            //If the permission has been granted, run showContacts() again and move on to the next step
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                showContacts();
+            }
+
+            //If the permission hasn't been granted, handle it with an error message
+            else {
+                Toast.makeText(this, "Without your permission, Terra cannot access your contacts.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    //Retrieve the user's contact list
+    private void getContactList() {
+
+        ContentResolver cr = getContentResolver();
+        Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
+                null, null, null, null);
+
+        if ((cur != null ? cur.getCount() : 0) > 0) {
+            while (cur != null && cur.moveToNext()) {
+                String id = cur.getString(
+                        cur.getColumnIndex(ContactsContract.Contacts._ID));
+                String name = cur.getString(cur.getColumnIndex(
+                        ContactsContract.Contacts.DISPLAY_NAME));
+
+                if (cur.getInt(cur.getColumnIndex(
+                        ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
+                    Cursor pCur = cr.query(
+                            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                            null,
+                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                            new String[]{id}, null);
+                    while (pCur.moveToNext()) {
+                        String phoneNo = pCur.getString(pCur.getColumnIndex(
+                                ContactsContract.CommonDataKinds.Phone.NUMBER));
+                        contacts.add(name); //Add each contact name to the ArrayList of contact names
+                        phoneNumbers.add(phoneNo);
+                    }
+                    pCur.close();
+                }
+            }
+        }
+        if (cur != null){
+            cur.close();
+        }
+
     }
 }
