@@ -17,7 +17,7 @@
         android:layout_marginStart="10dp"/>
 
     <TextView
-        android:id="@+id/before"
+        android:id="@+id/score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="70dp"
@@ -48,8 +48,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_toStartOf="@id/home_button"
-        android:layout_marginBottom="25dp"
-        android:layout_marginStart="25dp"/>
+        android:layout_marginBottom="15dp"
+        android:layout_marginStart="20dp"/>
 
     <TextView
         android:id="@+id/textViewCounty"
@@ -57,11 +57,12 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat"
         android:textColor="@color/darkGreen"
-        android:textSize="20sp"
-        android:layout_marginTop="250dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginStart="25dp"
-        android:text="Please type the name of your county below." />
+        android:textSize="18sp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginStart="35dp"
+        android:layout_below="@id/score"
+        android:text="Please enter name of your county below." />
 
     <EditText
         android:id="@+id/editTextCounty"
@@ -69,20 +70,78 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/montserrat"
         android:inputType="text"
-        android:hint="Name of Your County"
+        android:hint="County name"
         android:layout_marginTop="10dp"
-        android:layout_marginStart="25dp"
+        android:layout_marginStart="35dp"
         android:layout_below="@+id/textViewCounty"/>
 
     <Button
-        android:id="@+id/doneButton"
-        android:layout_width="wrap_content"
+        android:id="@+id/show_risk_button"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editTextCounty"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:background="@color/lightGreen"
+        android:background="@drawable/radius"
+        android:backgroundTint="@color/lightGreen"
         android:fontFamily="@font/montserrat"
-        android:text="Show me my scores" />
+        android:padding="10dp"
+        android:text="Show me my Risk Score"
+        android:textColor="@color/darkGreen"
+        android:textAllCaps="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/risk_score"
+        android:layout_below="@id/show_risk_button"
+        android:text="Your Risk Score:"
+        android:fontFamily="@font/montserrat"
+        android:textColor="@color/darkGreen"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/risk_score_blurb"
+        android:layout_below="@id/risk_score"
+        android:text="@string/risk_score_blurb"
+        android:fontFamily="@font/montserrat"
+        android:textColor="@color/darkGreen"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginTop="5dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/readiness_score"
+        android:layout_below="@id/risk_score_blurb"
+        android:text="Your Readiness Score:"
+        android:fontFamily="@font/montserrat"
+        android:textColor="@color/darkGreen"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/readiness_score_blurb"
+        android:layout_below="@id/readiness_score"
+        android:text="@string/readiness_score_blurb"
+        android:fontFamily="@font/montserrat"
+        android:textColor="@color/darkGreen"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:layout_marginStart="35dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginTop="5dp"/>
 
 </RelativeLayout>

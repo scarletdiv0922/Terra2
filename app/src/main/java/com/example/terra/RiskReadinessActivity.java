@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,6 +47,9 @@ public class RiskReadinessActivity extends AppCompatActivity {
     ImageButton back;
     FloatingActionButton home;
     String disaster = " ";
+    TextView riskText;
+    TextView readinessText;
+
     private static final String TAG = "RiskReadiness";
 
     FirebaseModelInterpreterOptions options;
@@ -59,6 +63,7 @@ public class RiskReadinessActivity extends AppCompatActivity {
 
     public double riskFromLoc = 0.0;
     String county = "Alameda";
+    String parsedCountyName = "";
     Button doneButton;
 
     HashMap chklistOrder = new HashMap<String, Integer>();
@@ -71,6 +76,9 @@ public class RiskReadinessActivity extends AppCompatActivity {
 
         Firebase.setAndroidContext(this);
         mRef = new Firebase("https://terra-alan.firebaseio.com/");
+
+        riskText = findViewById(R.id.risk_score);
+        readinessText = findViewById(R.id.readiness_score);
 
         //Alan Button
         JSONObject commandJson = null;
@@ -217,8 +225,6 @@ public class RiskReadinessActivity extends AppCompatActivity {
 
         getFirebase();
 
-        Toast.makeText(this, "score " + readinessScore, Toast.LENGTH_SHORT).show();
-
         //current order of the checklist for ml model, no dust masks for now
         chklistOrder.put("Battery-powered Radio", 1);
         chklistOrder.put("Extra Batteries", 2);
@@ -239,13 +245,24 @@ public class RiskReadinessActivity extends AppCompatActivity {
         chklistOrder.put("Wrench or Pliers", 17);
 
         //risk of natural disaster based on location
-        doneButton = findViewById(R.id.doneButton);
+        doneButton = findViewById(R.id.show_risk_button);
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EditText editTextCounty = findViewById(R.id.editTextCounty);
                 county = editTextCounty.getText().toString();
-                System.out.println(county);
+                String[] splitCounty = county.split(" ");
+                for (int i = 0; i < splitCounty.length; i++) {
+                    if (splitCounty[i].equals("county") || splitCounty[i].equals("County")) {
+                        parsedCountyName = parsedCountyName.substring(0, parsedCountyName.length()-1);
+                        break;
+                    }
+                    else {
+                        parsedCountyName += splitCounty[i];
+                        parsedCountyName += " ";
+                    }
+                }
+                System.out.println("COUNTY NAME: " + parsedCountyName);
                 InputStream inputStream; //default to earthquakes
                 inputStream = getResources().openRawResource(R.raw.eqdata);;
                 if (disaster.equalsIgnoreCase("Earthquakes"))
@@ -259,7 +276,7 @@ public class RiskReadinessActivity extends AppCompatActivity {
                 System.out.println("COUNTYYYYYYYY");
                 for(ArrayList<String> scoreData:riskList ) {
                     for (String s:scoreData) {
-                        if (s.equals(county)) {
+                        if (s.equals(parsedCountyName)) {
                             String locRisk = scoreData.get(2);
                             if (locRisk.equals("High"))
                                 riskFromLoc = 2.0;
@@ -277,7 +294,8 @@ public class RiskReadinessActivity extends AppCompatActivity {
                     ratio = (double)((checkedItems - itemsMarked)/checkedItems) + 0.1;
                 riskScore = ratio * riskFromLoc;
                 System.out.println("risk score: " + riskScore);
-
+                riskText.setText("Your Risk Score: " + riskScore);
+                parsedCountyName = "";
             }
         });
 
@@ -422,8 +440,9 @@ public class RiskReadinessActivity extends AppCompatActivity {
                     }
                     Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("readiness_score");
                     readinessScore = (double) checkedItems / (double) SIZE_OF_CHECKLIST;
-                    mRefChild.setValue((readinessScore*100) + "%");
-                    mRefChild.setValue(String.format("%.2f", (readinessScore*100)) + "%");
+                    String formattedReadinessScore = String.format("%.2f", (readinessScore*100)) + "%";
+                    mRefChild.setValue(formattedReadinessScore);
+                    readinessText.setText("Your Readiness Score: " + formattedReadinessScore);
                 }
             }
 

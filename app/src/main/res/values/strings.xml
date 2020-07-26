@@ -53,5 +53,7 @@
         • Throw any food items out if the house was without power for a long time. \n \n
         • Contact your home insurance broker to get started with repairs right away. \n \n
     </string>
+    <string name="risk_score_blurb">Your risk score is a weighted score calculated based on your location and readiness.</string>
+    <string name="readiness_score_blurb">Your readiness score is calculated based on how many items you have prepared in your emergency kit.</string>
 
 </resources>
