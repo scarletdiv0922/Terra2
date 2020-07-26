@@ -23,17 +23,18 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.ml.custom.FirebaseCustomLocalModel;
-import com.google.firebase.ml.custom.FirebaseCustomRemoteModel;
-import com.google.firebase.ml.custom.FirebaseModelInputOutputOptions;
-import com.google.firebase.ml.custom.FirebaseModelInputs;
-import com.google.firebase.ml.custom.FirebaseModelInterpreter;
-import com.google.firebase.ml.custom.FirebaseModelInterpreterOptions;
+//import com.google.firebase.ml.custom.FirebaseCustomLocalModel;
+//import com.google.firebase.ml.custom.FirebaseCustomRemoteModel;
+//import com.google.firebase.ml.custom.FirebaseModelInputOutputOptions;
+//import com.google.firebase.ml.custom.FirebaseModelInputs;
+//import com.google.firebase.ml.custom.FirebaseModelInterpreter;
+//import com.google.firebase.ml.custom.FirebaseModelInterpreterOptions;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,12 +54,12 @@ public class RiskReadinessActivity extends AppCompatActivity {
 
     private static final String TAG = "RiskReadiness";
 
-    FirebaseModelInterpreterOptions options;
-    FirebaseModelInputOutputOptions inputOutputOptions;
-    FirebaseModelInterpreter interpreter;
-    FirebaseCustomLocalModel localModel;
-    FirebaseModelInputs inputs;
-    FirebaseCustomRemoteModel remoteModel;
+//    FirebaseModelInterpreterOptions options;
+//    FirebaseModelInputOutputOptions inputOutputOptions;
+//    FirebaseModelInterpreter interpreter;
+//    FirebaseCustomLocalModel localModel;
+//    FirebaseModelInputs inputs;
+//    FirebaseCustomRemoteModel remoteModel;
     Float[][][] myInput = new Float[1][1][18]; //contains whether users have a certain item or not
     public double riskScore;
 
@@ -249,13 +250,14 @@ public class RiskReadinessActivity extends AppCompatActivity {
                 county = editTextCounty.getText().toString();
                 String[] splitCounty = county.split(" ");
                 for (int i = 0; i < splitCounty.length; i++) {
-                    if (splitCounty[i].equals("county") || splitCounty[i].equals("County")) {
+                    if (splitCounty[i].equalsIgnoreCase("county")) {
                         parsedCountyName = parsedCountyName.substring(0, parsedCountyName.length()-1);
                         break;
                     }
                     else {
                         parsedCountyName += splitCounty[i];
-                        parsedCountyName += " ";
+                        if (i != splitCounty.length - 1)
+                            parsedCountyName += " ";
                     }
                 }
                 System.out.println("COUNTY NAME: " + parsedCountyName);
@@ -268,36 +270,34 @@ public class RiskReadinessActivity extends AppCompatActivity {
                 System.out.println("which disaster? it's " + disaster);
                 CSVFile csvFile = new CSVFile(inputStream);
                 ArrayList<ArrayList<String>> riskList = csvFile.read();
-                System.out.println(riskList.get(1));
-                System.out.println("COUNTYYYYYYYY");
                 for(ArrayList<String> scoreData:riskList ) {
                     for (String s:scoreData) {
                         if (s.equals(parsedCountyName)) {
                             String locRisk = scoreData.get(2);
-                            if (locRisk.equals("High")) {
-                                //TODO Set the colors in the right spots
-                                riskText.setTextColor(Color.rgb(181, 9, 0)); //RED FOR HIGH RISK
+                            if (locRisk.equals("High"))
                                 riskFromLoc = 2.0;
-                            }
-                            else if (locRisk.equals("Medium")) {
-                                riskText.setTextColor(Color.rgb(237, 174, 0)); //YELLOW FOR MEDIUM RISK
+                            else if (locRisk.equals("Medium"))
                                 riskFromLoc = 1.0;
-                            }
-                            else {
-                                riskText.setTextColor(Color.rgb(21, 176, 0)); //GREEN FOR LOW RISK
+                            else
                                 riskFromLoc = 0.5;
-                            }
                             System.out.println("At " + locRisk + " risk");
                         }
                     }
                 }
                 //risk score mathematical model
                 double ratio = 0.5;
-                if (itemsMarked != 0 && checkedItems != 0)
-                    ratio = (double)((checkedItems - itemsMarked)/checkedItems) + 0.1;
+                if (SIZE_OF_CHECKLIST != 0 && checkedItems != 0)
+                    ratio = (1 - (readinessScore * 0.9)) * 0.5;
                 riskScore = ratio * riskFromLoc;
+                if (riskScore > 0.75)
+                    riskText.setTextColor(Color.rgb(181, 9, 0)); //RED FOR HIGH RISK
+                else if (riskScore > 0.5)
+                    riskText.setTextColor(Color.rgb(237, 174, 0)); //YELLOW FOR MEDIUM RISK
+                else
+                    riskText.setTextColor(Color.rgb(21, 176, 0)); //GREEN FOR LOW RISK
+                DecimalFormat df = new DecimalFormat("#.###");
                 System.out.println("risk score: " + riskScore);
-                riskText.setText("Your Risk Score: " + riskScore);
+                riskText.setText("Your Risk Score: " + df.format(riskScore));
                 parsedCountyName = "";
             }
         });
