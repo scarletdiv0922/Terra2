@@ -267,7 +267,6 @@ public class RiskReadinessActivity extends AppCompatActivity {
                     inputStream = getResources().openRawResource(R.raw.eqdata);
                 else if (disaster.equalsIgnoreCase("Wildfires"))
                     inputStream = getResources().openRawResource(R.raw.firedata);
-                System.out.println("which disaster? it's " + disaster);
                 CSVFile csvFile = new CSVFile(inputStream);
                 ArrayList<ArrayList<String>> riskList = csvFile.read();
                 for(ArrayList<String> scoreData:riskList ) {
@@ -299,6 +298,8 @@ public class RiskReadinessActivity extends AppCompatActivity {
                 System.out.println("risk score: " + riskScore);
                 riskText.setText("Your Risk Score: " + df.format(riskScore));
                 parsedCountyName = "";
+                Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("risk_score");
+                mRefChild.setValue(df.format(riskScore));
             }
         });
 
@@ -388,7 +389,7 @@ public class RiskReadinessActivity extends AppCompatActivity {
 
         home.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { //was pointing to disaster menu activity... changed it to this?
+            public void onClick(View v) {
                 Intent intent1 = new Intent(RiskReadinessActivity.this, HomeScreenActivity.class);
                 startActivity(intent1);
             }
