@@ -6,6 +6,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -100,6 +101,11 @@ public class HomeScreenActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
 
+        if (!checkPermission(Manifest.permission.CALL_PHONE)) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CALL_PHONE}, 1);
+        }
+
         JSONObject commandJson = null;
 
         try {
@@ -174,6 +180,26 @@ public class HomeScreenActivity extends AppCompatActivity {
                     }
                     else {
                         alan_button.playText("I don't think " + cmd.substring(i, j) + "is in your emergency contacts.");
+                    }
+                }
+                else if (cmd.contains("call")) {
+                    int i = cmd.indexOf("value")+8;
+                    int j = cmd.indexOf("\"}");
+                    String name = cmd.substring(i, j);
+
+                    if (contacts.contains(name)) {
+                        Intent callIntent = new Intent(Intent.ACTION_CALL);
+                        String number = "tel:" + phoneNumbers.get(contacts.indexOf(name));
+                        callIntent.setData(Uri.parse(number));
+
+                        if (ActivityCompat.checkSelfPermission(HomeScreenActivity.this,
+                                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                            return;
+                        }
+                        startActivity(callIntent);
+                    }
+                    else {
+                        alan_button.playText("I am unable to call " + name);
                     }
                 }
                 else if (cmd.contains("safe")){
