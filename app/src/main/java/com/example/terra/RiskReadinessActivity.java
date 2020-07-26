@@ -273,11 +273,11 @@ public class RiskReadinessActivity extends AppCompatActivity {
                 ArrayList<ArrayList<String>> riskList = csvFile.read();
                 for(ArrayList<String> scoreData:riskList ) {
                     for (String s:scoreData) {
-                        if (s.equals(parsedCountyName)) {
+                        if (s.equalsIgnoreCase(parsedCountyName)) {
                             String locRisk = scoreData.get(2);
-                            if (locRisk.equals("High"))
+                            if (locRisk.equalsIgnoreCase("High"))
                                 riskFromLoc = 2.0;
-                            else if (locRisk.equals("Medium"))
+                            else if (locRisk.equalsIgnoreCase("Medium"))
                                 riskFromLoc = 1.0;
                             else
                                 riskFromLoc = 0.5;
