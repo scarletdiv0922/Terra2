@@ -243,6 +243,7 @@ public class RiskReadinessActivity extends AppCompatActivity {
 
         //risk of natural disaster based on location
         doneButton = findViewById(R.id.show_risk_button);
+        System.out.println("The disaster is " + disaster);
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -262,11 +263,12 @@ public class RiskReadinessActivity extends AppCompatActivity {
                 }
                 System.out.println("COUNTY NAME: " + parsedCountyName);
                 InputStream inputStream; //default to earthquakes
-                inputStream = getResources().openRawResource(R.raw.eqdata);;
-                if (disaster.equalsIgnoreCase("Earthquakes"))
-                    inputStream = getResources().openRawResource(R.raw.eqdata);
-                else if (disaster.equalsIgnoreCase("Wildfires"))
+                if (disaster.equalsIgnoreCase("Wildfires"))
                     inputStream = getResources().openRawResource(R.raw.firedata);
+                else {
+                    disaster = "Earthquakes";
+                    inputStream = getResources().openRawResource(R.raw.eqdata);
+                }
                 CSVFile csvFile = new CSVFile(inputStream);
                 ArrayList<ArrayList<String>> riskList = csvFile.read();
                 for(ArrayList<String> scoreData:riskList ) {
@@ -287,6 +289,7 @@ public class RiskReadinessActivity extends AppCompatActivity {
                 double ratio = 0.5;
                 if (SIZE_OF_CHECKLIST != 0 && checkedItems != 0)
                     ratio = (1 - (readinessScore * 0.9)) * 0.5;
+                System.out.println(ratio + " " + riskFromLoc);
                 riskScore = ratio * riskFromLoc;
                 if (riskScore > 0.75)
                     riskText.setTextColor(Color.rgb(181, 9, 0)); //RED FOR HIGH RISK
@@ -298,7 +301,7 @@ public class RiskReadinessActivity extends AppCompatActivity {
                 System.out.println("risk score: " + riskScore);
                 riskText.setText("Your Risk Score: " + df.format(riskScore));
                 parsedCountyName = "";
-                Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("risk_score");
+                Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("risk_score").child(disaster);
                 mRefChild.setValue(df.format(riskScore));
             }
         });

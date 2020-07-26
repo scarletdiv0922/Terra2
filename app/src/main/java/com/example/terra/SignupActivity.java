@@ -29,6 +29,7 @@ public class SignupActivity extends AppCompatActivity {
     private Firebase mRef;
     ArrayList<String> items = new ArrayList<>();
     ImageButton back;
+    ArrayList<String> disastersList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,9 @@ public class SignupActivity extends AppCompatActivity {
         items.add("Portable Charger");
         //REMINDER: If you add any extra items to this list, update the SIZE_OF_CHECKLIST
         //class constant in ChecklistActivity2
+
+        disastersList.add("Earthquakes");
+        disastersList.add("Wildfires");
 
         Button signup = findViewById(R.id.sign_up_button);
         signup.setOnClickListener((v) -> registerUser());
@@ -123,7 +127,11 @@ public class SignupActivity extends AppCompatActivity {
 
         Firebase mRefChild1 = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("readiness_score");
         mRefChild1.setValue("0 %");
-        Firebase mRefChild2 = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("risk_score");
-        mRefChild2.setValue("undefined");
+
+        for (int i = 0; i < disastersList.size(); i++) {
+            Firebase mRefChild2 = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("risk_score")
+                    .child(disastersList.get(i));
+            mRefChild2.setValue("undefined");
+        }
     }
 }
