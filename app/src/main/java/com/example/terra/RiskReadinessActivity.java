@@ -1,6 +1,7 @@
 package com.example.terra;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -179,11 +180,6 @@ public class RiskReadinessActivity extends AppCompatActivity {
                     Intent intent = new Intent(RiskReadinessActivity.this, NearbyFacilitiesActivity.class);
                     startActivity(intent);
                 }
-                else if (cmd.contains("left")) {
-                    //TODO
-                    Intent intent = new Intent(RiskReadinessActivity.this, ChecklistActivity2.class);
-                    startActivity(intent);
-                }
                 else if (cmd.contains("navigate")) {
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
@@ -278,12 +274,19 @@ public class RiskReadinessActivity extends AppCompatActivity {
                     for (String s:scoreData) {
                         if (s.equals(parsedCountyName)) {
                             String locRisk = scoreData.get(2);
-                            if (locRisk.equals("High"))
+                            if (locRisk.equals("High")) {
+                                //TODO Set the colors in the right spots
+                                riskText.setTextColor(Color.rgb(181, 9, 0)); //RED FOR HIGH RISK
                                 riskFromLoc = 2.0;
-                            else if (locRisk.equals("Medium"))
+                            }
+                            else if (locRisk.equals("Medium")) {
+                                riskText.setTextColor(Color.rgb(237, 174, 0)); //YELLOW FOR MEDIUM RISK
                                 riskFromLoc = 1.0;
-                            else
+                            }
+                            else {
+                                riskText.setTextColor(Color.rgb(21, 176, 0)); //GREEN FOR LOW RISK
                                 riskFromLoc = 0.5;
+                            }
                             System.out.println("At " + locRisk + " risk");
                         }
                     }

@@ -151,11 +151,6 @@ public class ContactsActivity2 extends AppCompatActivity {
                     Intent intent = new Intent(ContactsActivity2.this, NearbyFacilitiesActivity.class);
                     startActivity(intent);
                 }
-                else if (cmd.contains("left")) {
-                    //TODO
-                    Intent intent = new Intent(ContactsActivity2.this, ChecklistActivity2.class);
-                    startActivity(intent);
-                }
                 else if (cmd.contains("navigate")) {
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");

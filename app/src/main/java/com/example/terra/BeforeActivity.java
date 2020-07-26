@@ -146,11 +146,6 @@ public class BeforeActivity extends AppCompatActivity {
                     Intent intent = new Intent(BeforeActivity.this, NearbyFacilitiesActivity.class);
                     startActivity(intent);
                 }
-                else if (cmd.contains("left")) {
-                    //TODO
-                    Intent intent = new Intent(BeforeActivity.this, ChecklistActivity2.class);
-                    startActivity(intent);
-                }
                 else if (cmd.contains("navigate")) {
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
