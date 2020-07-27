@@ -83,11 +83,10 @@ public class DisasterMapActivity extends FragmentActivity implements OnMapReadyC
 
         if (disaster.equals("Earthquakes")) {
             setContentView(R.layout.activity_earthquake_map);
-//            mapView = findViewById(R.id.mapView);
+            getPermission();
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                     .findFragmentById(R.id.map);
             mapFragment.getMapAsync((OnMapReadyCallback) this);
-            getPermission();
             GetUsgsData();
         }
 

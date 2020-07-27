@@ -16,18 +16,6 @@
         android:layout_marginTop="30dp"
         android:layout_marginStart="10dp"/>
 
-<!--    <TextView-->
-<!--        android:id="@+id/map"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="70dp"-->
-<!--        android:layout_marginTop="100dp"-->
-<!--        android:fontFamily="@font/montserrat"-->
-<!--        android:text="Map"-->
-<!--        android:textColor="@color/darkGreen"-->
-<!--        android:textSize="40sp"-->
-<!--        android:textStyle="bold" />-->
-
     <TextView
         android:id="@+id/dialogue"
         android:layout_width="match_parent"
@@ -62,7 +50,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_toStartOf="@id/home_button"
-        android:layout_marginBottom="25dp"
-        android:layout_marginStart="25dp"/>
+        android:layout_marginBottom="15dp"
+        android:layout_marginStart="20dp"/>
 
 </RelativeLayout>

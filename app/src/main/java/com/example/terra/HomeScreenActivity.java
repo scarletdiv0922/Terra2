@@ -58,8 +58,8 @@ public class HomeScreenActivity extends AppCompatActivity {
     int SIZE_OF_CHECKLIST;
     int checkedItems;
     double readinessScore;
-    boolean riskScoreUD = false;
-    ArrayList<Double> riskScores = new ArrayList<>();
+    boolean riskScoreUD = true;
+    ArrayList<String> riskScores = new ArrayList<>();
 
     //Location Updates variables
     static HomeScreenActivity instance;
@@ -145,12 +145,12 @@ public class HomeScreenActivity extends AppCompatActivity {
                 System.out.println(cmd);
                 if (cmd.contains("riskScore")){
                     if (riskScoreUD) {
-                        alan_button.playText("Your risk scores haven't been calculated yet. Please go to the your scores screen to find out what your risk score is.");
+                        alan_button.playText("Your risk scores haven't been calculated yet. Please go to your scores screen to find out what your risk scores are.");
                     }
                     else {
                         for (int i = 0; i < riskScores.size(); i++) {
-                            if (riskScores.get(i) == 100.0) {
-                                alan_button.playText("Your risk score for " + disasters.get(i) + "has not been calculated.");
+                            if (riskScores.get(i).equals("100")) {
+                                alan_button.playText("Your risk score for " + disasters.get(i) + " has not been calculated.");
                             }
                             else {
                                 alan_button.playText("Your risk score for " + disasters.get(i) + " is " + riskScores.get(i));
@@ -438,7 +438,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     public void getFirebase() {
 
         Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("readiness_score");
-        mRefChild.addListenerForSingleValueEvent(new ValueEventListener() {
+        mRefChild.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 readinessValue = (String) dataSnapshot.getValue();
@@ -504,26 +504,44 @@ public class HomeScreenActivity extends AppCompatActivity {
     }
 
     public void getRisk() {
+        System.out.println("RISK 1");
         Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("risk_score");
         mRefChild.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                System.out.println("RISK 2");
                 int count = disasters.size();
                 Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
                 for (Map.Entry<String, Object> entry : map.entrySet()) {
-                    try {
-                        Double score = (Double) dataSnapshot.getValue();
+//                    try {
+//                        Double score = (Double) dataSnapshot.getValue();
+//                        riskScores.add(score);
+//                        riskScoreUD = false;
+//                        System.out.println("FALSE");
+//                    } catch (Exception e) {
+//                        String s = (String) entry.getValue();
+//                        if (s.equals("undefined")) {
+//                            count--;
+//                            riskScores.add(100.0);
+//                            if (count == 0) {
+//                                System.out.println("TRUE");
+//                                riskScoreUD = true;
+//                            }
+//                        }
+//                    }
+                    String score = (String) entry.getValue();
+                    if (score.equals("undefined")) {
+                        count--;
+                        riskScores.add("100");
+                        if (count == 0) {
+                            System.out.println("TRUE");
+                            riskScoreUD = true;
+                        }
+                    }
+                    else {
                         riskScores.add(score);
                         riskScoreUD = false;
-                    } catch (Exception e) {
-                        String s = (String) entry.getValue();
-                        if (s.equals("undefined")) {
-                            count--;
-                            riskScores.add(100.0);
-                            if (count == 0) {
-                                riskScoreUD = true;
-                            }
-                        }
+                        System.out.println("FALSE");
                     }
                 }
             }
