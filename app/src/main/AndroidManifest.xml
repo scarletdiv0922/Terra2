@@ -113,6 +113,10 @@
             android:name=".PopRisk"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.CustomTheme"/>
+        <activity
+            android:name=".PopReadiness"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.CustomTheme"/>
 
         <meta-data
             android:name="preloaded_fonts"
