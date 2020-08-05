@@ -103,6 +103,16 @@
         android:layout_marginStart="35dp"
         android:layout_marginTop="30dp"/>
 
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/risk_info"
+        android:layout_below="@id/show_risk_button"
+        android:layout_toRightOf="@id/risk_score"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_info_dark_green"
+        style="?android:attr/borderlessButtonStyle" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -129,6 +139,15 @@
         android:textStyle="bold"
         android:layout_marginStart="35dp"
         android:layout_marginTop="10dp"/>
+
+    <ImageButton
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/readiness_info"
+        android:layout_below="@id/risk_score_blurb"
+        android:layout_toRightOf="@id/readiness_score"
+        android:src="@drawable/ic_info_dark_green"
+        style="?android:attr/borderlessButtonStyle" />
 
     <TextView
         android:layout_width="wrap_content"
