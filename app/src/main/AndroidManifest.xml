@@ -109,6 +109,10 @@
         <activity
             android:name=".DisasterMapActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".PopRisk"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.CustomTheme"/>
 
         <meta-data
             android:name="preloaded_fonts"
