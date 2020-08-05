@@ -61,7 +61,7 @@
         android:textSize="18sp"
         android:layout_marginTop="100dp"
         android:layout_marginEnd="35dp"
-        android:layout_marginStart="35dp"
+        android:layout_marginStart="30dp"
         android:layout_below="@id/score"
         android:text="Please enter name of your county below." />
 
@@ -101,7 +101,7 @@
         android:textColor="@color/darkGreen"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:layout_marginStart="35dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="30dp"/>
 
     <ImageButton
@@ -138,7 +138,7 @@
         android:textColor="@color/darkGreen"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:layout_marginStart="35dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="10dp"/>
 
     <ImageButton
