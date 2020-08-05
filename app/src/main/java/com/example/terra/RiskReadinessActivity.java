@@ -3,10 +3,16 @@ package com.example.terra;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -71,6 +77,12 @@ public class RiskReadinessActivity extends AppCompatActivity {
     HashMap chklistOrder = new HashMap<String, Integer>();
     public int itemsMarked = 0; //just the number of items marked without weight
 
+    private PopupWindow popupWindow;
+    private LayoutInflater layoutInflater;
+    ImageButton riskInfoButton;
+    ImageButton readinessInfoButton;
+    private RelativeLayout relativeLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +93,22 @@ public class RiskReadinessActivity extends AppCompatActivity {
 
         riskText = findViewById(R.id.risk_score);
         readinessText = findViewById(R.id.readiness_score);
+        riskInfoButton = findViewById(R.id.risk_info);
+        readinessInfoButton = findViewById(R.id.readiness_info);
+
+        riskInfoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                startActivity(new Intent(RiskReadinessActivity.this, PopRisk.class));
+            }
+        });
+
+        readinessInfoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                startActivity(new Intent(RiskReadinessActivity.this, PopReadiness.class));
+            }
+        });
 
         //Alan Button
         JSONObject commandJson = null;
