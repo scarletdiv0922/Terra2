@@ -10,7 +10,7 @@ public class PopReadiness extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.pop_window_risk);
+        setContentView(R.layout.pop_window_readiness);
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);

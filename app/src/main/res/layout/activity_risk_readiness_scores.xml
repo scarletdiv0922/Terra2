@@ -114,25 +114,25 @@
         android:src="@drawable/ic_info_dark_green"
         style="?android:attr/borderlessButtonStyle" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/risk_score_blurb"
-        android:layout_below="@id/risk_score"
-        android:text="@string/risk_score_blurb"
-        android:fontFamily="@font/montserrat"
-        android:textColor="@color/darkGreen"
-        android:textSize="10sp"
-        android:textStyle="bold"
-        android:layout_marginStart="35dp"
-        android:layout_marginEnd="35dp"
-        android:layout_marginTop="5dp"/>
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/risk_score_blurb"-->
+<!--        android:layout_below="@id/risk_score"-->
+<!--        android:text="@string/risk_score_blurb"-->
+<!--        android:fontFamily="@font/montserrat"-->
+<!--        android:textColor="@color/darkGreen"-->
+<!--        android:textSize="10sp"-->
+<!--        android:textStyle="bold"-->
+<!--        android:layout_marginStart="35dp"-->
+<!--        android:layout_marginEnd="35dp"-->
+<!--        android:layout_marginTop="5dp"/>-->
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/readiness_score"
-        android:layout_below="@id/risk_score_blurb"
+        android:layout_below="@id/risk_score"
         android:text="Your Readiness Score:"
         android:fontFamily="@font/montserrat"
         android:textColor="@color/darkGreen"
@@ -145,23 +145,23 @@
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:id="@+id/readiness_info"
-        android:layout_below="@id/risk_score_blurb"
+        android:layout_below="@id/risk_score"
         android:layout_toRightOf="@id/readiness_score"
         android:src="@drawable/ic_info_dark_green"
         style="?android:attr/borderlessButtonStyle" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/readiness_score_blurb"
-        android:layout_below="@id/readiness_score"
-        android:text="@string/readiness_score_blurb"
-        android:fontFamily="@font/montserrat"
-        android:textColor="@color/darkGreen"
-        android:textSize="10sp"
-        android:textStyle="bold"
-        android:layout_marginStart="35dp"
-        android:layout_marginEnd="35dp"
-        android:layout_marginTop="5dp"/>
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/readiness_score_blurb"-->
+<!--        android:layout_below="@id/readiness_score"-->
+<!--        android:text="@string/readiness_score_blurb"-->
+<!--        android:fontFamily="@font/montserrat"-->
+<!--        android:textColor="@color/darkGreen"-->
+<!--        android:textSize="10sp"-->
+<!--        android:textStyle="bold"-->
+<!--        android:layout_marginStart="35dp"-->
+<!--        android:layout_marginEnd="35dp"-->
+<!--        android:layout_marginTop="5dp"/>-->
 
 </RelativeLayout>
