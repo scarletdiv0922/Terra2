@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/thirdGreen">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/risk_score_blurb"
+        android:text="@string/readiness_score_blurb"
+        android:fontFamily="@font/montserrat"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:layout_margin="30dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/risk_score_average"
+        android:layout_below="@id/risk_score_blurb"
+        android:text="@string/readiness_score_average"
+        android:fontFamily="@font/montserrat"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"/>
+
+</RelativeLayout>

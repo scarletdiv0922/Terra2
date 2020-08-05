@@ -55,5 +55,7 @@
     </string>
     <string name="risk_score_blurb">Your risk score is a weighted score calculated based on your location and readiness.</string>
     <string name="readiness_score_blurb">Your readiness score is calculated based on how many items you have prepared in your emergency kit.</string>
+    <string name="risk_score_average">The highest possible risk score is 1.00. Assuming an average readiness score of 60%, the risk score of someone living near the San Andreas Fault would be 0.48.</string>
+    <string name="readiness_score_average">An average readiness score would be around 60%.</string>
 
 </resources>
