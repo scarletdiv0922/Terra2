@@ -126,6 +126,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         FloatingActionButton checklistFAB = findViewById(R.id.checklist_button);
         FloatingActionButton emergencyContactsFAB = findViewById(R.id.emergency_contacts_button);
         FloatingActionButton infoFAB = findViewById(R.id.info_button);
+        FloatingActionButton addFAB = findViewById(R.id.add_disasters_button);
 
         alan_button.playCommand(commandJson.toString(),  new ScriptMethodCallback() {
             @Override
@@ -342,6 +343,14 @@ public class HomeScreenActivity extends AppCompatActivity {
         getSelectedDisasters();
 
         alan_button.registerCallback(myCallback);
+        addFAB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                Intent intent = new Intent(HomeScreenActivity.this, DisastersActivity.class);
+                startActivity(intent);
+
+            }
+        });
         emergencyContactsFAB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
