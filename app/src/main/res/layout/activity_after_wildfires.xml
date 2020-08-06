@@ -38,7 +38,7 @@
         android:layout_marginBottom="80dp"
         android:fontFamily="@font/montserrat"
         android:scrollbars="vertical"
-        android:text="@string/after_earthquake"
+        android:text="@string/after_wildfire"
         android:textColor="@color/darkGreen"
         android:textSize="20sp" />
 
