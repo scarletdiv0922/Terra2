@@ -88,19 +88,6 @@ public class EarthquakeMapActivity extends FragmentActivity implements OnMapRead
             GetUsgsData();
         }
 
-        else if (disaster.equals("Wildfires")) {
-            setContentView(R.layout.activity_wildfire_map);
-            home = findViewById(R.id.home_button);
-
-            home.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent1 = new Intent(EarthquakeMapActivity.this, HomeScreenActivity.class);
-                    startActivity(intent1);
-                }
-            });
-        }
-
         instance = this;
 
         back = findViewById(R.id.back_button);;

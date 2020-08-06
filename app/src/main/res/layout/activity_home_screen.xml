@@ -30,55 +30,9 @@
         android:textColor="#FFFFFF"
         android:textSize="15sp" />
 
-    <com.getbase.floatingactionbutton.FloatingActionButton
-        android:id="@+id/checklist_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="20dp"
-        app:fab_colorNormal="@color/midGreen"
-        app:fab_colorPressed="@color/darkGreen"
-        app:fab_icon="@drawable/ic_checklist"/>
-
-    <com.getbase.floatingactionbutton.FloatingActionButton
-        android:id="@+id/emergency_contacts_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="20dp"
-        android:layout_toStartOf="@id/checklist_button"
-        app:fab_colorNormal="@color/midGreen"
-        app:fab_colorPressed="@color/darkGreen"
-        app:fab_icon="@drawable/ic_people" />
-
-    <com.getbase.floatingactionbutton.FloatingActionButton
-        android:id="@+id/info_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="20dp"
-        android:layout_toStartOf="@id/emergency_contacts_button"
-        app:fab_colorNormal="@color/midGreen"
-        app:fab_colorPressed="@color/darkGreen"
-        app:fab_icon="@drawable/ic_info" />
-
-    <com.alan.alansdk.button.AlanButton
-        android:id="@+id/alan_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_toStartOf="@id/info_button"
-        android:layout_marginBottom="25dp"
-        android:layout_marginStart="25dp"/>
-
     <Button
         android:id="@+id/earthquakes"
-        android:layout_width="250dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/blurb"
         android:layout_centerHorizontal="true"
@@ -88,14 +42,14 @@
         android:fontFamily="@font/montserrat"
         android:text="Earthquakes"
         android:textAllCaps="false"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:visibility="invisible"
         android:backgroundTint="@color/thirdGreen"
         android:textColor="@color/white"/>
 
     <Button
         android:id="@+id/wildfires"
-        android:layout_width="250dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/earthquakes"
         android:layout_centerHorizontal="true"
@@ -104,22 +58,69 @@
         android:enabled="false"
         android:fontFamily="@font/montserrat"
         android:text="Wildfires"
-        android:textAllCaps="false"
-        android:textSize="20sp"
         android:visibility="invisible"
+        android:textAllCaps="false"
+        android:textSize="18sp"
         android:backgroundTint="@color/thirdGreen"
         android:textColor="@color/white" />
 
-    <com.getbase.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_disasters_button"
+    <com.alan.alansdk.button.AlanButton
+        android:id="@+id/alan_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="25dp"
+        android:layout_marginStart="25dp"/>
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/fab1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="100dp"
-        app:fab_colorNormal="@color/midGreen"
-        app:fab_colorPressed="@color/darkGreen"
-        app:fab_icon="@drawable/add_icon"/>
+        android:layout_marginBottom="20dp"
+        android:enabled="false"
+        app:fab_addButtonColorNormal="@color/midGreen"
+        app:fab_addButtonColorPressed="@color/darkGreen"
+        app:fab_labelStyle="@style/customFab">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_disasters_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/midGreen"
+            app:fab_colorPressed="@color/darkGreen"
+            app:fab_icon="@drawable/ic_add_white"
+            app:fab_size="normal" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/checklist_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/midGreen"
+            app:fab_colorPressed="@color/darkGreen"
+            app:fab_icon="@drawable/ic_checklist" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/emergency_contacts_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/midGreen"
+            app:fab_colorPressed="@color/darkGreen"
+            app:fab_icon="@drawable/ic_people" />
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/info_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/midGreen"
+            app:fab_colorPressed="@color/darkGreen"
+            app:fab_icon="@drawable/ic_info" />
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 </RelativeLayout>

@@ -29,6 +29,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -58,6 +59,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     double readinessScore;
     boolean riskScoreUD = true;
     ArrayList<String> riskScores = new ArrayList<>();
+    FloatingActionsMenu fab;
 
     //Location Updates variables
     static HomeScreenActivity instance;
@@ -79,6 +81,7 @@ public class HomeScreenActivity extends AppCompatActivity {
 
         earthquake = findViewById(R.id.earthquakes);
         wildfire = findViewById(R.id.wildfires);
+        fab = findViewById(R.id.fab1);
 
         //Connect activity to Firebase
         Firebase.setAndroidContext(this);
@@ -417,6 +420,10 @@ public class HomeScreenActivity extends AppCompatActivity {
                     }
                 }
                 showButtons();
+
+                fab.setVisibility(View.VISIBLE);
+                fab.setEnabled(true);
+
             }
 
             @Override

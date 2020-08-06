@@ -109,6 +109,8 @@
         <activity
             android:name=".EarthquakeMapActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".WildfireMapActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".PopRisk"
             android:screenOrientation="portrait"
