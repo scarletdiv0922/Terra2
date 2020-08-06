@@ -8,7 +8,6 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alan.alansdk.AlanCallback;
 import com.alan.alansdk.AlanConfig;
@@ -124,12 +123,12 @@ public class DuringActivity extends AppCompatActivity {
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
                     if (cmd.substring(i, j).equals("earthquake") || cmd.substring(i, j).equals("earthquakes")) {
-                        Intent intent = new Intent(DuringActivity.this, DisasterMapActivity.class);
+                        Intent intent = new Intent(DuringActivity.this, EarthquakeMapActivity.class);
                         intent.putExtra("Disaster", "Earthquakes");
                         startActivity(intent);
                     }
                     else if (cmd.substring(i, j).equals("wildfire") ||cmd.substring(i, j).equals("wildfires")){
-                        Intent intent = new Intent(DuringActivity.this, DisasterMapActivity.class);
+                        Intent intent = new Intent(DuringActivity.this, EarthquakeMapActivity.class);
                         intent.putExtra("Disaster", "Wildfires");
                         startActivity(intent);
                     }
@@ -166,7 +165,7 @@ public class DuringActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                     else if (cmd.substring(i, j).equals("disaster warnings") || cmd.substring(i, j).equals("disaster updates") || cmd.substring(i, j).equals("map")) {
-                        Intent intent = new Intent(DuringActivity.this, DisasterMapActivity.class);
+                        Intent intent = new Intent(DuringActivity.this, EarthquakeMapActivity.class);
                         startActivity(intent);
                     }
                 }

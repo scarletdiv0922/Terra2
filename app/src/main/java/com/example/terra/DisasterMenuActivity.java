@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -129,12 +128,12 @@ public class DisasterMenuActivity extends AppCompatActivity {
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
                     if (cmd.substring(i, j).equals("earthquake") || cmd.substring(i, j).equals("earthquakes")) {
-                        Intent intent = new Intent(DisasterMenuActivity.this, DisasterMapActivity.class);
+                        Intent intent = new Intent(DisasterMenuActivity.this, EarthquakeMapActivity.class);
                         intent.putExtra("Disaster", "Earthquakes");
                         startActivity(intent);
                     }
                     else if (cmd.substring(i, j).equals("wildfire") ||cmd.substring(i, j).equals("wildfires")){
-                        Intent intent = new Intent(DisasterMenuActivity.this, DisasterMapActivity.class);
+                        Intent intent = new Intent(DisasterMenuActivity.this, EarthquakeMapActivity.class);
                         intent.putExtra("Disaster", "Wildfires");
                         startActivity(intent);
                     }
@@ -171,7 +170,7 @@ public class DisasterMenuActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                     else if (cmd.substring(i, j).equals("disaster warnings") || cmd.substring(i, j).equals("disaster updates") || cmd.substring(i, j).equals("map")) {
-                        Intent intent = new Intent(DisasterMenuActivity.this, DisasterMapActivity.class);
+                        Intent intent = new Intent(DisasterMenuActivity.this, EarthquakeMapActivity.class);
                         startActivity(intent);
                     }
                 }
@@ -209,7 +208,7 @@ public class DisasterMenuActivity extends AppCompatActivity {
         updates.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(DisasterMenuActivity.this, DisasterMapActivity.class);
+                Intent intent1 = new Intent(DisasterMenuActivity.this, EarthquakeMapActivity.class);
                 intent1.putExtra("Disaster", disaster);
                 startActivity(intent1);
             }

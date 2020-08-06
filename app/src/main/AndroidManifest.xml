@@ -107,7 +107,7 @@
             android:name=".RiskReadinessActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".DisasterMapActivity"
+            android:name=".EarthquakeMapActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".PopRisk"

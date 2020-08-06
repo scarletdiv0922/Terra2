@@ -1,13 +1,9 @@
 package com.example.terra;
 
-import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
-import android.os.IBinder;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.location.LocationResult;
 
@@ -23,7 +19,7 @@ public class MyLocationService extends BroadcastReceiver {
                 if (result != null) {
                     Location location = result.getLastLocation();
                     try {
-                        DisasterMapActivity.getInstance().setCoordinates(location.getLatitude(), location.getLongitude());
+                        EarthquakeMapActivity.getInstance().setCoordinates(location.getLatitude(), location.getLongitude());
                     } catch (Exception e) {
                     }
                 }

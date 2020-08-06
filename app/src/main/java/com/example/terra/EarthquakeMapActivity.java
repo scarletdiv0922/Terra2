@@ -6,10 +6,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
@@ -41,7 +39,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DisasterMapActivity extends FragmentActivity implements OnMapReadyCallback {
+public class EarthquakeMapActivity extends FragmentActivity implements OnMapReadyCallback {
 
     String disaster;
     String json;
@@ -53,14 +51,14 @@ public class DisasterMapActivity extends FragmentActivity implements OnMapReadyC
     int count = 0;
 
     //Location Updates variables
-    static DisasterMapActivity instance;
+    static EarthquakeMapActivity instance;
     LocationRequest locationRequest;
     FusedLocationProviderClient fusedLocationProviderClient;
     double currentlat;
     double currentlong;
     String dateString;
 
-    public static DisasterMapActivity getInstance() {
+    public static EarthquakeMapActivity getInstance() {
         return instance;
     }
 
@@ -97,7 +95,7 @@ public class DisasterMapActivity extends FragmentActivity implements OnMapReadyC
             home.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent1 = new Intent(DisasterMapActivity.this, HomeScreenActivity.class);
+                    Intent intent1 = new Intent(EarthquakeMapActivity.this, HomeScreenActivity.class);
                     startActivity(intent1);
                 }
             });
@@ -110,7 +108,7 @@ public class DisasterMapActivity extends FragmentActivity implements OnMapReadyC
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(DisasterMapActivity.this, DisasterMenuActivity.class);
+                Intent intent1 = new Intent(EarthquakeMapActivity.this, DisasterMenuActivity.class);
                 intent1.putExtra("Disaster", disaster);
                 startActivity(intent1);
             }
@@ -121,7 +119,7 @@ public class DisasterMapActivity extends FragmentActivity implements OnMapReadyC
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             //Then request the user permission to access contacts
-            ActivityCompat.requestPermissions(DisasterMapActivity.this,
+            ActivityCompat.requestPermissions(EarthquakeMapActivity.this,
                     new String[] { Manifest.permission.ACCESS_FINE_LOCATION }, 1);
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overridden method
         }
@@ -176,7 +174,7 @@ public class DisasterMapActivity extends FragmentActivity implements OnMapReadyC
 
     public void setCoordinates(final double lat, final double lon) {
         System.out.println("setting coords");
-        DisasterMapActivity.this.runOnUiThread(new Runnable() { //while this activity is running
+        EarthquakeMapActivity.this.runOnUiThread(new Runnable() { //while this activity is running
             @Override
             public void run() {
                 currentlat = lat;

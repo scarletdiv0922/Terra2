@@ -3,13 +3,10 @@ package com.example.terra;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.alan.alansdk.AlanCallback;
 import com.alan.alansdk.AlanConfig;
@@ -139,12 +136,12 @@ public class BDAActivity extends AppCompatActivity {
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
                     if (cmd.substring(i, j).equals("earthquake") || cmd.substring(i, j).equals("earthquakes")) {
-                        Intent intent = new Intent(BDAActivity.this, DisasterMapActivity.class);
+                        Intent intent = new Intent(BDAActivity.this, EarthquakeMapActivity.class);
                         intent.putExtra("Disaster", "Earthquakes");
                         startActivity(intent);
                     }
                     else if (cmd.substring(i, j).equals("wildfire") ||cmd.substring(i, j).equals("wildfires")){
-                        Intent intent = new Intent(BDAActivity.this, DisasterMapActivity.class);
+                        Intent intent = new Intent(BDAActivity.this, EarthquakeMapActivity.class);
                         intent.putExtra("Disaster", "Wildfires");
                         startActivity(intent);
                     }
@@ -185,7 +182,7 @@ public class BDAActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                     else if (cmd.substring(i, j).equals("disaster warnings") || cmd.substring(i, j).equals("disaster updates") || cmd.substring(i, j).equals("map")) {
-                        Intent intent = new Intent(BDAActivity.this, DisasterMapActivity.class);
+                        Intent intent = new Intent(BDAActivity.this, EarthquakeMapActivity.class);
                         startActivity(intent);
                     }
                 }
