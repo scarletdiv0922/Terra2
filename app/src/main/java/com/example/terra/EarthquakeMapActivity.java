@@ -89,17 +89,6 @@ public class EarthquakeMapActivity extends FragmentActivity implements OnMapRead
         }
 
         instance = this;
-
-        back = findViewById(R.id.back_button);;
-
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent1 = new Intent(EarthquakeMapActivity.this, DisasterMenuActivity.class);
-                intent1.putExtra("Disaster", disaster);
-                startActivity(intent1);
-            }
-        });
     }
 
     public void getPermission() {

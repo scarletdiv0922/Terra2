@@ -4,6 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,6 +27,8 @@ public class WildfireMapActivity extends AppCompatActivity {
 
     private String disaster;
     private FloatingActionButton home;
+    ImageButton back;
+    WebView webView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,7 +52,24 @@ public class WildfireMapActivity extends AppCompatActivity {
                     startActivity(intent1);
                 }
             });
+
         }
+
+        back = findViewById(R.id.back_button);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(WildfireMapActivity.this, DisasterMenuActivity.class);
+                intent1.putExtra("Disaster", "Wildfires");
+                startActivity(intent1);
+            }
+        });
+
+        webView = (WebView) findViewById(R.id.web_view);
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webView.loadUrl("https://www.google.org/crisismap/us-wildfires");
 
         //Alan Button
         JSONObject commandJson = null;

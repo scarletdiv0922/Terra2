@@ -208,9 +208,16 @@ public class DisasterMenuActivity extends AppCompatActivity {
         updates.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(DisasterMenuActivity.this, EarthquakeMapActivity.class);
-                intent1.putExtra("Disaster", disaster);
-                startActivity(intent1);
+                if (disaster.equals("Earthquakes")) {
+                    Intent intent1 = new Intent(DisasterMenuActivity.this, EarthquakeMapActivity.class);
+                    intent1.putExtra("Disaster", disaster);
+                    startActivity(intent1);
+                }
+                else {
+                    Intent intent1 = new Intent(DisasterMenuActivity.this, WildfireMapActivity.class);
+                    intent1.putExtra("Disaster", disaster);
+                    startActivity(intent1);
+                }
             }
         });
 
