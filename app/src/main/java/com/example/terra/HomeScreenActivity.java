@@ -160,7 +160,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                         }
                     }
                 }
-                else if (cmd.contains("preparationIndex")) {
+                else if (cmd.contains("preparation index")) {
                     getFirebase();
                     System.out.println("at readiness " + readinessValue);
                     alan_button.playText("Your preparation index is " + readinessValue);
