@@ -112,9 +112,6 @@ public class SignupActivity extends AppCompatActivity {
                         //user is successfully registered
                         Toast.makeText(this, "User is successfully registered.", Toast.LENGTH_LONG).show();
                         addToFirebase();
-
-                        Intent intent = new Intent(getBaseContext(), DisastersActivity.class);
-                        startActivity(intent);
                     }
                     else
                         Toast.makeText(this, "Failed to register. Please try again.", Toast.LENGTH_LONG).show();

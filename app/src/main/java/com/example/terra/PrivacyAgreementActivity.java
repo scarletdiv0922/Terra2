@@ -20,7 +20,7 @@ public class PrivacyAgreementActivity extends Activity {
         agreeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(PrivacyAgreementActivity.this, HomeScreenActivity.class));
+                startActivity(new Intent(PrivacyAgreementActivity.this, DisastersActivity.class));
             }
         });
 
