@@ -72,7 +72,13 @@ public class SignupActivity extends AppCompatActivity {
         disastersList.add("Wildfires");
 
         Button signup = findViewById(R.id.sign_up_button);
-        signup.setOnClickListener((v) -> registerUser());
+        signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SignupActivity.this, PopPrivacy.class));
+                registerUser();
+            }
+        });
 
         back = findViewById(R.id.back_button);
         back.setOnClickListener(new View.OnClickListener() {
