@@ -24,7 +24,7 @@
         android:layout_marginStart="70dp"
         android:layout_marginTop="100dp"
         android:fontFamily="@font/montserrat"
-        android:text="Your Scores"
+        android:text="Your Indices"
         android:textColor="@color/darkGreen"
         android:textSize="40sp"
         android:textStyle="bold" />
@@ -78,7 +78,7 @@
 
     <Button
         android:id="@+id/show_risk_button"
-        android:layout_width="200dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editTextCounty"
         android:layout_centerHorizontal="true"
@@ -87,7 +87,7 @@
         android:backgroundTint="@color/lightGreen"
         android:fontFamily="@font/montserrat"
         android:padding="10dp"
-        android:text="Show me my Risk Score"
+        android:text="Show me my Hazard Index"
         android:textColor="@color/darkGreen"
         android:textAllCaps="false" />
 
@@ -96,7 +96,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/risk_score"
         android:layout_below="@id/show_risk_button"
-        android:text="Your Risk Score:"
+        android:text="Your Hazard Index:"
         android:fontFamily="@font/montserrat"
         android:textColor="@color/darkGreen"
         android:textSize="20sp"
@@ -133,7 +133,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/readiness_score"
         android:layout_below="@id/risk_score"
-        android:text="Your Readiness Score:"
+        android:text="Your Preparation Index:"
         android:fontFamily="@font/montserrat"
         android:textColor="@color/darkGreen"
         android:textSize="20sp"

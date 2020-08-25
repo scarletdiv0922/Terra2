@@ -285,7 +285,6 @@ public class RiskReadinessActivity extends AppCompatActivity {
                             parsedCountyName += " ";
                     }
                 }
-                System.out.println("COUNTY NAME: " + parsedCountyName);
                 InputStream inputStream; //default to earthquakes
                 if (disaster.equalsIgnoreCase("Wildfires"))
                     inputStream = getResources().openRawResource(R.raw.firedata);
@@ -323,7 +322,7 @@ public class RiskReadinessActivity extends AppCompatActivity {
                     riskText.setTextColor(Color.rgb(21, 176, 0)); //GREEN FOR LOW RISK
                 DecimalFormat df = new DecimalFormat("#.###");
                 System.out.println("risk score: " + riskScore);
-                riskText.setText("Your Risk Score: " + df.format(riskScore));
+                riskText.setText("Your Hazard Index: " + df.format(riskScore));
                 parsedCountyName = "";
                 Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("risk_score").child(disaster);
                 mRefChild.setValue(df.format(riskScore));
@@ -473,7 +472,7 @@ public class RiskReadinessActivity extends AppCompatActivity {
                     readinessScore = (double) checkedItems / (double) SIZE_OF_CHECKLIST;
                     String formattedReadinessScore = String.format("%.2f", (readinessScore*100)) + "%";
                     mRefChild.setValue(formattedReadinessScore);
-                    readinessText.setText("Your Readiness Score: " + formattedReadinessScore);
+                    readinessText.setText("Your Preparation Index " + formattedReadinessScore);
                 }
             }
 

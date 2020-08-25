@@ -54,10 +54,10 @@
         • Throw any food items out if the house was without power for a long time. \n \n
         • Contact your home insurance broker to get started with repairs right away. \n \n
     </string>
-    <string name="risk_score_blurb">Your risk score is a weighted score calculated based on your location and readiness.</string>
-    <string name="readiness_score_blurb">Your readiness score is calculated based on how many items you have prepared in your emergency kit.</string>
-    <string name="risk_score_average">The highest possible risk score is 1.00. Assuming an average readiness score of 60%, the risk score of someone living near the San Andreas Fault would be 0.48.</string>
-    <string name="readiness_score_average">An average readiness score would be around 60%.</string>
+    <string name="risk_score_blurb">Your hazard index is a weighted value calculated based on your location and preparedness.</string>
+    <string name="readiness_score_blurb">Your preparation index is calculated based on how many items you have prepared in your emergency kit.</string>
+    <string name="risk_score_average">The highest possible hazard index is 1.00. Assuming an average readiness score of 60%, the risk score of someone living near the San Andreas Fault would be 0.48.</string>
+    <string name="readiness_score_average">An average preparation index would be around 60%.</string>
 
     <string name="user_privacy_agreement"> Onyx Jewels may change, suspend, or discontinue the availability of any Terra feature at any time. Onyx Jewels reserves the right to charge fees for future use of or access to the Terra application. Onyx Jewels does not guarantee that Terra is free of inaccuracies, errors, bugs, or interruptions, or is reliable, accurate, complete, or otherwise valid. \n
 Disclaimer of Any Warranty: Terra and all data derived through such application are provided \"as is\" with no warranty, express or implied, of any kind and Onyx Jewels expressly disclaims any and all warranties and conditions, including but not limited to, any implied warranty of merchantability, fitness for a particular purpose, availability, security, title and non-infringement. You are solely responsible for any damage that results from the use of Terra and any data derived through such application including, but not limited to, any damage to your device or loss of data. \n
