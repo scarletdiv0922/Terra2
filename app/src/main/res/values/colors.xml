@@ -12,5 +12,6 @@
 
 
     <color name="white">#FFFFFF</color>
+    <color name="whiteTransparent">#B2FFFFFF</color>
     <color name="black">#000000</color>
 </resources>
