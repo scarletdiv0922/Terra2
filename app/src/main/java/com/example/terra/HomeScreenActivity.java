@@ -57,7 +57,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     int SIZE_OF_CHECKLIST;
     int checkedItems;
     double readinessScore;
-    boolean riskScoreUD = true;
+    boolean hazardIndexUD = true;
     ArrayList<String> riskScores = new ArrayList<>();
     FloatingActionsMenu fab;
 
@@ -145,25 +145,25 @@ public class HomeScreenActivity extends AppCompatActivity {
                 System.out.println("Command received");
                 String cmd = eventCommand.getData().toString();
                 System.out.println(cmd);
-                if (cmd.contains("riskScore")){
-                    if (riskScoreUD) {
-                        alan_button.playText("Your risk scores haven't been calculated yet. Please go to your scores screen to find out what your risk scores are.");
+                if (cmd.contains("hazardIndex")){
+                    if (hazardIndexUD) {
+                        alan_button.playText("Your hazard indices haven't been calculated yet. Please go to your indices screen to find out what your hazard indices are.");
                     }
                     else {
                         for (int i = 0; i < riskScores.size(); i++) {
                             if (riskScores.get(i).equals("100")) {
-                                alan_button.playText("Your risk score for " + disasters.get(i) + " has not been calculated.");
+                                alan_button.playText("Your hazard index for " + disasters.get(i) + " has not been calculated.");
                             }
                             else {
-                                alan_button.playText("Your risk score for " + disasters.get(i) + " is " + riskScores.get(i));
+                                alan_button.playText("Your hazard index for " + disasters.get(i) + " is " + riskScores.get(i));
                             }
                         }
                     }
                 }
-                else if (cmd.contains("readinessScore")) {
+                else if (cmd.contains("preparationIndex")) {
                     getFirebase();
                     System.out.println("at readiness " + readinessValue);
-                    alan_button.playText("Your readiness score is " + readinessValue);
+                    alan_button.playText("Your preparation index is " + readinessValue);
                 }
                 else if (cmd.contains("addContact")){
                     int i = cmd.indexOf("value")+8;
@@ -549,12 +549,12 @@ public class HomeScreenActivity extends AppCompatActivity {
                         riskScores.add("100");
                         if (count == 0) {
                             System.out.println("TRUE");
-                            riskScoreUD = true;
+                            hazardIndexUD = true;
                         }
                     }
                     else {
                         riskScores.add(score);
-                        riskScoreUD = false;
+                        hazardIndexUD = false;
                         System.out.println("FALSE");
                     }
                 }
