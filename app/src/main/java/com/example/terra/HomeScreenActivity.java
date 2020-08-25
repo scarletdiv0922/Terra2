@@ -134,7 +134,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         alan_button.playCommand(commandJson.toString(),  new ScriptMethodCallback() {
             @Override
             public void onResponse(String methodName, String body, String error) {
-                System.out.println("Home now");
+                System.out.println("Home screen");
                 System.out.println(methodName);
             }
         });
