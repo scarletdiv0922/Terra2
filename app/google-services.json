@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:845515073522:android:2a422958d30971540e6d6b",
         "android_client_info": {
-          "package_name": "com.example.terra"
+          "package_name": "onyx.example.terra"
         }
       },
       "oauth_client": [

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.terra">
+    package="onyx.example.terra">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -30,15 +30,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NearbyFacilitiesActivity"></activity>
+        <activity android:name="onyx.example.terra.NearbyFacilitiesActivity"></activity>
         <receiver
-            android:name=".MyLocationService"/>
+            android:name="onyx.example.terra.MyLocationService"/>
         <!-- not sure why this is throwing me an error, so commented for now -->
         <receiver
-            android:name=".MyLocationService2"/>
+            android:name="onyx.example.terra.MyLocationService2"/>
 
         <receiver
-            android:name=".MyLocationService3"/>
+            android:name="onyx.example.terra.MyLocationService3"/>
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -53,10 +53,10 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name="onyx.example.terra.MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity
-            android:name=".MainActivity"
+            android:name="onyx.example.terra.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -65,62 +65,62 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AfterActivity"
+            android:name="onyx.example.terra.AfterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".BeforeActivity"
+            android:name="onyx.example.terra.BeforeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".BDAActivity"
+            android:name="onyx.example.terra.BDAActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".DuringActivity"
+            android:name="onyx.example.terra.DuringActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".EmergencyContactsActivity"
+            android:name="onyx.example.terra.EmergencyContactsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".HomeScreenActivity"
+            android:name="onyx.example.terra.HomeScreenActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".LoginActivity"
+            android:name="onyx.example.terra.LoginActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".SignupActivity"
+            android:name="onyx.example.terra.SignupActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ContactsActivity2"
+            android:name="onyx.example.terra.ContactsActivity2"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".RemoveContactActivity"
+            android:name="onyx.example.terra.RemoveContactActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ChecklistActivity2"
+            android:name="onyx.example.terra.ChecklistActivity2"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".DisastersActivity"
+            android:name="onyx.example.terra.DisastersActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".DisasterMenuActivity"
+            android:name="onyx.example.terra.DisasterMenuActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".RiskReadinessActivity"
+            android:name="onyx.example.terra.RiskReadinessActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".EarthquakeMapActivity"
+            android:name="onyx.example.terra.EarthquakeMapActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".WildfireMapActivity"
+        <activity android:name="onyx.example.terra.WildfireMapActivity"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".PopRisk"
+            android:name="onyx.example.terra.PopRisk"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.CustomTheme"/>
         <activity
-            android:name=".PopReadiness"
+            android:name="onyx.example.terra.PopReadiness"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.CustomTheme"/>
         <activity
-            android:name=".PrivacyAgreementActivity"
+            android:name="onyx.example.terra.PrivacyAgreementActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.CustomTheme"/>
 
