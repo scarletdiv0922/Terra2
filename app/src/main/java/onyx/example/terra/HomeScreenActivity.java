@@ -661,7 +661,7 @@ public class HomeScreenActivity extends AppCompatActivity {
 
             //If the permission hasn't been granted, handle it with an error message
             else {
-                Toast.makeText(this, "Without your permission, Terra cannot access your contacts.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Without your permission, Terra cannot access your contacts. Terra will access your contacts solely for the reason of making it easier and faster for you to tell your emergency contacts that you are safe or that you need help directly from the app.", Toast.LENGTH_LONG).show();
             }
         }
     }
