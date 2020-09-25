@@ -117,7 +117,7 @@ public class EarthquakeMapActivity extends FragmentActivity implements OnMapRead
 
             //If the permission hasn't been granted, handle it with an error message
             else {
-                Toast.makeText(this, "Without your permission, Terra cannot access your contacts.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Without your location, Terra can not provide a map of earthquakes near you. Please allow Terra to access your location to use this feature.", Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -36,43 +36,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-/*
-
-public class TerraAlan implements Parcelable {
-
-    AlanButton alan_button;
-
-    public TerraAlan () {
-        //alan_button = findViewById(R.id.alan_button);
-
-        AlanConfig config = AlanConfig.builder()
-                .setProjectId("53a6f889052442def00f689c7641807c2e956eca572e1d8b807a3e2338fdd0dc/stage")
-                .build();
-        alan_button.initWithConfig(config);
-    }
-
-    public AlanButton getAlan_button() {
-        return alan_button;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-
-    }
-
-    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public TerraAlan createFromParcel(Parcel in) {
-            return null;
-        }
-    };
-}
-*/
-
 public class MainActivity extends AppCompatActivity {
 
     //TerraAlan ta = new TerraAlan();
