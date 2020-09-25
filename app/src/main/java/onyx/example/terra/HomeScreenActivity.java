@@ -106,10 +106,10 @@ public class HomeScreenActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
 
-        if (!checkPermission(Manifest.permission.CALL_PHONE)) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.CALL_PHONE}, 1);
-        }
+//        if (!checkPermission(Manifest.permission.CALL_PHONE)) {
+//            ActivityCompat.requestPermissions(this,
+//                    new String[]{Manifest.permission.CALL_PHONE}, 1);
+//        }
 
         JSONObject commandJson = null;
 
@@ -205,14 +205,14 @@ public class HomeScreenActivity extends AppCompatActivity {
                     String name = cmd.substring(i, j);
 
                     if (contacts.contains(name)) {
-                        Intent callIntent = new Intent(Intent.ACTION_CALL);
+                        Intent callIntent = new Intent(Intent.ACTION_DIAL);
                         String number = "tel:" + phoneNumbers.get(contacts.indexOf(name));
                         callIntent.setData(Uri.parse(number));
 
-                        if (ActivityCompat.checkSelfPermission(HomeScreenActivity.this,
-                                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                            return;
-                        }
+//                        if (ActivityCompat.checkSelfPermission(HomeScreenActivity.this,
+//                                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+//                            return;
+//                        }
                         startActivity(callIntent);
                     }
                     else {
