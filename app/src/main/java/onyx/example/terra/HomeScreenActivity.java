@@ -91,7 +91,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         getFirebase();
         getReadiness();
         getEmergContacts();
-        showContacts();
+//        showContacts();
         updateLocation();
         getRisk();
 
