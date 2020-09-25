@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -87,6 +88,16 @@ public class EarthquakeMapActivity extends FragmentActivity implements OnMapRead
             mapFragment.getMapAsync((OnMapReadyCallback) this);
             GetUsgsData();
         }
+
+        back = findViewById(R.id.back_button);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(EarthquakeMapActivity.this, DisasterMenuActivity.class);
+                intent1.putExtra("Disaster", "Earthquakes");
+                startActivity(intent1);
+            }
+        });
 
         instance = this;
     }
