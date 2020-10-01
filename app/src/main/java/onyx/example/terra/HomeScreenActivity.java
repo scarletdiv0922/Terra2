@@ -99,15 +99,15 @@ public class HomeScreenActivity extends AppCompatActivity {
         getRisk();
 
         //Check if the user has allowed the app to send text messages
-        if (!checkPermission(Manifest.permission.SEND_SMS)) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.SEND_SMS}, 1);
-        }
+//        if (!checkPermission(Manifest.permission.SEND_SMS)) {
+//            ActivityCompat.requestPermissions(this,
+//                    new String[]{Manifest.permission.SEND_SMS}, 1);
+//        }
 
-        if (!checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        }
+//        if (!checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
+//            ActivityCompat.requestPermissions(this,
+//                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 2);
+//        }
 
 //        if (!checkPermission(Manifest.permission.CALL_PHONE)) {
 //            ActivityCompat.requestPermissions(this,
@@ -169,6 +169,10 @@ public class HomeScreenActivity extends AppCompatActivity {
                     alan_button.playText("Your preparation index is " + readinessValue);
                 }
                 else if (cmd.contains("addContact")){
+                    if (!checkPermission(Manifest.permission.READ_CONTACTS)) {
+                        ActivityCompat.requestPermissions(HomeScreenActivity.this,
+                                new String[]{Manifest.permission.READ_CONTACTS}, 3);
+                    }
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
 
@@ -189,6 +193,11 @@ public class HomeScreenActivity extends AppCompatActivity {
                     }
                 }
                 else if (cmd.contains("removeContact")){
+                    if (!checkPermission(Manifest.permission.READ_CONTACTS)) {
+                        ActivityCompat.requestPermissions(HomeScreenActivity.this,
+                                new String[]{Manifest.permission.READ_CONTACTS}, 3);
+                    }
+
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
 
@@ -222,12 +231,30 @@ public class HomeScreenActivity extends AppCompatActivity {
                     }
                 }
                 else if (cmd.contains("safe")){
+                    if (!checkPermission(Manifest.permission.SEND_SMS)) {
+                        ActivityCompat.requestPermissions(HomeScreenActivity.this,
+                                new String[]{Manifest.permission.SEND_SMS}, 1);
+                    }
+                    if (!checkPermission(Manifest.permission.READ_CONTACTS)) {
+                        ActivityCompat.requestPermissions(HomeScreenActivity.this,
+                                new String[]{Manifest.permission.READ_CONTACTS}, 3);
+                    }
+
                     for (int i = 0; i < emergPhoneNumbers.size(); i++) {
                         sendSafeText(emergPhoneNumbers.get(i));
                     }
                     alan_button.playText("Your contacts have been informed that you are safe");
                 }
                 else if (cmd.contains("help")){
+                    if (!checkPermission(Manifest.permission.SEND_SMS)) {
+                        ActivityCompat.requestPermissions(HomeScreenActivity.this,
+                                new String[]{Manifest.permission.SEND_SMS}, 1);
+                    }
+                    if (!checkPermission(Manifest.permission.READ_CONTACTS)) {
+                        ActivityCompat.requestPermissions(HomeScreenActivity.this,
+                                new String[]{Manifest.permission.READ_CONTACTS}, 3);
+                    }
+
                     for (int i = 0; i < emergPhoneNumbers.size(); i++) {
                         sendHelpText(emergPhoneNumbers.get(i));
                     }
@@ -281,6 +308,11 @@ public class HomeScreenActivity extends AppCompatActivity {
                     }
                 }
                 else if (cmd.contains("nearMe")) {
+                    if (!checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                        ActivityCompat.requestPermissions(HomeScreenActivity.this,
+                                new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 2);
+                    }
+
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
                     if (cmd.substring(i, j).equals("earthquake") || cmd.substring(i, j).equals("earthquakes")) {
@@ -303,6 +335,11 @@ public class HomeScreenActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 else if (cmd.contains("near")) {
+                    if (!checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                        ActivityCompat.requestPermissions(HomeScreenActivity.this,
+                                new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 2);
+                    }
+
                     Intent intent = new Intent(HomeScreenActivity.this, NearbyFacilitiesActivity.class);
                     startActivity(intent);
                 }
@@ -656,6 +693,19 @@ public class HomeScreenActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == 1) {
+
+            //If the permission has been granted, run showContacts() again and move on to the next step
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                showContacts();
+            }
+
+            //If the permission hasn't been granted, handle it with an error message
+            else {
+                Toast.makeText(this, "Without your permission, Terra cannot access your contacts. Terra will access your contacts solely for the reason of making it easier and faster for you to tell your emergency contacts that you are safeWithout your permission, Terra cannot access your contacts. Terra will access your contacts solely for the reason of making it easier and faster for you to tell your emergency contacts that you are safe or that you need help directly from the app.", Toast.LENGTH_LONG).show();
+            }
+        }
+
+        if (requestCode == 2) {
 
             //If the permission has been granted, run showContacts() again and move on to the next step
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {

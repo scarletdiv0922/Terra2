@@ -13,7 +13,6 @@ import com.alan.alansdk.AlanConfig;
 import com.alan.alansdk.ScriptMethodCallback;
 import com.alan.alansdk.button.AlanButton;
 import com.alan.alansdk.events.EventCommand;
-import onyx.example.terra.R;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 
@@ -202,11 +201,11 @@ public class DisasterMenuActivity extends AppCompatActivity {
             }
         });
 
-        //Go to the risk/readiness scores screen
+        //Go to the hazard/prep scores screen
         scores.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(DisasterMenuActivity.this, RiskReadinessActivity.class);
+                Intent intent1 = new Intent(DisasterMenuActivity.this, HazardPrepActivity.class);
                 intent1.putExtra("Disaster", disaster);
                 startActivity(intent1);
             }

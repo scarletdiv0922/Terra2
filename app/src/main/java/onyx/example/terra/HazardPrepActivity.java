@@ -20,7 +20,6 @@ import com.alan.alansdk.AlanConfig;
 import com.alan.alansdk.ScriptMethodCallback;
 import com.alan.alansdk.button.AlanButton;
 import com.alan.alansdk.events.EventCommand;
-import onyx.example.terra.R;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -43,25 +42,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RiskReadinessActivity extends AppCompatActivity {
+public class HazardPrepActivity extends AppCompatActivity {
 
     //initialize variables
     private Firebase mRef;
     int checkedItems; //stores weighted amount of how many items are checked
     public int total;
     public int SIZE_OF_CHECKLIST;
-    public double readinessScore;
+    public double preparationIndex;
     ImageButton back;
     FloatingActionButton home;
     String disaster = " ";
-    TextView riskText;
-    TextView readinessText;
+    TextView hazardText;
+    TextView preparationText;
 
-    private static final String TAG = "RiskReadiness";
+    private static final String TAG = "HazardPrepActivity";
     Float[][][] myInput = new Float[1][1][18]; //contains whether users have a certain item or not
-    public double riskScore;
+    public double hazardIndex;
 
-    public double riskFromLoc = 0.0;
+    public double hazardFromLoc = 0.0;
     String county = "Alameda";
     String parsedCountyName = "";
     Button doneButton;
@@ -71,38 +70,38 @@ public class RiskReadinessActivity extends AppCompatActivity {
 
     private PopupWindow popupWindow;
     private LayoutInflater layoutInflater;
-    ImageButton riskInfoButton;
-    ImageButton readinessInfoButton;
+    ImageButton hazardInfoButton;
+    ImageButton preparationInfoButton;
     private RelativeLayout relativeLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_risk_readiness_scores);
+        setContentView(R.layout.activity_hazard_prep_indices);
 
         //Connect to Firebase
         Firebase.setAndroidContext(this);
         mRef = new Firebase("https://terra-alan.firebaseio.com/");
 
         //Retrieve the relevant views from the xml layout
-        riskText = findViewById(R.id.risk_score);
-        readinessText = findViewById(R.id.readiness_score);
-        riskInfoButton = findViewById(R.id.risk_info);
-        readinessInfoButton = findViewById(R.id.readiness_info);
+        hazardText = findViewById(R.id.hazard_index);
+        preparationText = findViewById(R.id.prep_index);
+        hazardInfoButton = findViewById(R.id.hazard_info);
+        preparationInfoButton = findViewById(R.id.prep_info);
 
         //Show the popup window with the user's hazard index
-        riskInfoButton.setOnClickListener(new View.OnClickListener() {
+        hazardInfoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                startActivity(new Intent(RiskReadinessActivity.this, PopRisk.class));
+                startActivity(new Intent(HazardPrepActivity.this, PopRisk.class));
             }
         });
 
         //Show the popup window with the user's preparation index
-        readinessInfoButton.setOnClickListener(new View.OnClickListener() {
+        preparationInfoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                startActivity(new Intent(RiskReadinessActivity.this, PopReadiness.class));
+                startActivity(new Intent(HazardPrepActivity.this, PopReadiness.class));
             }
         });
 
@@ -135,19 +134,18 @@ public class RiskReadinessActivity extends AppCompatActivity {
             @Override
             public void onCommandReceived(EventCommand eventCommand) {
                 super.onCommandReceived(eventCommand);
-                System.out.println("Heeereeee");
                 String cmd = eventCommand.getData().toString();
                 System.out.println(cmd);
                 if (cmd.contains("before")){
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
                     if (cmd.substring(i, j).equals("earthquake") || cmd.substring(i, j).equals("earthquakes")) {
-                        Intent intent = new Intent(RiskReadinessActivity.this, BeforeActivity.class);
+                        Intent intent = new Intent(HazardPrepActivity.this, BeforeActivity.class);
                         intent.putExtra("Disaster", "Earthquakes");
                         startActivity(intent);
                     }
                     else if (cmd.substring(i, j).equals("wildfire") || cmd.substring(i, j).equals("wildfires")) {
-                        Intent intent = new Intent(RiskReadinessActivity.this, BeforeActivity.class);
+                        Intent intent = new Intent(HazardPrepActivity.this, BeforeActivity.class);
                         intent.putExtra("Disaster", "Wildfires");
                         startActivity(intent);
                     }
@@ -156,12 +154,12 @@ public class RiskReadinessActivity extends AppCompatActivity {
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
                     if (cmd.substring(i, j).equals("earthquake") || cmd.substring(i, j).equals("earthquakes")){
-                        Intent intent = new Intent(RiskReadinessActivity.this, DuringActivity.class);
+                        Intent intent = new Intent(HazardPrepActivity.this, DuringActivity.class);
                         intent.putExtra("Disaster", "Earthquakes");
                         startActivity(intent);
                     }
                     else if (cmd.substring(i, j).equals("wildfire") || cmd.substring(i, j).equals("wildfires")){
-                        Intent intent = new Intent(RiskReadinessActivity.this, DuringActivity.class);
+                        Intent intent = new Intent(HazardPrepActivity.this, DuringActivity.class);
                         intent.putExtra("Disaster", "Wildfires");
                         startActivity(intent);
                     }
@@ -170,12 +168,12 @@ public class RiskReadinessActivity extends AppCompatActivity {
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
                     if (cmd.substring(i, j).equals("earthquake") || cmd.substring(i, j).equals("earthquakes")){
-                        Intent intent = new Intent(RiskReadinessActivity.this, AfterActivity.class);
+                        Intent intent = new Intent(HazardPrepActivity.this, AfterActivity.class);
                         intent.putExtra("Disaster", "Earthquakes");
                         startActivity(intent);
                     }
                     else if (cmd.substring(i, j).equals("wildfire") ||cmd.substring(i, j).equals("wildfires")){
-                        Intent intent = new Intent(RiskReadinessActivity.this, AfterActivity.class);
+                        Intent intent = new Intent(HazardPrepActivity.this, AfterActivity.class);
                         intent.putExtra("Disaster", "Wildfires");
                         startActivity(intent);
                     }
@@ -184,49 +182,49 @@ public class RiskReadinessActivity extends AppCompatActivity {
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
                     if (cmd.substring(i, j).equals("earthquake") || cmd.substring(i, j).equals("earthquakes")) {
-                        Intent intent = new Intent(RiskReadinessActivity.this, EarthquakeMapActivity.class);
+                        Intent intent = new Intent(HazardPrepActivity.this, EarthquakeMapActivity.class);
                         intent.putExtra("Disaster", "Earthquakes");
                         startActivity(intent);
                     }
                     else if (cmd.substring(i, j).equals("wildfire") ||cmd.substring(i, j).equals("wildfires")){
-                        Intent intent = new Intent(RiskReadinessActivity.this, EarthquakeMapActivity.class);
+                        Intent intent = new Intent(HazardPrepActivity.this, EarthquakeMapActivity.class);
                         intent.putExtra("Disaster", "Wildfires");
                         startActivity(intent);
                     }
                 }
                 else if (cmd.contains("show")) {
-                    Intent intent = new Intent(RiskReadinessActivity.this, EmergencyContactsActivity.class);
+                    Intent intent = new Intent(HazardPrepActivity.this, EmergencyContactsActivity.class);
                     startActivity(intent);
                 }
                 else if (cmd.contains("checklist")) {
-                    Intent intent = new Intent(RiskReadinessActivity.this, ChecklistActivity2.class);
+                    Intent intent = new Intent(HazardPrepActivity.this, ChecklistActivity2.class);
                     startActivity(intent);
                 }
                 else if (cmd.contains("near")) {
-                    Intent intent = new Intent(RiskReadinessActivity.this, NearbyFacilitiesActivity.class);
+                    Intent intent = new Intent(HazardPrepActivity.this, NearbyFacilitiesActivity.class);
                     startActivity(intent);
                 }
                 else if (cmd.contains("navigate")) {
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
                     if (cmd.substring(i, j).equals("home")){
-                        Intent intent = new Intent(RiskReadinessActivity.this, HomeScreenActivity.class);
+                        Intent intent = new Intent(HazardPrepActivity.this, HomeScreenActivity.class);
                         startActivity(intent);
                     }
                     else if (cmd.substring(i, j).equals("emergency contacts") || cmd.substring(i, j).equals("contacts")){
-                        Intent intent = new Intent(RiskReadinessActivity.this, EmergencyContactsActivity.class);
+                        Intent intent = new Intent(HazardPrepActivity.this, EmergencyContactsActivity.class);
                         startActivity(intent);
                     }
                     else if (cmd.substring(i, j).equals("emergency checklist") || cmd.substring(i, j).equals("checklist")) {
-                        Intent intent = new Intent(RiskReadinessActivity.this, ChecklistActivity2.class);
+                        Intent intent = new Intent(HazardPrepActivity.this, ChecklistActivity2.class);
                         startActivity(intent);
                     }
                     else if (cmd.substring(i, j).equals("nearby facilities")){
-                        Intent intent = new Intent(RiskReadinessActivity.this, NearbyFacilitiesActivity.class);
+                        Intent intent = new Intent(HazardPrepActivity.this, NearbyFacilitiesActivity.class);
                         startActivity(intent);
                     }
                     else if (cmd.substring(i, j).equals("disaster warnings") || cmd.substring(i, j).equals("disaster updates") || cmd.substring(i, j).equals("map")) {
-                        Intent intent = new Intent(RiskReadinessActivity.this, EarthquakeMapActivity.class);
+                        Intent intent = new Intent(HazardPrepActivity.this, EarthquakeMapActivity.class);
                         startActivity(intent);
                     }
                 }
@@ -267,8 +265,8 @@ public class RiskReadinessActivity extends AppCompatActivity {
         chklistOrder.put("Whistles", 16);
         chklistOrder.put("Wrench or Pliers", 17);
 
-        //risk of natural disaster based on location
-        doneButton = findViewById(R.id.show_risk_button);
+        //hazard of natural disaster based on location
+        doneButton = findViewById(R.id.show_hazard_button);
         System.out.println("The disaster is " + disaster);
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -295,40 +293,40 @@ public class RiskReadinessActivity extends AppCompatActivity {
                     inputStream = getResources().openRawResource(R.raw.eqdata);
                 }
                 CSVFile csvFile = new CSVFile(inputStream);
-                ArrayList<ArrayList<String>> riskList = csvFile.read();
-                for(ArrayList<String> scoreData:riskList ) {
+                ArrayList<ArrayList<String>> hazardList = csvFile.read();
+                for(ArrayList<String> scoreData:hazardList ) {
                     for (String s:scoreData) {
                         if (s.equalsIgnoreCase(parsedCountyName)) {
-                            String locRisk = scoreData.get(2);
-                            if (locRisk.equalsIgnoreCase("High"))
-                                riskFromLoc = 2.0;
-                            else if (locRisk.equalsIgnoreCase("Medium"))
-                                riskFromLoc = 1.0;
+                            String locHazard = scoreData.get(2);
+                            if (locHazard.equalsIgnoreCase("High"))
+                                hazardFromLoc = 2.0;
+                            else if (locHazard.equalsIgnoreCase("Medium"))
+                                hazardFromLoc = 1.0;
                             else
-                                riskFromLoc = 0.5;
-                            System.out.println("At " + locRisk + " risk");
+                                hazardFromLoc = 0.5;
+                            Log.v(TAG, "At " + locHazard + " risk");
                         }
                     }
                 }
-                //risk score mathematical model
+                //hazard score mathematical model
                 double ratio = 0.5;
                 if (SIZE_OF_CHECKLIST != 0 && checkedItems != 0)
-                    ratio = (1 - (readinessScore * 0.9)) * 0.5;
-                System.out.println(ratio + " " + riskFromLoc);
-                riskScore = ratio * riskFromLoc;
-                if (riskScore > 0.75)
-                    riskText.setTextColor(Color.rgb(181, 9, 0)); //RED FOR HIGH RISK
-                else if (riskScore > 0.5)
-                    riskText.setTextColor(Color.rgb(237, 174, 0)); //YELLOW FOR MEDIUM RISK
+                    ratio = (1 - (preparationIndex * 0.9)) * 0.5;
+                System.out.println(ratio + " " + hazardFromLoc);
+                hazardIndex = ratio * hazardFromLoc;
+                if (hazardIndex > 0.75)
+                    hazardText.setTextColor(Color.rgb(181, 9, 0)); //RED FOR HIGH HAZARD
+                else if (hazardIndex > 0.5)
+                    hazardText.setTextColor(Color.rgb(237, 174, 0)); //YELLOW FOR MEDIUM HAZARD
                 else
-                    riskText.setTextColor(Color.rgb(21, 176, 0)); //GREEN FOR LOW RISK
+                    hazardText.setTextColor(Color.rgb(21, 176, 0)); //GREEN FOR LOW HAZARD
                 DecimalFormat df = new DecimalFormat("#.###");
-                Log.v(TAG, "hazard index: " + riskScore);
-                riskText.setText("Your Hazard Index: " + df.format(riskScore));
+                Log.v(TAG, "hazard index: " + hazardIndex);
+                hazardText.setText("Your Hazard Index: " + df.format(hazardIndex));
                 parsedCountyName = "";
                 //update the hazard index value in firebase
                 Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("risk_score").child(disaster);
-                mRefChild.setValue(df.format(riskScore));
+                mRefChild.setValue(df.format(hazardIndex));
             }
         });
 
@@ -340,7 +338,7 @@ public class RiskReadinessActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(RiskReadinessActivity.this, DisasterMenuActivity.class);
+                Intent intent1 = new Intent(HazardPrepActivity.this, DisasterMenuActivity.class);
                 intent1.putExtra("Disaster", disaster);
                 startActivity(intent1);
             }
@@ -350,7 +348,7 @@ public class RiskReadinessActivity extends AppCompatActivity {
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(RiskReadinessActivity.this, HomeScreenActivity.class);
+                Intent intent1 = new Intent(HazardPrepActivity.this, HomeScreenActivity.class);
                 startActivity(intent1);
             }
         });
@@ -379,7 +377,7 @@ public class RiskReadinessActivity extends AppCompatActivity {
                             else
                                 myInput[0][0][idx] = Float.valueOf(0);
                         }
-                        //get readiness score
+                        //get preparation index
                         if (item.equals("Water") || item.equals("Non-perishable Food") || item.equals("First-aid Kit")) {
                             SIZE_OF_CHECKLIST +=3;
                             System.out.println("rough");
@@ -403,11 +401,11 @@ public class RiskReadinessActivity extends AppCompatActivity {
                         }
                     }
                     Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("readiness_score");
-                    readinessScore = (double) checkedItems / (double) SIZE_OF_CHECKLIST;
-                    Log.v(TAG, "preparation index: " + readinessScore);
-                    String formattedReadinessScore = String.format("%.2f", (readinessScore*100)) + "%";
-                    mRefChild.setValue(formattedReadinessScore);
-                    readinessText.setText("Your Preparation Index " + formattedReadinessScore);
+                    preparationIndex = (double) checkedItems / (double) SIZE_OF_CHECKLIST;
+                    Log.v(TAG, "preparation index: " + preparationIndex);
+                    String formattedPreparationIndex = String.format("%.2f", (preparationIndex*100)) + "%";
+                    mRefChild.setValue(formattedPreparationIndex);
+                    preparationText.setText("Your Preparation Index " + formattedPreparationIndex);
                 }
             }
 

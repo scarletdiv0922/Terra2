@@ -94,7 +94,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/hazard_score"
+        android:id="@+id/hazard_index"
         android:layout_below="@id/show_hazard_button"
         android:text="Your Hazard Index:"
         android:fontFamily="@font/montserrat"
@@ -109,7 +109,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/hazard_info"
         android:layout_below="@id/show_hazard_button"
-        android:layout_toRightOf="@id/hazard_score"
+        android:layout_toRightOf="@id/hazard_index"
         android:layout_marginTop="20dp"
         android:src="@drawable/ic_info_dark_green"
         style="?android:attr/borderlessButtonStyle" />
@@ -131,8 +131,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/prepared_score"
-        android:layout_below="@id/hazard_score"
+        android:id="@+id/prep_index"
+        android:layout_below="@id/hazard_index"
         android:text="Your Preparation Index:"
         android:fontFamily="@font/montserrat"
         android:textColor="@color/darkGreen"
@@ -144,9 +144,9 @@
     <ImageButton
         android:layout_width="40dp"
         android:layout_height="wrap_content"
-        android:id="@+id/prepared_info"
-        android:layout_below="@id/hazard_score"
-        android:layout_toRightOf="@id/prepared_score"
+        android:id="@+id/prep_info"
+        android:layout_below="@id/hazard_index"
+        android:layout_toRightOf="@id/prep_index"
         android:src="@drawable/ic_info_dark_green"
         style="?android:attr/borderlessButtonStyle" />
 

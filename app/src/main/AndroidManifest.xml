@@ -104,7 +104,7 @@
             android:name="onyx.example.terra.DisasterMenuActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="onyx.example.terra.RiskReadinessActivity"
+            android:name="onyx.example.terra.HazardPrepActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="onyx.example.terra.EarthquakeMapActivity"
