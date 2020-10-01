@@ -4,15 +4,13 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 
-import onyx.example.terra.R;
-
 public class PopReadiness extends Activity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.pop_window_readiness);
+        setContentView(R.layout.pop_window_preparedness);
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);

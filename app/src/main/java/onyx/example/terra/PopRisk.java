@@ -3,9 +3,6 @@ package onyx.example.terra;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.Display;
-
-import onyx.example.terra.R;
 
 
 public class PopRisk extends Activity {
@@ -14,7 +11,7 @@ public class PopRisk extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.pop_window_risk);
+        setContentView(R.layout.pop_window_hazard);
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);

@@ -77,7 +77,7 @@
         android:layout_below="@+id/textViewCounty"/>
 
     <Button
-        android:id="@+id/show_risk_button"
+        android:id="@+id/show_hazard_button"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editTextCounty"
@@ -94,8 +94,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/risk_score"
-        android:layout_below="@id/show_risk_button"
+        android:id="@+id/hazard_score"
+        android:layout_below="@id/show_hazard_button"
         android:text="Your Hazard Index:"
         android:fontFamily="@font/montserrat"
         android:textColor="@color/darkGreen"
@@ -107,9 +107,9 @@
     <ImageButton
         android:layout_width="40dp"
         android:layout_height="wrap_content"
-        android:id="@+id/risk_info"
-        android:layout_below="@id/show_risk_button"
-        android:layout_toRightOf="@id/risk_score"
+        android:id="@+id/hazard_info"
+        android:layout_below="@id/show_hazard_button"
+        android:layout_toRightOf="@id/hazard_score"
         android:layout_marginTop="20dp"
         android:src="@drawable/ic_info_dark_green"
         style="?android:attr/borderlessButtonStyle" />
@@ -117,9 +117,9 @@
 <!--    <TextView-->
 <!--        android:layout_width="wrap_content"-->
 <!--        android:layout_height="wrap_content"-->
-<!--        android:id="@+id/risk_score_blurb"-->
-<!--        android:layout_below="@id/risk_score"-->
-<!--        android:text="@string/risk_score_blurb"-->
+<!--        android:id="@+id/hazard_score_blurb"-->
+<!--        android:layout_below="@id/hazard_score"-->
+<!--        android:text="@string/hazard_score_blurb"-->
 <!--        android:fontFamily="@font/montserrat"-->
 <!--        android:textColor="@color/darkGreen"-->
 <!--        android:textSize="10sp"-->
@@ -131,8 +131,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/readiness_score"
-        android:layout_below="@id/risk_score"
+        android:id="@+id/prepared_score"
+        android:layout_below="@id/hazard_score"
         android:text="Your Preparation Index:"
         android:fontFamily="@font/montserrat"
         android:textColor="@color/darkGreen"
@@ -144,18 +144,18 @@
     <ImageButton
         android:layout_width="40dp"
         android:layout_height="wrap_content"
-        android:id="@+id/readiness_info"
-        android:layout_below="@id/risk_score"
-        android:layout_toRightOf="@id/readiness_score"
+        android:id="@+id/prepared_info"
+        android:layout_below="@id/hazard_score"
+        android:layout_toRightOf="@id/prepared_score"
         android:src="@drawable/ic_info_dark_green"
         style="?android:attr/borderlessButtonStyle" />
 
 <!--    <TextView-->
 <!--        android:layout_width="wrap_content"-->
 <!--        android:layout_height="wrap_content"-->
-<!--        android:id="@+id/readiness_score_blurb"-->
-<!--        android:layout_below="@id/readiness_score"-->
-<!--        android:text="@string/readiness_score_blurb"-->
+<!--        android:id="@+id/prepared_score_blurb"-->
+<!--        android:layout_below="@id/prepared_score"-->
+<!--        android:text="@string/prepared_score_blurb"-->
 <!--        android:fontFamily="@font/montserrat"-->
 <!--        android:textColor="@color/darkGreen"-->
 <!--        android:textSize="10sp"-->
