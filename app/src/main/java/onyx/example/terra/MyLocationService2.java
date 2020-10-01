@@ -12,7 +12,6 @@ public class MyLocationService2 extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-//        System.out.println("that's");
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_PROCESS_UPDATE.equals(action)) {

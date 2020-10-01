@@ -2,6 +2,7 @@ package onyx.example.terra;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -32,6 +33,7 @@ import java.util.Map;
 
 public class RemoveContactActivity extends AppCompatActivity {
 
+    //initialize variables
     ListView emergContacts;
     FloatingActionButton done;
     ImageButton back;
@@ -41,18 +43,21 @@ public class RemoveContactActivity extends AppCompatActivity {
     ArrayList<String> contacts2 = new ArrayList<>();
     ArrayList<String> names = new ArrayList<>();
     private ArrayAdapter<String> displayContacts;
+    private static final String TAG = "RemoveContactActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_remove_contacts);
 
+        //Retrieve the relevant views from the xml layout
         emergContacts = findViewById(R.id.listv);
         done = findViewById(R.id.done);
         back = findViewById(R.id.back_button);
         noContacts = findViewById(R.id.no_contacts);
         instructions = findViewById(R.id.instructions);
 
+        //create a Firebase instance
         Firebase.setAndroidContext(this);
         mRef = new Firebase("https://terra-alan.firebaseio.com/");
 
@@ -64,6 +69,7 @@ public class RemoveContactActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        //Set up the Alan AI voice assistant
         AlanButton alan_button;
         alan_button = findViewById(R.id.alan_button);
 
@@ -75,17 +81,16 @@ public class RemoveContactActivity extends AppCompatActivity {
         alan_button.playCommand(commandJson.toString(),  new ScriptMethodCallback() {
             @Override
             public void onResponse(String methodName, String body, String error) {
-                System.out.println("Heyyyyy");
-                System.out.println(methodName);
+                Log.v(TAG, methodName);
             }
         });
+
+        //Define the Alan Callback
         AlanCallback myCallback = new AlanCallback() {
             @Override
             public void onCommandReceived(EventCommand eventCommand) {
                 super.onCommandReceived(eventCommand);
-                System.out.println("Heeereeee");
                 String cmd = eventCommand.getData().toString();
-                System.out.println(cmd);
                 if (cmd.contains("before")){
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
@@ -186,8 +191,10 @@ public class RemoveContactActivity extends AppCompatActivity {
 
         alan_button.registerCallback(myCallback);
 
+        //update Firebase with the new contacts
         updateContacts();
 
+        //return to the emergency contacts activity after removing contact
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -196,6 +203,7 @@ public class RemoveContactActivity extends AppCompatActivity {
             }
         });
 
+        //return to the emergency contacts activity without removing contact
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -204,20 +212,22 @@ public class RemoveContactActivity extends AppCompatActivity {
             }
         });
 
+        //remove the contact on firebase
         emergContacts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println("CONTACT: " + names.get(position));
+                Log.v(TAG, "CONTACT: " + names.get(position));
                 mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("emergency_contacts")
                         .child(names.get(position)).removeValue();
                 contacts2.clear();
                 names.clear();
                 displayContacts.clear();
-                System.out.println("CLEARED");
+                Log.v(TAG, "CLEARED");
             }
         });
     }
 
+    //update Firebase with the new contacts
     public void updateContacts() {
         Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("emergency_contacts");
 
@@ -233,12 +243,12 @@ public class RemoveContactActivity extends AppCompatActivity {
                         //Get phone field and append to list
                         System.out.println("NAME2: " + contactName);
                         System.out.println("PHONE2: " + contactPhone);
-
+                        //selecting the contacts to remove
                         contacts2.add(contactName + "\n" + contactPhone);
                         names.add(contactName);
                     }
 
-                    if (contacts2.size() != 0) {
+                    if (contacts2.size() != 0) { //if there are contacts selected to remove
                         noContacts.setVisibility(View.INVISIBLE);
                         instructions.setVisibility(View.VISIBLE);
 
@@ -250,7 +260,7 @@ public class RemoveContactActivity extends AppCompatActivity {
 
                         emergContacts.setAdapter(displayContacts);
                     }
-                    else {
+                    else { //if there are no contacts selected to remove
                         noContacts.setVisibility(View.VISIBLE);
                         instructions.setVisibility(View.INVISIBLE);
                     }
@@ -259,7 +269,7 @@ public class RemoveContactActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-                System.out.println("firebase oops");
+                Log.e(TAG, "There is a firebase error");
             }
         });
     }

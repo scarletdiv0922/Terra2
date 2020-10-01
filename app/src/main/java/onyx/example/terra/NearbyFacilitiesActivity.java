@@ -51,7 +51,6 @@ public class NearbyFacilitiesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nearby_facilities);
-        System.out.println(53);
         //Assign variables
         spType = findViewById(R.id.sp_type);
         btFind = findViewById(R.id.bt_find);
@@ -62,32 +61,26 @@ public class NearbyFacilitiesActivity extends AppCompatActivity {
         final String[] placeTypeList = {"atm", "bank", "hospital", "store", "shelter"};
         //Initialize array of place names
         String[] placeNameList = {"ATM", "Bank", "Hospital", "Store", "Shelter"};
-        System.out.println(64);
         //Set adapter on spinner
         spType.setAdapter(new ArrayAdapter<>(NearbyFacilitiesActivity.this,
                 android.R.layout.simple_spinner_dropdown_item, placeNameList));
 
         //Initialize fused location provider client
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        System.out.println(71);
         //Check permission
         if (ActivityCompat.checkSelfPermission(NearbyFacilitiesActivity.this,
                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             //When permission granted, call method
-            System.out.println(76);
             getCurrentLocation();
         }
         else{
             //If permission denied, request permission
-            System.out.println(81);
             ActivityCompat.requestPermissions(NearbyFacilitiesActivity.this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
         }
-        System.out.println(85);
         btFind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                System.out.println(89);
                 //Get selected position of spinner
                 int i = spType.getSelectedItemPosition();
                 //Initialize url
@@ -97,7 +90,6 @@ public class NearbyFacilitiesActivity extends AppCompatActivity {
                         "&types=" + placeTypeList[i] + //Place type
                         "&sensor=true" + //Sensor
                         "&key=" + getResources().getString(R.string.google_map_key);// Google map api key
-                System.out.println(99);
                 //Execute place task method to download json data
                 new PlaceTask().execute(url);
             }
@@ -106,15 +98,8 @@ public class NearbyFacilitiesActivity extends AppCompatActivity {
 
     private void getCurrentLocation() {
         //Initialize task location
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            System.out.println(116);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         Task<Location> task = fusedLocationProviderClient.getLastLocation();
@@ -127,18 +112,15 @@ public class NearbyFacilitiesActivity extends AppCompatActivity {
                     currentLat = location.getLatitude();
                     currentLong = location.getLongitude();
                     //Sync map
-                    System.out.println(129);
                     supportMapFragment.getMapAsync(new OnMapReadyCallback() {
                         @Override
                         public void onMapReady(GoogleMap googleMap) {
                             //When map is ready
                             map = googleMap;
                             //Zoom current location
-                            System.out.println(136);
                             map.animateCamera(CameraUpdateFactory.newLatLngZoom(
                                     new LatLng(currentLat, currentLong), 10
                             ));
-                            System.out.println(140);
                         }
                     });
                 }
@@ -151,7 +133,6 @@ public class NearbyFacilitiesActivity extends AppCompatActivity {
         if (requestCode == 44){
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 //When permission is granted, call method
-                System.out.println(153);
                 getCurrentLocation();
             }
         }
@@ -165,7 +146,6 @@ public class NearbyFacilitiesActivity extends AppCompatActivity {
             try {
                 //Initialize data
                 data = downloadUrl(strings[0]);
-                System.out.println(167);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -175,7 +155,6 @@ public class NearbyFacilitiesActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             //Execute parser task
-            System.out.println(177);
             new ParserTask().execute(s);
         }
     }
@@ -187,23 +166,16 @@ public class NearbyFacilitiesActivity extends AppCompatActivity {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         //Connect connection
         connection.connect();
-        //Initialize input stream
+        //Initialize input stream, buffer reader, and string builder
         InputStream stream = connection.getInputStream();
-        //Initialize buffer reader
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-        //Initialize string builder
         StringBuilder builder = new StringBuilder();
-        //Initialize string variable
         String line = "";
-        //Use while loop
         while ((line = reader.readLine()) != null){
-            //Append line
             builder.append(line);
         }
-        System.out.println(202);
         //Get append data
         String data = builder.toString();
-        //Close reader
         reader.close();
         //Return data
         return data;
@@ -223,7 +195,6 @@ public class NearbyFacilitiesActivity extends AppCompatActivity {
                 object = new JSONObject(strings[0]);
                 //Parse json object
                 mapList = jsonParser.parseResult(object);
-                System.out.println(225);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -242,7 +213,6 @@ public class NearbyFacilitiesActivity extends AppCompatActivity {
                 //Get latitude and longitude
                 double lat = Double.parseDouble(hashMapList.get("lat"));
                 double lng = Double.parseDouble(hashMapList.get("lng"));
-                System.out.println(244);
                 //Get name
                 String name = hashMapList.get("name");
                 //Concatenate latitude and longitude

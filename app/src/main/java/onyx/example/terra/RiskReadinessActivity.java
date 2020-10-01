@@ -3,6 +3,7 @@ package onyx.example.terra;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -44,6 +45,7 @@ import java.util.Map;
 
 public class RiskReadinessActivity extends AppCompatActivity {
 
+    //initialize variables
     private Firebase mRef;
     int checkedItems; //stores weighted amount of how many items are checked
     public int total;
@@ -56,13 +58,6 @@ public class RiskReadinessActivity extends AppCompatActivity {
     TextView readinessText;
 
     private static final String TAG = "RiskReadiness";
-
-//    FirebaseModelInterpreterOptions options;
-//    FirebaseModelInputOutputOptions inputOutputOptions;
-//    FirebaseModelInterpreter interpreter;
-//    FirebaseCustomLocalModel localModel;
-//    FirebaseModelInputs inputs;
-//    FirebaseCustomRemoteModel remoteModel;
     Float[][][] myInput = new Float[1][1][18]; //contains whether users have a certain item or not
     public double riskScore;
 
@@ -72,7 +67,7 @@ public class RiskReadinessActivity extends AppCompatActivity {
     Button doneButton;
 
     HashMap chklistOrder = new HashMap<String, Integer>();
-    public int itemsMarked = 0; //just the number of items marked without weight
+    public int itemsMarked = 0; // the number of items marked without weight
 
     private PopupWindow popupWindow;
     private LayoutInflater layoutInflater;
@@ -85,14 +80,17 @@ public class RiskReadinessActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_risk_readiness_scores);
 
+        //Connect to Firebase
         Firebase.setAndroidContext(this);
         mRef = new Firebase("https://terra-alan.firebaseio.com/");
 
+        //Retrieve the relevant views from the xml layout
         riskText = findViewById(R.id.risk_score);
         readinessText = findViewById(R.id.readiness_score);
         riskInfoButton = findViewById(R.id.risk_info);
         readinessInfoButton = findViewById(R.id.readiness_info);
 
+        //Show the popup window with the user's hazard index
         riskInfoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
@@ -100,6 +98,7 @@ public class RiskReadinessActivity extends AppCompatActivity {
             }
         });
 
+        //Show the popup window with the user's preparation index
         readinessInfoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
@@ -107,7 +106,6 @@ public class RiskReadinessActivity extends AppCompatActivity {
             }
         });
 
-        //Alan Button
         JSONObject commandJson = null;
 
         try {
@@ -116,6 +114,7 @@ public class RiskReadinessActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        //Set up the Alan AI voice assistant
         AlanButton alan_button;
         alan_button = findViewById(R.id.alan_button);
 
@@ -127,10 +126,11 @@ public class RiskReadinessActivity extends AppCompatActivity {
         alan_button.playCommand(commandJson.toString(),  new ScriptMethodCallback() {
             @Override
             public void onResponse(String methodName, String body, String error) {
-                System.out.println("Heyyyyy");
-                System.out.println(methodName);
+                Log.v(TAG, methodName);
             }
         });
+
+        //Define the Alan Callback
         AlanCallback myCallback = new AlanCallback() {
             @Override
             public void onCommandReceived(EventCommand eventCommand) {
@@ -235,6 +235,7 @@ public class RiskReadinessActivity extends AppCompatActivity {
 
         alan_button.registerCallback(myCallback);
 
+        //check which disaster the user wants the hazard index for
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
 
@@ -247,7 +248,7 @@ public class RiskReadinessActivity extends AppCompatActivity {
 
         getFirebase();
 
-        //current order of the checklist for ml model, no dust masks for now
+        //current order of the checklist
         chklistOrder.put("Battery-powered Radio", 1);
         chklistOrder.put("Extra Batteries", 2);
         chklistOrder.put("Extra Cash", 3);
@@ -322,89 +323,20 @@ public class RiskReadinessActivity extends AppCompatActivity {
                 else
                     riskText.setTextColor(Color.rgb(21, 176, 0)); //GREEN FOR LOW RISK
                 DecimalFormat df = new DecimalFormat("#.###");
-                System.out.println("risk score: " + riskScore);
+                Log.v(TAG, "hazard index: " + riskScore);
                 riskText.setText("Your Hazard Index: " + df.format(riskScore));
                 parsedCountyName = "";
+                //update the hazard index value in firebase
                 Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("risk_score").child(disaster);
                 mRefChild.setValue(df.format(riskScore));
             }
         });
 
-        //Risk Score ml model
-//        remoteModel = new FirebaseCustomRemoteModel.Builder("EQ_model").build();
-//        localModel = new FirebaseCustomLocalModel.Builder()
-//                .setAssetFilePath("eq_model.tflite")
-//                .build(); //local and remote model in case of no internet
-//        FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions.Builder()
-//                .requireWifi()
-//                .build();
-//        FirebaseModelManager.getInstance().download(remoteModel, conditions)
-//                .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                    @Override
-//                    public void onSuccess(Void v) {
-//                        Toast.makeText(RiskReadinessActivity.this, "Model downloaded!", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//        FirebaseModelManager.getInstance().isModelDownloaded(remoteModel)
-//                .addOnSuccessListener(new OnSuccessListener<Boolean>() {
-//                    @Override
-//                    public void onSuccess(Boolean isDownloaded) {
-//                        //use either remote model in firebase or local model
-//                        if (isDownloaded) {
-//                            System.out.println("remote");
-//                            options = new FirebaseModelInterpreterOptions.Builder(remoteModel).build();
-//                        }
-//                        else {
-//                            System.out.println("local");
-//                            options = new FirebaseModelInterpreterOptions.Builder(localModel).build();
-//                        }
-//
-//                        try {
-//                            System.out.println(87);
-//                            FirebaseModelInterpreter interpreter = FirebaseModelInterpreter.getInstance(options);
-//                            inputOutputOptions = new FirebaseModelInputOutputOptions.Builder()
-//                                    .setInputFormat(0, FirebaseModelDataType.FLOAT32, new int[]{1, 1, 18})
-//                                    .setOutputFormat(0, FirebaseModelDataType.FLOAT32, new int[]{1, 1})
-//                                    .build();
-//                            //get myInput in the getFirebase method
-//                            inputs = new FirebaseModelInputs.Builder()
-//                                    .add(myInput)  // add() as many input arrays as your model requires
-//                                    .build();
-//                            System.out.println(107);
-//                            interpreter.run(inputs, inputOutputOptions)
-//                                    .addOnSuccessListener(
-//                                            new OnSuccessListener<FirebaseModelOutputs>() {
-//                                                @Override
-//                                                public void onSuccess(FirebaseModelOutputs result) {
-//                                                    Toast.makeText(RiskReadinessActivity.this, "Model is running!", Toast.LENGTH_SHORT).show();
-//                                                    float[][] output = result.getOutput(0);
-//                                                    System.out.println("probability: " + output[0][0]);
-//                                                    riskScore = readinessScore * output[0][0];
-//                                                }
-//                                            })
-//                                    .addOnFailureListener(
-//                                            new OnFailureListener() {
-//                                                @Override
-//                                                public void onFailure(@NonNull Exception e) {
-//                                                    Toast.makeText(RiskReadinessActivity.this, "Model failed to run.", Toast.LENGTH_SHORT).show();
-//                                                    e.printStackTrace();
-//                                                }
-//                                            });
-//                        } catch (FirebaseMLException e) {
-//                            e.printStackTrace();
-//                            //continue with mathematical model
-//                            double ratio = 1.0;
-//                            if (itemsMarked != 0 && checkedItems != 0)
-//                                ratio = (double)((checkedItems - itemsMarked)/itemsMarked);
-//
-//                        }
-//                    }
-//                });
-
         //Buttons
         back = findViewById(R.id.back_button);
         home = findViewById(R.id.home_button);
 
+        //go back to the disaster menu activity
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -414,6 +346,7 @@ public class RiskReadinessActivity extends AppCompatActivity {
             }
         });
 
+        //go to the home screen
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -424,12 +357,12 @@ public class RiskReadinessActivity extends AppCompatActivity {
 
     }
 
+    //get the firebase values
     public void getFirebase() {
         Firebase mRefChild1 = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("emergency_checklist");
         mRefChild1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println("That's");
                 if (dataSnapshot.getValue() != null) {
                     Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
 
@@ -471,6 +404,7 @@ public class RiskReadinessActivity extends AppCompatActivity {
                     }
                     Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("readiness_score");
                     readinessScore = (double) checkedItems / (double) SIZE_OF_CHECKLIST;
+                    Log.v(TAG, "preparation index: " + readinessScore);
                     String formattedReadinessScore = String.format("%.2f", (readinessScore*100)) + "%";
                     mRefChild.setValue(formattedReadinessScore);
                     readinessText.setText("Your Preparation Index " + formattedReadinessScore);
@@ -479,7 +413,7 @@ public class RiskReadinessActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
-
+                Log.e(TAG, "There is a firebase error");
             }
         });
     }

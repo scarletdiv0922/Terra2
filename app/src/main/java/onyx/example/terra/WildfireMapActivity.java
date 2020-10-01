@@ -22,6 +22,7 @@ import org.json.JSONObject;
 
 public class WildfireMapActivity extends AppCompatActivity {
 
+    //Initialize variables
     private String disaster;
     private FloatingActionButton home;
     ImageButton back;
@@ -31,6 +32,7 @@ public class WildfireMapActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //if the disaster map is for wildfires
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
 
@@ -41,7 +43,7 @@ public class WildfireMapActivity extends AppCompatActivity {
         if (disaster.equals("Wildfires")) {
             setContentView(R.layout.activity_wildfire_map);
             home = findViewById(R.id.home_button);
-
+            //go to the home screen activity
             home.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -53,7 +55,7 @@ public class WildfireMapActivity extends AppCompatActivity {
         }
 
         back = findViewById(R.id.back_button);
-
+        //take the user back to the disaster menu screen
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,12 +65,12 @@ public class WildfireMapActivity extends AppCompatActivity {
             }
         });
 
+        //load the wildfire map
         webView = (WebView) findViewById(R.id.web_view);
         WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
         webView.loadUrl("https://www.google.org/crisismap/us-wildfires");
 
-        //Alan Button
         JSONObject commandJson = null;
 
         try {
@@ -77,6 +79,7 @@ public class WildfireMapActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        //Set up the Alan AI voice assistant
         AlanButton alan_button;
         alan_button = findViewById(R.id.alan_button);
 
@@ -92,6 +95,8 @@ public class WildfireMapActivity extends AppCompatActivity {
                 System.out.println(methodName);
             }
         });
+
+        //Define the Alan Callback
         AlanCallback myCallback = new AlanCallback() {
             @Override
             public void onCommandReceived(EventCommand eventCommand) {

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 public class SignupActivity extends AppCompatActivity {
 
+    //Initialize variables
     private EditText editTextEmail;
     private EditText editTextPass;
     private ProgressDialog progressDialog;
@@ -27,14 +28,15 @@ public class SignupActivity extends AppCompatActivity {
     private Firebase mRef;
     ArrayList<String> items = new ArrayList<>();
     ImageButton back;
+    Button signup;
     ArrayList<String> disastersList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-//        getSupportActionBar().hide();
 
+        //connect to firebase
         firebaseAuth = FirebaseAuth.getInstance();
 
         Firebase.setAndroidContext(this);
@@ -42,9 +44,13 @@ public class SignupActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
 
+        //Retrieve the relevant views from the xml layout
         editTextEmail = findViewById(R.id.email);
         editTextPass = findViewById(R.id.password);
+        signup = findViewById(R.id.sign_up_button);
+        back = findViewById(R.id.back_button);
 
+        //add emergency checklist items
         items.add("Water");
         items.add("Non-perishable Food");
         items.add("Battery-powered Radio");
@@ -63,13 +69,13 @@ public class SignupActivity extends AppCompatActivity {
         items.add("Matchsticks");
         items.add("Extra Cash");
         items.add("Portable Charger");
-        //REMINDER: If you add any extra items to this list, update the SIZE_OF_CHECKLIST
-        //class constant in ChecklistActivity2
+        //REMINDER: If you add any extra items to this list, update the SIZE_OF_CHECKLIST, a class constant in ChecklistActivity2
 
+        //add disasters to the list
         disastersList.add("Earthquakes");
         disastersList.add("Wildfires");
 
-        Button signup = findViewById(R.id.sign_up_button);
+        //direct the users to the privacy agreement screen
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,7 +84,7 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
-        back = findViewById(R.id.back_button);
+        //go back to the main activity (welcome screen)
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,6 +95,7 @@ public class SignupActivity extends AppCompatActivity {
 
     }
 
+    //register the user to firebase
     private void registerUser(){
         String email = editTextEmail.getText().toString().trim();
         String pass = editTextPass.getText().toString().trim();
@@ -119,6 +126,7 @@ public class SignupActivity extends AppCompatActivity {
                 });
     }
 
+    //initialize emergency checklist and disaster list values on firebase for current user
     public void addToFirebase() {
         for (int i = 0; i < items.size(); i++) {
             Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("emergency_checklist")
