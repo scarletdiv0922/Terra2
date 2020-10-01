@@ -187,6 +187,7 @@ public class BeforeActivity extends AppCompatActivity {
         backButton = findViewById(R.id.back_button);
         home = findViewById(R.id.home_button);
 
+        //Go back a screen
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -196,6 +197,7 @@ public class BeforeActivity extends AppCompatActivity {
             }
         });
 
+        //Go to the home screen
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

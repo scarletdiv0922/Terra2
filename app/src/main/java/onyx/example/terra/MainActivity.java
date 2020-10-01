@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -58,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
     int minutes;
     int seconds;
 
+    private static final String TAG = "MainActivity";
+
     public static MainActivity getInstance() {
         return instance;
     }
@@ -68,15 +71,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         instance = this;
-
-//        minutes = Calendar.getInstance().get(Calendar.MINUTE);
-//        seconds = Calendar.getInstance().get(Calendar.SECOND);
-//        SimpleDateFormat formatter
-//                = new SimpleDateFormat ("yyyy-MM-dd'T'hh:");
-//        Date date = new Date();
-//        dateString = formatter.format(date);
-//        System.out.println("DATE "+dateString+":"+minutes+":"+seconds);
-
         Button signup = findViewById(R.id.sign_up_button);
         signup.setOnClickListener((v) -> {
             //Toast.makeText(this, "Moving to signup activity", Toast.LENGTH_SHORT).show();
@@ -134,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(Object response) {
 
                         json = response.toString();
-                        System.out.println("I'M HERE 22222" + json);
+                        Log.v(TAG, "Request Successful");
                         try {
                             readJSON();
                         } catch (JSONException | InterruptedException e) {
@@ -148,7 +142,6 @@ public class MainActivity extends AppCompatActivity {
         // Add the request to the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         queue.add(stringRequest);
-        System.out.println("uwu " + count);
         count++;
 
         prevCodes.addAll(currCodes);
@@ -171,17 +164,15 @@ public class MainActivity extends AppCompatActivity {
                 mags.add(magnitude);
                 places.add(place);
 
-//                System.out.println("MAG: " + magnitude);
                 JSONObject geometry = (JSONObject) earthquake.get("geometry");
                 JSONArray coordinates = geometry.getJSONArray("coordinates");
                 Double latitude = (Double) coordinates.get(1);
                 Double longitude = (Double) coordinates.get(0);
-//                System.out.println(latitude + "/" + longitude);
             }
 
             for (int i = 0; i < currCodes.size(); i++) {
                 if (!prevCodes.contains(currCodes.get(i))) {
-                    System.out.println("NOTIFY " + currCodes.get(i));
+                    Log.v(TAG, "NOTIFY " + currCodes.get(i));
 
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this, "channel")
                             .setSmallIcon(R.mipmap.ic_launcher_round)
@@ -202,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
                     code++;
                 }
                 else {
-                    System.out.println("DON'T NOTIFY");
+                    Log.v(TAG, "DON'T NOTIFY");
                 }
             }
         }
@@ -233,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overridden method
         }
         else {
-            System.out.println("PERMISSION RECEIVED");
+            Log.v(TAG, "PERMISSION RECEIVED");
             updateLocation();
         }
     }
@@ -263,26 +254,24 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, getPendingIntent());
-        System.out.println("updateLocation");
-
-
+        Log.v(TAG, "updateLocation");
     }
 
     private PendingIntent getPendingIntent() {
         Intent intent = new Intent(this, MyLocationService2.class);
         intent.setAction(MyLocationService.ACTION_PROCESS_UPDATE);
-        System.out.println("pendingIntent");
+        Log.v(TAG, "getPendingIntent");
         return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private void buildLocationRequest() {
         locationRequest = new LocationRequest();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY); //get the location at high accuracy
-        System.out.println("buildLocationRequest");
+        Log.v(TAG, "buildLocationRequest");
     }
 
     public void setCoordinates(final double lat, final double lon) {
-        System.out.println("setting coords");
+        Log.v(TAG, "Setting coordinates");
         MainActivity.this.runOnUiThread(new Runnable() { //while this activity is running
             @Override
             public void run() {

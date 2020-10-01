@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -59,6 +60,8 @@ public class EarthquakeMapActivity extends FragmentActivity implements OnMapRead
     double currentlong;
     String dateString;
 
+    private static final String TAG = "EarthquakeMap";
+
     public static EarthquakeMapActivity getInstance() {
         return instance;
     }
@@ -66,7 +69,6 @@ public class EarthquakeMapActivity extends FragmentActivity implements OnMapRead
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_earthquake_map);
 
         SimpleDateFormat formatter
                 = new SimpleDateFormat("yyyy-MM-dd");
@@ -80,13 +82,13 @@ public class EarthquakeMapActivity extends FragmentActivity implements OnMapRead
             disaster = (String) bundle.get("Disaster");
         }
 
-        if (disaster.equals("Earthquakes")) {
+        if (disaster.equals("Earthquakes")) { //If the user is on the earthquake route in the app
             setContentView(R.layout.activity_earthquake_map);
             getPermission();
-            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager() //create the map fragment
                     .findFragmentById(R.id.map);
             mapFragment.getMapAsync((OnMapReadyCallback) this);
-            GetUsgsData();
+            GetUsgsData(); //retrieve the USGS data
         }
 
         back = findViewById(R.id.back_button);
@@ -102,6 +104,7 @@ public class EarthquakeMapActivity extends FragmentActivity implements OnMapRead
         instance = this;
     }
 
+    //Get the user permission for location
     public void getPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
@@ -111,7 +114,7 @@ public class EarthquakeMapActivity extends FragmentActivity implements OnMapRead
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overridden method
         }
         else {
-            System.out.println("PERMISSION RECEIVED");
+            Log.v(TAG, "PERMISSION RECEIVED");
             updateLocation();
         }
     }
@@ -141,7 +144,7 @@ public class EarthquakeMapActivity extends FragmentActivity implements OnMapRead
             return;
         }
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, getPendingIntent());
-        System.out.println("updateLocation");
+        Log.v(TAG, "updateLocation");
 
 
     }
@@ -149,18 +152,19 @@ public class EarthquakeMapActivity extends FragmentActivity implements OnMapRead
     private PendingIntent getPendingIntent() {
         Intent intent = new Intent(this, MyLocationService.class);
         intent.setAction(MyLocationService.ACTION_PROCESS_UPDATE);
-        System.out.println("pendingIntent");
+        Log.v(TAG, "pendingIntent");
         return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private void buildLocationRequest() {
         locationRequest = new LocationRequest();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY); //get the location at high accuracy
-        System.out.println("buildLocationRequest");
+        Log.v(TAG, "buildLocationRequest");
     }
 
+
     public void setCoordinates(final double lat, final double lon) {
-        System.out.println("setting coords");
+        Log.v(TAG, "Setting coordinates");
         EarthquakeMapActivity.this.runOnUiThread(new Runnable() { //while this activity is running
             @Override
             public void run() {
@@ -180,7 +184,7 @@ public class EarthquakeMapActivity extends FragmentActivity implements OnMapRead
                     public void onResponse(Object response) {
                         // Display the first 500 characters of the response string.
                         json = response.toString();
-                        System.out.println("I'M HERE" + json.substring(0,100));
+                        Log.v(TAG, json.substring(0,100));
                         try {
                             readJSON();
                         } catch (JSONException e) {
@@ -198,6 +202,7 @@ public class EarthquakeMapActivity extends FragmentActivity implements OnMapRead
         queue.add(stringRequest);
     }
 
+    //Parse the JSON file that the app receives from USGS
     public void readJSON() throws JSONException {
         if (json != null) {
             JSONObject reader = new JSONObject(json);
@@ -209,15 +214,13 @@ public class EarthquakeMapActivity extends FragmentActivity implements OnMapRead
                 Double magnitude = properties.getDouble("mag");
                 String place = properties.getString("place");
 
-//                System.out.println("MAG: " + magnitude);
                 JSONObject geometry = (JSONObject) earthquake.get("geometry");
                 JSONArray coordinates = geometry.getJSONArray("coordinates");
                 Double latitude = (Double) coordinates.get(1);
                 Double longitude = (Double) coordinates.get(0);
-//                System.out.println(latitude + "/" + longitude);
 
                 LatLng location = new LatLng(latitude, longitude);
-                map.addMarker(new MarkerOptions().position(location).title("Magnitude: " + magnitude+"; " + place)
+                map.addMarker(new MarkerOptions().position(location).title("Magnitude: " + magnitude+"; " + place) //Once the earthquake information has been received, set a map marker
                         .icon(BitmapDescriptorFactory.defaultMarker(getMarkerColor(magnitude))));
             }
         }
@@ -232,9 +235,10 @@ public class EarthquakeMapActivity extends FragmentActivity implements OnMapRead
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        System.out.println("map ready");
+        Log.v(TAG, "Map Ready");
     }
 
+    //Set the map marker's color based on the magnitude of the earthquake
     public float getMarkerColor(double magnitude) {
         if (magnitude < 1.0) {
             return BitmapDescriptorFactory.HUE_CYAN;

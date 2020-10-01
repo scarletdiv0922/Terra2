@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -26,16 +27,18 @@ public class DuringActivity extends AppCompatActivity {
     FloatingActionButton home;
     String disaster;
     TextView text;
+    private static final String TAG = "DuringActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Set the activity layout based on which disaster the user is learning about
         Intent disasterIntent = getIntent();
         Bundle bundle = disasterIntent.getExtras();
 
         if (bundle != null) {
-            disaster = (String) bundle.get("Disaster");
+            disaster = (String) bundle.get("Disaster"); //Get the disaster passed to this activity from the previous activity
         }
 
         if (disaster.equals("Earthquakes")) {
@@ -56,6 +59,7 @@ public class DuringActivity extends AppCompatActivity {
         text = findViewById(R.id.during_text);
         text.setMovementMethod(new ScrollingMovementMethod());
 
+        //Set up the Alan AI voice assistant
         AlanButton alan_button;
         alan_button = findViewById(R.id.alan_button);
 
@@ -67,17 +71,15 @@ public class DuringActivity extends AppCompatActivity {
         alan_button.playCommand(commandJson.toString(),  new ScriptMethodCallback() {
             @Override
             public void onResponse(String methodName, String body, String error) {
-                System.out.println("Heyyyyy");
-                System.out.println(methodName);
+                Log.v(TAG, methodName);
             }
         });
         AlanCallback myCallback = new AlanCallback() {
             @Override
             public void onCommandReceived(EventCommand eventCommand) {
                 super.onCommandReceived(eventCommand);
-                System.out.println("Heeereeee");
                 String cmd = eventCommand.getData().toString();
-                System.out.println(cmd);
+                Log.v(TAG, cmd);
                 if (cmd.contains("before")){
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
@@ -178,6 +180,7 @@ public class DuringActivity extends AppCompatActivity {
         backButton = findViewById(R.id.back_button);
         home = findViewById(R.id.home_button);
 
+        //Go back to the BDA menu screen
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -187,6 +190,7 @@ public class DuringActivity extends AppCompatActivity {
             }
         });
 
+        //Go back to the home screen
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

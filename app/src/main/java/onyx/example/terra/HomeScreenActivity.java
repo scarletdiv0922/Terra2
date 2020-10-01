@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -69,6 +70,8 @@ public class HomeScreenActivity extends AppCompatActivity {
     double currentlat;
     double currentlong;
 
+    private static final String TAG = "HomeScreen";
+
     public static HomeScreenActivity getInstance() {
         return instance;
     }
@@ -119,6 +122,7 @@ public class HomeScreenActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        //Set up the Alan AI voice assistant
         AlanButton alan_button;
         alan_button = findViewById(R.id.alan_button);
 
@@ -135,17 +139,15 @@ public class HomeScreenActivity extends AppCompatActivity {
         alan_button.playCommand(commandJson.toString(),  new ScriptMethodCallback() {
             @Override
             public void onResponse(String methodName, String body, String error) {
-                System.out.println("Home screen");
-                System.out.println(methodName);
+                Log.v(TAG, methodName);
             }
         });
         AlanCallback myCallback = new AlanCallback() {
             @Override
             public void onCommandReceived(EventCommand eventCommand) {
                 super.onCommandReceived(eventCommand);
-                System.out.println("Command received");
+                Log.v(TAG, "Command recieved");
                 String cmd = eventCommand.getData().toString();
-                System.out.println(cmd);
                 if (cmd.contains("hazardIndex")){
                     if (hazardIndexUD) {
                         alan_button.playText("Your hazard indices haven't been calculated yet. Please go to your indices screen to find out what your hazard indices are.");
@@ -403,6 +405,7 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     }
 
+    //Check which disasters the user wanted to learn about and display those button options on the home screen
     public void getSelectedDisasters() {
         Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("selected_disasters"); //Get the child element
         mRefChild.addValueEventListener(new ValueEventListener() {
@@ -434,6 +437,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         });
     }
 
+    //Show the buttons for each disaster selected
     public void showButtons() {
         for (int i = 0; i < disasters.size(); i++) {
             if (values.get(i)) {
@@ -450,6 +454,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         }
     }
 
+    //Retrieve the user's readiness score from firebase
     public void getFirebase() {
 
         Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("readiness_score");
@@ -466,12 +471,12 @@ public class HomeScreenActivity extends AppCompatActivity {
         });
     }
 
+    //Get and set the user's readiness score
     public void getReadiness() {
         Firebase mRefChild1 = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("emergency_checklist");
         mRefChild1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println("That's");
                 if (dataSnapshot.getValue() != null) {
                     Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
 
@@ -482,21 +487,18 @@ public class HomeScreenActivity extends AppCompatActivity {
                         if (item.equals("Water") || item.equals("Non-perishable Food") || item.equals("First-aid Kit")) {
                             SIZE_OF_CHECKLIST +=3;
                             if (value){
-                                System.out.println("rough");
                                 checkedItems += 3;
                             }
                         }
                         else if (item.equals("Portable Charger") || item.equals("Extra Cash") || item.equals("Flashlight") || item.equals("Extra Batteries")) {
                             SIZE_OF_CHECKLIST +=2;
                             if (value){
-                                System.out.println("buddy");
                                 checkedItems += 2;
                             }
                         }
                         else {
                             SIZE_OF_CHECKLIST++;
                             if (value){
-                                System.out.println("- Z");
                                 checkedItems ++;
                             }
                         }
@@ -505,7 +507,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                     readinessScore = (double) checkedItems / (double) SIZE_OF_CHECKLIST;
                     mRefChild.setValue((readinessScore*100) + "%");
                     mRefChild.setValue(String.format("%.2f", (readinessScore*100)) + "%");
-                    System.out.println("CHECKED " + checkedItems);
+                    Log.v(TAG, "CHECKED " + checkedItems);
                     checkedItems = 0;
                     SIZE_OF_CHECKLIST = 0;
                 }
@@ -519,12 +521,12 @@ public class HomeScreenActivity extends AppCompatActivity {
     }
 
     public void getRisk() {
-        System.out.println("RISK 1");
+        Log.v(TAG, "RISK 1");
         Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("risk_score");
         mRefChild.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println("RISK 2");
+                Log.v(TAG, "RISK 2");
                 int count = disasters.size();
                 Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
                 for (Map.Entry<String, Object> entry : map.entrySet()) {
@@ -549,14 +551,14 @@ public class HomeScreenActivity extends AppCompatActivity {
                         count--;
                         riskScores.add("100");
                         if (count == 0) {
-                            System.out.println("TRUE");
+                            Log.v(TAG, "TRUE");
                             hazardIndexUD = true;
                         }
                     }
                     else {
                         riskScores.add(score);
                         hazardIndexUD = false;
-                        System.out.println("FALSE");
+                        Log.v(TAG, "FALSE");
                     }
                 }
             }
@@ -591,7 +593,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         }
     }
 
-    //Sned the "help" text message to the emergency contacts
+    //Send the "help" text message to the emergency contacts
     public void sendHelpText(String phoneNumber) {
         if (phoneNumber == null || phoneNumber.length() == 0) {
             return;
@@ -607,6 +609,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         }
     }
 
+    //Retrieve the user's emergency contacts
     public void getEmergContacts() {
         Firebase mRefChild1 = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("emergency_contacts");
         mRefChild1.addValueEventListener(new ValueEventListener() {
@@ -620,7 +623,7 @@ public class HomeScreenActivity extends AppCompatActivity {
 
                         emergContacts.add(contact);
                         emergPhoneNumbers.add(number);
-                        System.out.println("CONTACT " + contact);
+                        Log.v(TAG, "CONTACT: " + contact);
                     }
                 }
             }
@@ -711,7 +714,7 @@ public class HomeScreenActivity extends AppCompatActivity {
             return;
         }
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, getPendingIntent());
-        System.out.println("updateLocation2");
+        Log.v(TAG, "updateLocation");
 
 
     }
@@ -719,25 +722,25 @@ public class HomeScreenActivity extends AppCompatActivity {
     private PendingIntent getPendingIntent() {
         Intent intent = new Intent(this, MyLocationService3.class);
         intent.setAction(MyLocationService.ACTION_PROCESS_UPDATE);
-        System.out.println("pendingIntent2");
+        Log.v(TAG, "getPendingIntent");
         return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private void buildLocationRequest() {
         locationRequest = new LocationRequest();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY); //get the location at high accuracy
-        System.out.println("buildLocationRequest2");
+        Log.v(TAG, "buildLocationRequest");
     }
 
     public void setCoordinates(final double lat, final double lon) {
-        System.out.println("setting coords2");
+        Log.v(TAG, "Setting coordinates");
         HomeScreenActivity.this.runOnUiThread(new Runnable() { //while this activity is running
             @Override
             public void run() {
                 currentlat = lat;
                 currentlong = lon;
 
-                System.out.println("owo"+currentlat+"/"+currentlong);
+                Log.v(TAG, currentlat + "/" + currentlong);
             }
         });
     }

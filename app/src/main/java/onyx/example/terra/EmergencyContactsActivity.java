@@ -112,6 +112,7 @@ public class EmergencyContactsActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        //Set up the Alan AI voice assistant
         AlanButton alan_button;
         alan_button = findViewById(R.id.alan_button);
 
@@ -123,17 +124,15 @@ public class EmergencyContactsActivity extends AppCompatActivity {
         alan_button.playCommand(commandJson.toString(),  new ScriptMethodCallback() {
             @Override
             public void onResponse(String methodName, String body, String error) {
-                System.out.println("Heyyyyy");
-                System.out.println(methodName);
+                Log.v(TAG, methodName);
             }
         });
         AlanCallback myCallback = new AlanCallback() {
             @Override
             public void onCommandReceived(EventCommand eventCommand) {
                 super.onCommandReceived(eventCommand);
-                System.out.println("Heeereeee");
                 String cmd = eventCommand.getData().toString();
-                System.out.println(cmd);
+                Log.v(TAG, cmd);
                 if (cmd.contains("before")){
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
@@ -227,6 +226,7 @@ public class EmergencyContactsActivity extends AppCompatActivity {
 
         alan_button.registerCallback(myCallback);
 
+        //Take the user to the screen where they can add contacts
         addContacts = findViewById(R.id.add_contact);
         addContacts.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -236,6 +236,7 @@ public class EmergencyContactsActivity extends AppCompatActivity {
             }
         });
 
+        //Take the user to the screen where they can remove contacts
         removeContacts = findViewById(R.id.remove_contact);
         removeContacts.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -384,7 +385,7 @@ public class EmergencyContactsActivity extends AppCompatActivity {
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overridden method
         }
         else {
-            System.out.println("PERMISSION RECEIVED");
+            Log.v(TAG, "PERMISSION RECEIVED");
             updateLocation();
         }
     }
@@ -414,33 +415,31 @@ public class EmergencyContactsActivity extends AppCompatActivity {
             return;
         }
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, getPendingIntent());
-        System.out.println("updateLocation2");
-
+        Log.v(TAG, "updateLocation");
 
     }
 
     private PendingIntent getPendingIntent() {
         Intent intent = new Intent(this, MyLocationService3.class);
         intent.setAction(MyLocationService.ACTION_PROCESS_UPDATE);
-        System.out.println("pendingIntent2");
+        Log.v(TAG, "getPendingIntent");
         return PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private void buildLocationRequest() {
         locationRequest = new LocationRequest();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY); //get the location at high accuracy
-        System.out.println("buildLocationRequest2");
+        Log.v(TAG, "buildLocationRequest");
     }
 
     public void setCoordinates(final double lat, final double lon) {
-        System.out.println("setting coords2");
+        Log.v(TAG, "Setting coordinates");
         EmergencyContactsActivity.this.runOnUiThread(new Runnable() { //while this activity is running
             @Override
             public void run() {
                 currentlat = lat;
                 currentlong = lon;
-
-                System.out.println("owo"+currentlat+"/"+currentlong);
+                Log.v(TAG, currentlat + "/" + currentlong);
             }
         });
     }
