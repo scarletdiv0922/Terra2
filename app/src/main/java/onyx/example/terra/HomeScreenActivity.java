@@ -100,7 +100,7 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     private static final String TAG = "HomeScreen";
 
-    int isLocPermissionGranted;
+    long isLocPermissionGranted;
 
     public static HomeScreenActivity getInstance() {
         return instance;
@@ -724,7 +724,7 @@ public class HomeScreenActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() != null) {
-                    isLocPermissionGranted = (int) dataSnapshot.getValue();
+                    isLocPermissionGranted = (long) dataSnapshot.getValue();
                     Log.v(TAG, "Permission is granted?: " + isLocPermissionGranted);
                 }
             }
