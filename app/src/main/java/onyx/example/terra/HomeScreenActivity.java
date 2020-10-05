@@ -882,6 +882,7 @@ public class HomeScreenActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == 1) {
+            Log.v(TAG, "CONTACTS: " + grantResults[0]);
 
             //If the permission has been granted, run showContacts() again and move on to the next step
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -895,6 +896,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         }
 
         if (requestCode == 2) {
+            Log.v(TAG, "LOCATION: " + grantResults[0]);
 
             //If the permission has been granted, run showContacts() again and move on to the next step
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
