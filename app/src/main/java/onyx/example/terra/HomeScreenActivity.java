@@ -126,7 +126,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         getReadiness();
         getEmergContacts();
 //        showContacts();
-        updateLocation();
+//        updateLocation();
         getRisk();
 
         //Check if the user has allowed the app to send text messages
@@ -339,9 +339,14 @@ public class HomeScreenActivity extends AppCompatActivity {
                     }
                 }
                 else if (cmd.contains("nearMe")) {
-                    if (!checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                        ActivityCompat.requestPermissions(HomeScreenActivity.this,
-                                new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 2);
+                    if (isLocPermissionGranted != 2) {
+                        if (!checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                            ActivityCompat.requestPermissions(HomeScreenActivity.this,
+                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 2);
+                        }
+                    }
+                    else {
+                        alan_button.playText("Please allow Terra to access your location to use this feature.");
                     }
 
                     int i = cmd.indexOf("value")+8;
@@ -366,13 +371,18 @@ public class HomeScreenActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
                 else if (cmd.contains("near")) {
-                    if (!checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                        ActivityCompat.requestPermissions(HomeScreenActivity.this,
-                                new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 2);
-                    }
+                    if (isLocPermissionGranted != 2) {
+                        if (!checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                            ActivityCompat.requestPermissions(HomeScreenActivity.this,
+                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 2);
+                        }
 
-                    Intent intent = new Intent(HomeScreenActivity.this, NearbyFacilitiesActivity.class);
-                    startActivity(intent);
+                        Intent intent = new Intent(HomeScreenActivity.this, NearbyFacilitiesActivity.class);
+                        startActivity(intent);
+                    }
+                    else {
+                        alan_button.playText("Please allow Terra to access your location to use this feature.");
+                    }
                 }
                 else if (cmd.contains("left")) {
                     int count = 0;
