@@ -85,8 +85,7 @@ public class NearbyFacilitiesActivity extends AppCompatActivity {
         //Initialize fused location provider client
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         //Check permission
-        if (ActivityCompat.checkSelfPermission(NearbyFacilitiesActivity.this,
-                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (isLocPermissionGranted == 1) {
             //When permission granted, call method
             getCurrentLocation();
         }
@@ -98,7 +97,7 @@ public class NearbyFacilitiesActivity extends AppCompatActivity {
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
             }
             else {
-                Toast.makeText(this, "You must accept the location permission to view your nearby facilities.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Without your location, Terra can not provide a map of nearby facilities near you. Please allow Terra to access your location to use this feature.", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(NearbyFacilitiesActivity.this, HomeScreenActivity.class);
                 startActivity(intent);
             }
@@ -124,7 +123,7 @@ public class NearbyFacilitiesActivity extends AppCompatActivity {
     private void getCurrentLocation() {
         //Initialize task location
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         Task<Location> task = fusedLocationProviderClient.getLastLocation();
