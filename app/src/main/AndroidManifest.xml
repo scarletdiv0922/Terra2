@@ -34,8 +34,8 @@
         <receiver
             android:name="onyx.example.terra.MyLocationService"/>
         <!-- not sure why this is throwing me an error, so commented for now -->
-        <receiver
-            android:name="onyx.example.terra.MyLocationService2"/>
+<!--        <receiver-->
+<!--            android:name="onyx.example.terra.MyLocationService2"/>-->
 
         <receiver
             android:name="onyx.example.terra.MyLocationService3"/>

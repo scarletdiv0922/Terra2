@@ -1,8 +1,11 @@
 package onyx.example.terra;
 
 import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -18,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import com.alan.alansdk.AlanCallback;
@@ -26,6 +30,13 @@ import com.alan.alansdk.ScriptMethodCallback;
 import com.alan.alansdk.button.AlanButton;
 import com.alan.alansdk.events.EventCommand;
 import onyx.example.terra.R;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
@@ -37,10 +48,14 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Map;
 
 public class HomeScreenActivity extends AppCompatActivity {
@@ -69,6 +84,19 @@ public class HomeScreenActivity extends AppCompatActivity {
     FusedLocationProviderClient fusedLocationProviderClient;
     double currentlat;
     double currentlong;
+
+    int count = 0;
+    public String json;
+
+    ArrayList<String> prevCodes = new ArrayList<>();
+    ArrayList<String> currCodes = new ArrayList<>();
+    ArrayList<Double> mags = new ArrayList<>();
+    ArrayList<String> places = new ArrayList<>();
+    NotificationChannel channel;
+    int code = 0;
+    String dateString;
+    int minutes;
+    int seconds;
 
     private static final String TAG = "HomeScreen";
 
@@ -440,6 +468,135 @@ public class HomeScreenActivity extends AppCompatActivity {
             }
         });
 
+        createNotificationChannel();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    threadCode();
+                    try {
+                        Thread.sleep(10000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+
+    }
+
+    public void threadCode() {
+        android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+        minutes = Calendar.getInstance().get(Calendar.MINUTE);
+        seconds = Calendar.getInstance().get(Calendar.SECOND);
+        SimpleDateFormat formatter
+                = new SimpleDateFormat ("yyyy-MM-dd'T'hh:");
+        Date date = new Date();
+        dateString = formatter.format(date);
+        System.out.println("DATE "+dateString+":"+minutes+":"+seconds);
+        getPermission();
+        System.out.println(currentlat);
+        System.out.println(currentlong);
+        String url = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&limit=20&orderby=time&latitude="
+                + currentlat
+                + "&longitude="
+                + currentlong
+                + "&maxradiuskm=100&minmagnitude=2.5&starttime="
+                + dateString+(minutes-1)+":"+seconds;
+
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener() {
+                    @Override
+                    public void onResponse(Object response) {
+
+                        json = response.toString();
+                        Log.v(TAG, "Request Successful");
+                        try {
+                            readJSON();
+                        } catch (JSONException | InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) { }
+        });
+        // Add the request to the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        queue.add(stringRequest);
+        count++;
+
+        prevCodes.addAll(currCodes);
+        currCodes.clear();
+        mags.clear();
+        places.clear();
+    }
+
+    public void readJSON() throws JSONException, InterruptedException {
+        if (json != null) {
+            JSONObject reader = new JSONObject(json);
+            JSONArray earthquakes = reader.getJSONArray("features");
+            for (int i = 0; i < earthquakes.length(); i++) {
+                JSONObject earthquake = (JSONObject) earthquakes.get(i);
+                JSONObject properties = (JSONObject) earthquake.get("properties");
+                Double magnitude = properties.getDouble("mag");
+                String place = properties.getString("place");
+                String code = properties.getString("code");
+                currCodes.add(code);
+                mags.add(magnitude);
+                places.add(place);
+
+                JSONObject geometry = (JSONObject) earthquake.get("geometry");
+                JSONArray coordinates = geometry.getJSONArray("coordinates");
+                Double latitude = (Double) coordinates.get(1);
+                Double longitude = (Double) coordinates.get(0);
+            }
+
+            for (int i = 0; i < currCodes.size(); i++) {
+                if (!prevCodes.contains(currCodes.get(i))) {
+                    Log.v(TAG, "NOTIFY " + currCodes.get(i));
+
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(HomeScreenActivity.this, "channel")
+                            .setSmallIcon(R.mipmap.ic_launcher_round)
+                            .setContentTitle("Earthquake")
+                            .setContentText("An earthquake of magnitude " + mags.get(i) + " at " + places.get(i) + " has occurred.")
+                            .setStyle(new NotificationCompat.BigTextStyle()
+                                    .bigText("An earthquake of magnitude " + mags.get(i) + " at " + places.get(i) + " has occurred."))
+                            .setAutoCancel(true);
+
+                    Intent intent = new Intent(HomeScreenActivity.this, HomeScreenActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                    PendingIntent pendingIntent = PendingIntent.getActivity(HomeScreenActivity.this, code, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    builder.setContentIntent(pendingIntent);
+
+                    NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                    notificationManager.notify(code, builder.build());
+                    code++;
+                }
+                else {
+                    Log.v(TAG, "DON'T NOTIFY");
+                }
+            }
+        }
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Notification";
+            String description = "Earthquake";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("channel", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
     //Check which disasters the user wanted to learn about and display those button options on the home screen
@@ -709,12 +866,12 @@ public class HomeScreenActivity extends AppCompatActivity {
 
             //If the permission has been granted, run showContacts() again and move on to the next step
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                showContacts();
+                getPermission();
             }
 
             //If the permission hasn't been granted, handle it with an error message
             else {
-                Toast.makeText(this, "Without your permission, Terra cannot access your contacts. Terra will access your contacts solely for the reason of making it easier and faster for you to tell your emergency contacts that you are safeWithout your permission, Terra cannot access your contacts. Terra will access your contacts solely for the reason of making it easier and faster for you to tell your emergency contacts that you are safe or that you need help directly from the app.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Without your permission, Terra cannot tell you what disasters are in your area.", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -754,6 +911,20 @@ public class HomeScreenActivity extends AppCompatActivity {
             cur.close();
         }
 
+    }
+
+    public void getPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            //Then request the user permission to access contacts
+            ActivityCompat.requestPermissions(HomeScreenActivity.this,
+                    new String[] { android.Manifest.permission.ACCESS_FINE_LOCATION }, 1);
+            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overridden method
+        }
+        else {
+            Log.v(TAG, "PERMISSION RECEIVED");
+            updateLocation();
+        }
     }
 
     private void updateLocation() {

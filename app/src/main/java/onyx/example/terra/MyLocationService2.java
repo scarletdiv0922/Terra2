@@ -19,7 +19,7 @@ public class MyLocationService2 extends BroadcastReceiver {
                 if (result != null) {
                     Location location = result.getLastLocation();
                     try {
-                        MainActivity.getInstance().setCoordinates(location.getLatitude(), location.getLongitude());
+//                        MainActivity.getInstance().setCoordinates(location.getLatitude(), location.getLongitude());
                     } catch (Exception e) {
                     }
                 }
