@@ -5,16 +5,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import onyx.example.terra.R;
+
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -25,6 +33,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,6 +55,9 @@ public class NearbyFacilitiesActivity extends AppCompatActivity {
     GoogleMap map;
     FusedLocationProviderClient fusedLocationProviderClient;
     double currentLat = 0, currentLong = 0;
+    long isLocPermissionGranted;
+    private Firebase mRef;
+    private static final String TAG = "NearbyFacilities";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +68,11 @@ public class NearbyFacilitiesActivity extends AppCompatActivity {
         btFind = findViewById(R.id.bt_find);
         supportMapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.google_map);
+
+        //Connect activity to Firebase
+        Firebase.setAndroidContext(this);
+        mRef = new Firebase("https://terra-alan.firebaseio.com/");
+        getIsLocPermissionGranted();
 
         //Initialize array of place types
         final String[] placeTypeList = {"atm", "bank", "hospital", "store", "shelter"};
@@ -73,10 +90,18 @@ public class NearbyFacilitiesActivity extends AppCompatActivity {
             //When permission granted, call method
             getCurrentLocation();
         }
-        else{
-            //If permission denied, request permission
-            ActivityCompat.requestPermissions(NearbyFacilitiesActivity.this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+        else {
+
+            if (isLocPermissionGranted == 0) {
+                //If permission denied, request permission
+                ActivityCompat.requestPermissions(NearbyFacilitiesActivity.this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
+            }
+            else {
+                Toast.makeText(this, "You must accept the location permission to view your nearby facilities.", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(NearbyFacilitiesActivity.this, HomeScreenActivity.class);
+                startActivity(intent);
+            }
         }
         btFind.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,6 +161,24 @@ public class NearbyFacilitiesActivity extends AppCompatActivity {
                 getCurrentLocation();
             }
         }
+    }
+
+    public void getIsLocPermissionGranted() {
+        Firebase mRefChild1 = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("isLocPermissionGranted");
+        mRefChild1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                    isLocPermissionGranted = (long) dataSnapshot.getValue();
+                    Log.v(TAG, "Permission is granted?: " + isLocPermissionGranted);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 
     private class PlaceTask extends AsyncTask<String, Integer, String> {
