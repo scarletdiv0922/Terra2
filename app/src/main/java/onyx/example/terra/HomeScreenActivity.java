@@ -202,7 +202,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                 else if (cmd.contains("addContact")){
                     if (!checkPermission(Manifest.permission.READ_CONTACTS)) {
                         ActivityCompat.requestPermissions(HomeScreenActivity.this,
-                                new String[]{Manifest.permission.READ_CONTACTS}, 3);
+                                new String[]{Manifest.permission.READ_CONTACTS}, 1);
                     }
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
@@ -226,7 +226,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                 else if (cmd.contains("removeContact")){
                     if (!checkPermission(Manifest.permission.READ_CONTACTS)) {
                         ActivityCompat.requestPermissions(HomeScreenActivity.this,
-                                new String[]{Manifest.permission.READ_CONTACTS}, 3);
+                                new String[]{Manifest.permission.READ_CONTACTS}, 1);
                     }
 
                     int i = cmd.indexOf("value")+8;
@@ -268,7 +268,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                     }
                     if (!checkPermission(Manifest.permission.READ_CONTACTS)) {
                         ActivityCompat.requestPermissions(HomeScreenActivity.this,
-                                new String[]{Manifest.permission.READ_CONTACTS}, 3);
+                                new String[]{Manifest.permission.READ_CONTACTS}, 1);
                     }
 
                     for (int i = 0; i < emergPhoneNumbers.size(); i++) {
@@ -283,7 +283,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                     }
                     if (!checkPermission(Manifest.permission.READ_CONTACTS)) {
                         ActivityCompat.requestPermissions(HomeScreenActivity.this,
-                                new String[]{Manifest.permission.READ_CONTACTS}, 3);
+                                new String[]{Manifest.permission.READ_CONTACTS}, 1);
                     }
 
                     for (int i = 0; i < emergPhoneNumbers.size(); i++) {
@@ -944,7 +944,7 @@ public class HomeScreenActivity extends AppCompatActivity {
 
             //Then request the user permission to access contacts
             ActivityCompat.requestPermissions(HomeScreenActivity.this,
-                    new String[] { android.Manifest.permission.ACCESS_FINE_LOCATION }, 1);
+                    new String[] { android.Manifest.permission.ACCESS_FINE_LOCATION }, 2);
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overridden method
         }
         else {
