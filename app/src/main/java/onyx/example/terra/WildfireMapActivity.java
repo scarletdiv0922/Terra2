@@ -2,10 +2,12 @@ package onyx.example.terra;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,7 +17,13 @@ import com.alan.alansdk.ScriptMethodCallback;
 import com.alan.alansdk.button.AlanButton;
 import com.alan.alansdk.events.EventCommand;
 import onyx.example.terra.R;
+
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,9 +36,23 @@ public class WildfireMapActivity extends AppCompatActivity {
     ImageButton back;
     WebView webView;
 
+    private Firebase mRef;
+    long isLocPermissionGranted;
+
+    private static final String TAG = "WildfireMap";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Firebase.setAndroidContext(this);
+        mRef = new Firebase("https://terra-alan.firebaseio.com/");
+        getIsLocPermissionGranted();
+        if (isLocPermissionGranted == 2){
+            Toast.makeText(this, "Without your location, Terra can not provide a map of wildfires near you. Please allow Terra to access your location to use this feature.", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(WildfireMapActivity.this, HomeScreenActivity.class);
+            startActivity(intent);
+        }
 
         //if the disaster map is for wildfires
         Intent intent = getIntent();
@@ -91,7 +113,6 @@ public class WildfireMapActivity extends AppCompatActivity {
         alan_button.playCommand(commandJson.toString(),  new ScriptMethodCallback() {
             @Override
             public void onResponse(String methodName, String body, String error) {
-                System.out.println("Heyyyyy");
                 System.out.println(methodName);
             }
         });
@@ -101,7 +122,6 @@ public class WildfireMapActivity extends AppCompatActivity {
             @Override
             public void onCommandReceived(EventCommand eventCommand) {
                 super.onCommandReceived(eventCommand);
-                System.out.println("Heeereeee");
                 String cmd = eventCommand.getData().toString();
                 System.out.println(cmd);
                 if (cmd.contains("before")){
@@ -200,5 +220,23 @@ public class WildfireMapActivity extends AppCompatActivity {
         };
 
         alan_button.registerCallback(myCallback);
+    }
+
+    public void getIsLocPermissionGranted() {
+        Firebase mRefChild1 = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("isLocPermissionGranted");
+        mRefChild1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                    isLocPermissionGranted = (long) dataSnapshot.getValue();
+                    Log.v(TAG, "Permission is granted?: " + isLocPermissionGranted);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
     }
 }

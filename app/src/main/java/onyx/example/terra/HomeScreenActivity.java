@@ -177,7 +177,7 @@ public class HomeScreenActivity extends AppCompatActivity {
             @Override
             public void onCommandReceived(EventCommand eventCommand) {
                 super.onCommandReceived(eventCommand);
-                Log.v(TAG, "Command recieved");
+                Log.v(TAG, "Command received");
                 String cmd = eventCommand.getData().toString();
                 if (cmd.contains("hazardIndex")){
                     if (hazardIndexUD) {

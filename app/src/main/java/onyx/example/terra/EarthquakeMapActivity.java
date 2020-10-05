@@ -21,6 +21,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import onyx.example.terra.R;
+
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
@@ -33,6 +38,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -62,6 +68,9 @@ public class EarthquakeMapActivity extends FragmentActivity implements OnMapRead
 
     private static final String TAG = "EarthquakeMap";
 
+    private Firebase mRef;
+    long isLocPermissionGranted;
+
     public static EarthquakeMapActivity getInstance() {
         return instance;
     }
@@ -69,6 +78,15 @@ public class EarthquakeMapActivity extends FragmentActivity implements OnMapRead
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Firebase.setAndroidContext(this);
+        mRef = new Firebase("https://terra-alan.firebaseio.com/");
+        getIsLocPermissionGranted();
+        if (isLocPermissionGranted == 2){
+            Toast.makeText(this, "Without your location, Terra can not provide a map of earthquakes near you. Please allow Terra to access your location to use this feature.", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(EarthquakeMapActivity.this, HomeScreenActivity.class);
+            startActivity(intent);
+        }
 
         SimpleDateFormat formatter
                 = new SimpleDateFormat("yyyy-MM-dd");
@@ -84,7 +102,8 @@ public class EarthquakeMapActivity extends FragmentActivity implements OnMapRead
 
         if (disaster.equals("Earthquakes")) { //If the user is on the earthquake route in the app
             setContentView(R.layout.activity_earthquake_map);
-            getPermission();
+            if (isLocPermissionGranted == 0)
+                getPermission();
             SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager() //create the map fragment
                     .findFragmentById(R.id.map);
             mapFragment.getMapAsync((OnMapReadyCallback) this);
@@ -126,12 +145,14 @@ public class EarthquakeMapActivity extends FragmentActivity implements OnMapRead
 
             //If the permission has been granted, run showContacts() again and move on to the next step
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getPermission();
+                updateLocation();
             }
 
             //If the permission hasn't been granted, handle it with an error message
             else {
                 Toast.makeText(this, "Without your location, Terra can not provide a map of earthquakes near you. Please allow Terra to access your location to use this feature.", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(EarthquakeMapActivity.this, HomeScreenActivity.class);
+                startActivity(intent);
             }
         }
     }
@@ -250,4 +271,23 @@ public class EarthquakeMapActivity extends FragmentActivity implements OnMapRead
             return BitmapDescriptorFactory.HUE_RED;
         }
     }
+
+    public void getIsLocPermissionGranted() {
+        Firebase mRefChild1 = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("isLocPermissionGranted");
+        mRefChild1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                    isLocPermissionGranted = (long) dataSnapshot.getValue();
+                    Log.v(TAG, "Permission is granted?: " + isLocPermissionGranted);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
 }
