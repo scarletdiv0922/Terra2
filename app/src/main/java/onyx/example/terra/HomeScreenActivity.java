@@ -907,7 +907,6 @@ public class HomeScreenActivity extends AppCompatActivity {
             //If the permission hasn't been granted, handle it with an error message
             else {
                 isLocPermissionGranted = 2;
-                Toast.makeText(this, "Without your permission, Terra cannot tell you what disasters are in your area.", Toast.LENGTH_LONG).show();
             }
             Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("isLocPermissionGranted");
             mRefChild.setValue(isLocPermissionGranted);
