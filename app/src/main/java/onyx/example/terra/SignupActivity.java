@@ -142,5 +142,8 @@ public class SignupActivity extends AppCompatActivity {
                     .child(disastersList.get(i));
             mRefChild2.setValue("undefined");
         }
+
+        Firebase mRefChild3 = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("isLocPermissionGranted");
+        mRefChild3.setValue(0);
     }
 }

@@ -100,6 +100,8 @@ public class HomeScreenActivity extends AppCompatActivity {
 
     private static final String TAG = "HomeScreen";
 
+    int isLocPermissionGranted;
+
     public static HomeScreenActivity getInstance() {
         return instance;
     }
@@ -120,6 +122,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         mRef = new Firebase("https://terra-alan.firebaseio.com/");
 
         getFirebase();
+        getIsLocPermissionGranted();
         getReadiness();
         getEmergContacts();
 //        showContacts();
@@ -495,7 +498,8 @@ public class HomeScreenActivity extends AppCompatActivity {
         Date date = new Date();
         dateString = formatter.format(date);
         System.out.println("DATE "+dateString+":"+minutes+":"+seconds);
-        getPermission();
+        if (isLocPermissionGranted == 0)
+            getPermission();
         System.out.println(currentlat);
         System.out.println(currentlong);
         String url = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&limit=20&orderby=time&latitude="
@@ -714,6 +718,24 @@ public class HomeScreenActivity extends AppCompatActivity {
         });
     }
 
+    public void getIsLocPermissionGranted() {
+        Firebase mRefChild1 = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("isLocPermissionGranted");
+        mRefChild1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null) {
+                    isLocPermissionGranted = (int) dataSnapshot.getValue();
+                    Log.v(TAG, "Permission is granted?: " + isLocPermissionGranted);
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
     public void getRisk() {
         Log.v(TAG, "RISK 1");
         Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("risk_score");
@@ -866,13 +888,17 @@ public class HomeScreenActivity extends AppCompatActivity {
 
             //If the permission has been granted, run showContacts() again and move on to the next step
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                getPermission();
+                isLocPermissionGranted = 1;
+                updateLocation();
             }
 
             //If the permission hasn't been granted, handle it with an error message
             else {
+                isLocPermissionGranted = 2;
                 Toast.makeText(this, "Without your permission, Terra cannot tell you what disasters are in your area.", Toast.LENGTH_LONG).show();
             }
+            Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("isLocPermissionGranted");
+            mRefChild.setValue(isLocPermissionGranted);
         }
     }
 
