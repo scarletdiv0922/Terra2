@@ -67,7 +67,7 @@ public class NearbyFacilitiesActivity extends AppCompatActivity {
         //Connect activity to Firebase
         Firebase.setAndroidContext(this);
         mRef = new Firebase("https://terra-alan.firebaseio.com/");
-        getIsLocPermissionGranted();
+        isLocPermissionGranted = getIsLocPermissionGranted();
 
         System.out.println("LOC: " + isLocPermissionGranted);
 
@@ -99,15 +99,13 @@ public class NearbyFacilitiesActivity extends AppCompatActivity {
         if (isLocPermissionGranted == 1) {
             //When permission granted, call method
             getCurrentLocation();
-        }
-        else {
+        } else {
 
             if (isLocPermissionGranted == 0) {
                 //If permission denied, request permission
                 ActivityCompat.requestPermissions(NearbyFacilitiesActivity.this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 44);
-            }
-            else {
+            } else {
                 Toast.makeText(this, "Without your location, Terra can not provide a map of nearby facilities near you. Please allow Terra to access your location to use this feature.", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(NearbyFacilitiesActivity.this, HomeScreenActivity.class);
                 startActivity(intent);
@@ -115,7 +113,7 @@ public class NearbyFacilitiesActivity extends AppCompatActivity {
         }
         btFind.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 //Get selected position of spinner
                 int i = spType.getSelectedItemPosition();
                 //Initialize url
@@ -173,14 +171,15 @@ public class NearbyFacilitiesActivity extends AppCompatActivity {
         }
     }
 
-    public void getIsLocPermissionGranted() {
+    public long getIsLocPermissionGranted() {
         Firebase mRefChild1 = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("isLocPermissionGranted");
+        long[] permission = {-1};
         mRefChild1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() != null) {
-                    isLocPermissionGranted = (long) dataSnapshot.getValue();
-                    Log.v(TAG, "Permission is granted?: " + isLocPermissionGranted);
+                    permission[0] = (long) dataSnapshot.getValue();
+                    Log.v(TAG, "Permission is granted?: " + permission[0]);
                 }
             }
 
@@ -189,6 +188,7 @@ public class NearbyFacilitiesActivity extends AppCompatActivity {
 
             }
         });
+        return permission[0];
     }
 
     private class PlaceTask extends AsyncTask<String, Integer, String> {
