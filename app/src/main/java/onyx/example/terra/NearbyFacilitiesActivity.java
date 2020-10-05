@@ -63,16 +63,26 @@ public class NearbyFacilitiesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nearby_facilities);
-        //Assign variables
-        spType = findViewById(R.id.sp_type);
-        btFind = findViewById(R.id.bt_find);
-        supportMapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.google_map);
 
         //Connect activity to Firebase
         Firebase.setAndroidContext(this);
         mRef = new Firebase("https://terra-alan.firebaseio.com/");
         getIsLocPermissionGranted();
+
+        System.out.println("LOC: " + isLocPermissionGranted);
+
+        if (isLocPermissionGranted == 2) {
+            System.out.println("OHOHOHOHOHOHO");
+            Toast.makeText(this, "Without your location, Terra can not provide a map of nearby facilities near you. Please allow Terra to access your location to use this feature.", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(NearbyFacilitiesActivity.this, HomeScreenActivity.class);
+            startActivity(intent);
+        }
+
+        //Assign variables
+        spType = findViewById(R.id.sp_type);
+        btFind = findViewById(R.id.bt_find);
+        supportMapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.google_map);
 
         //Initialize array of place types
         final String[] placeTypeList = {"atm", "bank", "hospital", "store", "shelter"};
@@ -84,6 +94,7 @@ public class NearbyFacilitiesActivity extends AppCompatActivity {
 
         //Initialize fused location provider client
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
         //Check permission
         if (isLocPermissionGranted == 1) {
             //When permission granted, call method
