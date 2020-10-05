@@ -47,7 +47,7 @@ public class WildfireMapActivity extends AppCompatActivity {
 
         Firebase.setAndroidContext(this);
         mRef = new Firebase("https://terra-alan.firebaseio.com/");
-        getIsLocPermissionGranted();
+        isLocPermissionGranted = getIsLocPermissionGranted();
         if (isLocPermissionGranted == 2){
             Toast.makeText(this, "Without your location, Terra can not provide a map of wildfires near you. Please allow Terra to access your location to use this feature.", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(WildfireMapActivity.this, HomeScreenActivity.class);
@@ -222,14 +222,15 @@ public class WildfireMapActivity extends AppCompatActivity {
         alan_button.registerCallback(myCallback);
     }
 
-    public void getIsLocPermissionGranted() {
+    public long getIsLocPermissionGranted() {
         Firebase mRefChild1 = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("isLocPermissionGranted");
+        long[] permission = {-1};
         mRefChild1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() != null) {
-                    isLocPermissionGranted = (long) dataSnapshot.getValue();
-                    Log.v(TAG, "Permission is granted?: " + isLocPermissionGranted);
+                    permission[0] = (long) dataSnapshot.getValue();
+                    Log.v(TAG, "Permission is granted?: " + permission[0]);
                 }
             }
 
@@ -238,5 +239,6 @@ public class WildfireMapActivity extends AppCompatActivity {
 
             }
         });
+        return permission[0];
     }
 }
