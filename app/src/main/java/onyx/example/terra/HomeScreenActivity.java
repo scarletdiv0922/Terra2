@@ -131,6 +131,20 @@ public class HomeScreenActivity extends AppCompatActivity {
 //        updateLocation();
         getRisk();
 
+        if (isLocPermissionGranted == 0) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(HomeScreenActivity.this);
+            builder.setMessage("Terra will access your location to provide a map of natural disasters near you, find nearby facilities (like hospitals) in case of an emergency, and to send texts with your location to your emergency contacts if you need help. Please click \"I understand\" below to proceed to the next step, where you can approve or deny this permission.")
+                    .setTitle("Need Permission to Access Your Location");
+            builder.setPositiveButton("I understand", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    ActivityCompat.requestPermissions(HomeScreenActivity.this,
+                            new String[]{Manifest.permission.READ_CONTACTS}, 1);
+                }
+            });
+            AlertDialog dialog = builder.create();
+            getPermission();
+        }
+
         //Check if the user has allowed the app to send text messages
 //        if (!checkPermission(Manifest.permission.SEND_SMS)) {
 //            ActivityCompat.requestPermissions(this,
@@ -510,19 +524,6 @@ public class HomeScreenActivity extends AppCompatActivity {
         Date date = new Date();
         dateString = formatter.format(date);
         System.out.println("DATE "+dateString+":"+minutes+":"+seconds);
-        if (isLocPermissionGranted == 0) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(HomeScreenActivity.this);
-            builder.setMessage("Terra will access your location to provide a map of natural disasters near you, find nearby facilities (like hospitals) in case of an emergency, and to send texts with your location to your emergency contacts if you need help. Please click \"I understand\" below to proceed to the next step, where you can approve or deny this permission.")
-                    .setTitle("Need Permission to Access Your Location");
-            builder.setPositiveButton("I understand", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    ActivityCompat.requestPermissions(HomeScreenActivity.this,
-                            new String[]{Manifest.permission.READ_CONTACTS}, 1);
-                }
-            });
-            AlertDialog dialog = builder.create();
-            getPermission();
-        }
         System.out.println(currentlat);
         System.out.println(currentlong);
         String url = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&limit=20&orderby=time&latitude="
