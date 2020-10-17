@@ -1,11 +1,13 @@
 package onyx.example.terra;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -202,7 +204,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                 else if (cmd.contains("addContact")){
                     if (!checkPermission(Manifest.permission.READ_CONTACTS)) {
                         ActivityCompat.requestPermissions(HomeScreenActivity.this,
-                                new String[]{Manifest.permission.READ_CONTACTS}, 1);
+                                        new String[]{Manifest.permission.READ_CONTACTS}, 1);
                     }
                     int i = cmd.indexOf("value")+8;
                     int j = cmd.indexOf("\"}");
@@ -508,8 +510,19 @@ public class HomeScreenActivity extends AppCompatActivity {
         Date date = new Date();
         dateString = formatter.format(date);
         System.out.println("DATE "+dateString+":"+minutes+":"+seconds);
-        if (isLocPermissionGranted == 0)
+        if (isLocPermissionGranted == 0) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(HomeScreenActivity.this);
+            builder.setMessage("Terra will access your location to provide a map of natural disasters near you, find nearby facilities (like hospitals) in case of an emergency, and to send texts with your location to your emergency contacts if you need help. Please click \"I understand\" below to proceed to the next step, where you can approve or deny this permission.")
+                    .setTitle("Need Permission to Access Your Location");
+            builder.setPositiveButton("I understand", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    ActivityCompat.requestPermissions(HomeScreenActivity.this,
+                            new String[]{Manifest.permission.READ_CONTACTS}, 1);
+                }
+            });
+            AlertDialog dialog = builder.create();
             getPermission();
+        }
         System.out.println(currentlat);
         System.out.println(currentlong);
         String url = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&limit=20&orderby=time&latitude="
@@ -891,7 +904,7 @@ public class HomeScreenActivity extends AppCompatActivity {
 
             //If the permission hasn't been granted, handle it with an error message
             else {
-                Toast.makeText(this, "Without your permission, Terra cannot access your contacts. Terra will access your contacts solely for the reason of making it easier and faster for you to tell your emergency contacts that you are safeWithout your permission, Terra cannot access your contacts. Terra will access your contacts solely for the reason of making it easier and faster for you to tell your emergency contacts that you are safe or that you need help directly from the app.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Without your permission, Terra cannot access your contacts. Terra will access your contacts solely for the reason of making it easier and faster for you to tell your emergency contacts that you are safe or that you need help directly from the app.", Toast.LENGTH_LONG).show();
             }
         }
 
