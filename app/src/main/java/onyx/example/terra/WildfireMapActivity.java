@@ -48,6 +48,7 @@ public class WildfireMapActivity extends AppCompatActivity {
         Firebase.setAndroidContext(this);
         mRef = new Firebase("https://terra-alan.firebaseio.com/");
         isLocPermissionGranted = getIsLocPermissionGranted();
+        System.out.println("GRANTED? " + isLocPermissionGranted);
         if (isLocPermissionGranted == 2){
             Toast.makeText(this, "Without your location, Terra can not provide a map of wildfires near you. Please allow Terra to access your location to use this feature.", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(WildfireMapActivity.this, HomeScreenActivity.class);
