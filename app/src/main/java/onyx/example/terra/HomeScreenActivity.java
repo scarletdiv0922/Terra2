@@ -134,6 +134,7 @@ public class HomeScreenActivity extends AppCompatActivity {
             mRefChild.setValue(isLocPermissionGranted);
         }
         if (isLocPermissionGranted == 0) {
+            System.out.println("THE AUDACITY");
             AlertDialog.Builder builder = new AlertDialog.Builder(HomeScreenActivity.this);
             builder.setMessage("Terra will access your location to provide a map of natural disasters near you, find nearby facilities (like hospitals) in case of an emergency, and to send texts with your location to your emergency contacts if you need help. Please click \"I understand\" below to proceed to the next step, where you can approve or deny this permission.")
                     .setTitle("Need Permission to Access Your Location");
@@ -144,6 +145,7 @@ public class HomeScreenActivity extends AppCompatActivity {
                 }
             });
             AlertDialog dialog = builder.create();
+            dialog.show();
             getPermission();
         }
         getFirebase();
