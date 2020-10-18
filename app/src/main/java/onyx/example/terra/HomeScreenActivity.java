@@ -140,10 +140,11 @@ public class HomeScreenActivity extends AppCompatActivity {
                     .setTitle("Need Permission to Access Your Location");
             builder.setPositiveButton("I understand", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    ActivityCompat.requestPermissions(HomeScreenActivity.this,
-                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 2);
-                    ActivityCompat.requestPermissions(HomeScreenActivity.this,
-                            new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 2);
+//                    ActivityCompat.requestPermissions(HomeScreenActivity.this,
+//                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 2);
+//                    ActivityCompat.requestPermissions(HomeScreenActivity.this,
+//                            new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 2);
+                    getPermission();
                 }
             });
             AlertDialog dialog = builder.create();
