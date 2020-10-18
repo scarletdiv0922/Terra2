@@ -907,10 +907,10 @@ public class HomeScreenActivity extends AppCompatActivity {
             getContactList();
         }
     }
-    public boolean verifyLocPermissionStatus(long isLocPermissionGranted) {
-        if (isLocPermissionGranted == 2 && checkPermission(Manifest.permission.ACCESS_FINE_LOCATION))
+    public boolean verifyLocPermissionStatus(long locperm) {
+        if (locperm == 2 && checkPermission(Manifest.permission.ACCESS_FINE_LOCATION))
             return false;
-        else if (isLocPermissionGranted == 1 && !checkPermission(Manifest.permission.ACCESS_FINE_LOCATION))
+        else if (locperm == 1 && !checkPermission(Manifest.permission.ACCESS_FINE_LOCATION))
             return false;
         return true;
     }
