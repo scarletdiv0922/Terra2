@@ -905,9 +905,9 @@ public class HomeScreenActivity extends AppCompatActivity {
         }
     }
     public boolean verifyLocPermissionStatus(long isLocPermissionGranted) {
-        if (isLocPermissionGranted == 2 && checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) && checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION))
+        if (isLocPermissionGranted == 2 && checkPermission(Manifest.permission.ACCESS_FINE_LOCATION))
             return false;
-        else if (isLocPermissionGranted == 1 && !checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) && !checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION))
+        else if (isLocPermissionGranted == 1 && !checkPermission(Manifest.permission.ACCESS_FINE_LOCATION))
             return false;
         return true;
     }
