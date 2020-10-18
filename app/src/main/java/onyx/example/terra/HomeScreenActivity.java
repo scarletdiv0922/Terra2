@@ -140,16 +140,11 @@ public class HomeScreenActivity extends AppCompatActivity {
                     .setTitle("Need Permission to Access Your Location");
             builder.setPositiveButton("I understand", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-//                    ActivityCompat.requestPermissions(HomeScreenActivity.this,
-//                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 2);
-//                    ActivityCompat.requestPermissions(HomeScreenActivity.this,
-//                            new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 2);
                     getPermission();
                 }
             });
             AlertDialog dialog = builder.create();
             dialog.show();
-//            getPermission();
         }
         getFirebase();
         getReadiness();
@@ -401,9 +396,11 @@ public class HomeScreenActivity extends AppCompatActivity {
                 }
                 else if (cmd.contains("near")) {
                     if (isLocPermissionGranted != 2) {
-                        if (!checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                        if (!checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) && !checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
                             ActivityCompat.requestPermissions(HomeScreenActivity.this,
                                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 2);
+                            ActivityCompat.requestPermissions(HomeScreenActivity.this,
+                                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 2);
                         }
 
                         Intent intent = new Intent(HomeScreenActivity.this, NearbyFacilitiesActivity.class);
@@ -990,9 +987,11 @@ public class HomeScreenActivity extends AppCompatActivity {
     public void getPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            //Then request the user permission to access contacts
+            //Then request the user permission to access location
             ActivityCompat.requestPermissions(HomeScreenActivity.this,
                     new String[] { android.Manifest.permission.ACCESS_FINE_LOCATION }, 2);
+            ActivityCompat.requestPermissions(HomeScreenActivity.this,
+                    new String[] { android.Manifest.permission.ACCESS_COARSE_LOCATION }, 2);
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overridden method
         }
         else {
