@@ -123,6 +123,9 @@ public class HomeScreenActivity extends AppCompatActivity {
         Firebase.setAndroidContext(this);
         mRef = new Firebase("https://terra-alan.firebaseio.com/");
 
+        Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("isLocPermissionGranted");
+        mRefChild.setValue(-1);
+
         isLocPermissionGranted = getIsLocPermissionGranted();
         System.out.println("HOW DARE " + isLocPermissionGranted);
         if (!verifyLocPermissionStatus(isLocPermissionGranted)){
