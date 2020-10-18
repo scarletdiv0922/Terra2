@@ -173,7 +173,7 @@ public class NearbyFacilitiesActivity extends AppCompatActivity {
 
     public long getIsLocPermissionGranted() {
         Firebase mRefChild1 = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("isLocPermissionGranted");
-        long[] permission = {-1};
+        long[] permission = {0};
         mRefChild1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
