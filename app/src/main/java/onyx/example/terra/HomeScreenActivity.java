@@ -123,9 +123,9 @@ public class HomeScreenActivity extends AppCompatActivity {
         Firebase.setAndroidContext(this);
         mRef = new Firebase("https://terra-alan.firebaseio.com/");
 
-        getFirebase();
         getIsLocPermissionGranted();
         if (!verifyLocPermissionStatus(isLocPermissionGranted)){
+            System.out.println("BROSKI");
             if ((isLocPermissionGranted == 2 || isLocPermissionGranted == 0) && checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION) && checkPermission(Manifest.permission.ACCESS_FINE_LOCATION))
                 isLocPermissionGranted = 1;
             else
@@ -133,12 +133,6 @@ public class HomeScreenActivity extends AppCompatActivity {
             Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("isLocPermissionGranted");
             mRefChild.setValue(isLocPermissionGranted);
         }
-        getReadiness();
-        getEmergContacts();
-//        showContacts();
-//        updateLocation();
-        getRisk();
-
         if (isLocPermissionGranted == 0) {
             AlertDialog.Builder builder = new AlertDialog.Builder(HomeScreenActivity.this);
             builder.setMessage("Terra will access your location to provide a map of natural disasters near you, find nearby facilities (like hospitals) in case of an emergency, and to send texts with your location to your emergency contacts if you need help. Please click \"I understand\" below to proceed to the next step, where you can approve or deny this permission.")
@@ -152,6 +146,12 @@ public class HomeScreenActivity extends AppCompatActivity {
             AlertDialog dialog = builder.create();
             getPermission();
         }
+        getFirebase();
+        getReadiness();
+        getEmergContacts();
+//        showContacts();
+//        updateLocation();
+        getRisk();
 
         //Check if the user has allowed the app to send text messages
 //        if (!checkPermission(Manifest.permission.SEND_SMS)) {
