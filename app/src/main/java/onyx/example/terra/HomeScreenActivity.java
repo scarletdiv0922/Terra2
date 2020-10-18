@@ -772,6 +772,7 @@ public class HomeScreenActivity extends AppCompatActivity {
 
             }
         });
+        System.out.println("PERMISSION[0] " + permission[0]);
         return permission[0];
     }
 
