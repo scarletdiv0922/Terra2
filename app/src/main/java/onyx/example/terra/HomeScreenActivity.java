@@ -769,7 +769,8 @@ public class HomeScreenActivity extends AppCompatActivity {
                 Log.v(TAG, "RISK 2");
                 int count = disasters.size();
                 Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                for (Map.Entry<String, Object> entry : map.entrySet()) {
+                if (map != null) {
+                    for (Map.Entry<String, Object> entry : map.entrySet()) {
 //                    try {
 //                        Double score = (Double) dataSnapshot.getValue();
 //                        riskScores.add(score);
@@ -786,22 +787,24 @@ public class HomeScreenActivity extends AppCompatActivity {
 //                            }
 //                        }
 //                    }
-                    String score = (String) entry.getValue();
-                    if (score.equals("undefined")) {
-                        count--;
-                        riskScores.add("100");
-                        if (count == 0) {
-                            Log.v(TAG, "TRUE");
-                            hazardIndexUD = true;
+                        String score = (String) entry.getValue();
+                        if (score.equals("undefined")) {
+                            count--;
+                            riskScores.add("100");
+                            if (count == 0) {
+                                Log.v(TAG, "TRUE");
+                                hazardIndexUD = true;
+                            }
+                        }
+                        else {
+                            riskScores.add(score);
+                            hazardIndexUD = false;
+                            Log.v(TAG, "FALSE");
                         }
                     }
-                    else {
-                        riskScores.add(score);
-                        hazardIndexUD = false;
-                        Log.v(TAG, "FALSE");
-                    }
                 }
-            }
+                }
+
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {
