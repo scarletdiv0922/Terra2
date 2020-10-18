@@ -123,7 +123,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         Firebase.setAndroidContext(this);
         mRef = new Firebase("https://terra-alan.firebaseio.com/");
 
-        getIsLocPermissionGranted();
+        isLocPermissionGranted = getIsLocPermissionGranted();
         System.out.println("HOW DARE " + isLocPermissionGranted);
         if (!verifyLocPermissionStatus(isLocPermissionGranted)){
             System.out.println("BROSKI");
@@ -755,14 +755,15 @@ public class HomeScreenActivity extends AppCompatActivity {
         });
     }
 
-    public void getIsLocPermissionGranted() {
+    public long getIsLocPermissionGranted() {
         Firebase mRefChild1 = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("isLocPermissionGranted");
+        long[] permission = {0};
         mRefChild1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() != null) {
-                    isLocPermissionGranted = (long) dataSnapshot.getValue();
-                    Log.v(TAG, "Permission is granted?: " + isLocPermissionGranted);
+                    permission[0] = (long) dataSnapshot.getValue();
+                    Log.v(TAG, "Permission is granted?: " + permission[0]);
                 }
             }
 
@@ -771,6 +772,7 @@ public class HomeScreenActivity extends AppCompatActivity {
 
             }
         });
+        return permission[0];
     }
 
     public void getRisk() {
