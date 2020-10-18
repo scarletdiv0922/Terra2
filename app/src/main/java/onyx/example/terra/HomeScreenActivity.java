@@ -125,6 +125,14 @@ public class HomeScreenActivity extends AppCompatActivity {
 
         getFirebase();
         getIsLocPermissionGranted();
+        if (!verifyLocPermissionStatus(isLocPermissionGranted)){
+            if ((isLocPermissionGranted == 2 || isLocPermissionGranted == 0) && checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION) && checkPermission(Manifest.permission.ACCESS_FINE_LOCATION))
+                isLocPermissionGranted = 1;
+            else
+                isLocPermissionGranted = 0;
+            Firebase mRefChild = mRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("isLocPermissionGranted");
+            mRefChild.setValue(isLocPermissionGranted);
+        }
         getReadiness();
         getEmergContacts();
 //        showContacts();
@@ -890,6 +898,13 @@ public class HomeScreenActivity extends AppCompatActivity {
             //Get the user's contacts
             getContactList();
         }
+    }
+    public boolean verifyLocPermissionStatus(long isLocPermissionGranted) {
+        if (isLocPermissionGranted == 2 && checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) && checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION))
+            return false;
+        else if (isLocPermissionGranted == 1 && !checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) && !checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION))
+            return false;
+        return true;
     }
 
     //Handle the permission request result
