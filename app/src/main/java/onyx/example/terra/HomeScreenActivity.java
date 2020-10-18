@@ -126,7 +126,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         getIsLocPermissionGranted();
         if (!verifyLocPermissionStatus(isLocPermissionGranted)){
             System.out.println("BROSKI");
-            if ((isLocPermissionGranted == 2 || isLocPermissionGranted == 0) && checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION) && checkPermission(Manifest.permission.ACCESS_FINE_LOCATION))
+            if ((isLocPermissionGranted == 2 || isLocPermissionGranted == 0) && checkPermission(Manifest.permission.ACCESS_FINE_LOCATION))
                 isLocPermissionGranted = 1;
             else
                 isLocPermissionGranted = 0;
@@ -990,8 +990,8 @@ public class HomeScreenActivity extends AppCompatActivity {
             //Then request the user permission to access location
             ActivityCompat.requestPermissions(HomeScreenActivity.this,
                     new String[] { android.Manifest.permission.ACCESS_FINE_LOCATION }, 2);
-            ActivityCompat.requestPermissions(HomeScreenActivity.this,
-                    new String[] { android.Manifest.permission.ACCESS_COARSE_LOCATION }, 2);
+//            ActivityCompat.requestPermissions(HomeScreenActivity.this,
+//                    new String[] { android.Manifest.permission.ACCESS_COARSE_LOCATION }, 2);
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overridden method
         }
         else {
